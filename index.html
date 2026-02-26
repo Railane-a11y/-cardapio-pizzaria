@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio Digital - CasadasPizzaass</title>
+
+    <!-- CÓDIGO DO APLICATIVO (PWA) -->
+    <meta name="theme-color" content="#e74c3c">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+
+    <style>
+        :root {
+            --cor-primaria: #e74c3c;
+            --cor-secundaria: #c0392b;
+            --cor-destaque: #27ae60;
+            --cor-premium-fundo: #2c3e50;
+            --cor-premium-texto: #ecf0f1;
+            --cor-premium-destaque: #ffd700;
+            --cor-texto-escuro: #2c3e50;
+            --cor-texto-claro: #666;
+            --fundo-claro: #ffffff;
+            --fundo-neutro: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--fundo-claro);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria));
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .header h1 { font-size: 2.2em; font-weight: 700; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+
+        .nav-menu {
+            background-color: var(--fundo-claro);
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .nav-menu a {
+            color: var(--cor-primaria);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 20px;
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block;
+        }
+        .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
+
+        /* ===== NOVAS SEÇÕES DE ESTRATÉGIA ===== */
+        .strategy-section {
+            padding: 20px;
+            margin: 0 20px 20px 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .offer-section {
+            background: linear-gradient(45deg, #ffc107, #ff9800);
+            color: #333;
+            border: 2px dashed #ffffff;
+        }
+        .loyalty-section {
+            background-color: #e8f5e9; /* Verde claro */
+            border: 2px solid var(--cor-destaque);
+            color: #1b5e20; /* Verde escuro */
+        }
+        .strategy-section h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .strategy-section p {
+            font-size: 1.05em;
+            line-height: 1.5;
+        }
+        .strategy-section .price-highlight {
+            font-weight: 700;
+            font-size: 1.2em;
+            display: block;
+            margin-top: 10px;
+        }
+        /* ======================================== */
+
+        .delivery-info {
+            background: var(--cor-destaque);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .category {
+            padding: 30px 20px;
+            border-bottom: 8px solid #f0f2f5;
+        }
+
+        .category h2 {
+            font-size: 1.7em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category .category-subtitle {
+            font-size: 1em;
+            color: var(--cor-texto-claro);
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .items-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
+        .item-card { display: flex; flex-direction: column; }
+        .item-card h3 { font-size: 1.25em; color: var(--cor-texto-escuro); margin-bottom: 8px; }
+        .item-card .description { color: var(--cor-texto-claro); margin-bottom: 12px; flex-grow: 1; }
+        .item-card .price { font-weight: 600; font-size: 1.1em; }
+        .item-card .price span { display: block; margin-top: 4px; }
+
+        .category-destaques { background-color: var(--fundo-claro); }
+        .category-destaques h2 { color: var(--cor-primaria); }
+        .category-destaques .price { color: var(--cor-primaria); }
+
+        .category-especiais { background-color: var(--fundo-neutro); }
+        .category-especiais h2 { color: var(--cor-primaria); }
+        .category-especiais .price { color: var(--cor-primaria); }
+
+        .category-premium { background-color: var(--cor-premium-fundo); color: var(--cor-premium-texto); }
+        .category-premium h2 { color: var(--cor-premium-destaque); }
+        .category-premium .category-subtitle { color: #bdc3c7; }
+        .category-premium .item-card h3 { color: var(--fundo-claro); }
+        .category-premium .item-card .description { color: #bdc3c7; }
+        .category-premium .item-card .price { color: var(--cor-premium-destaque); }
+
+        .order-section { background: linear-gradient(135deg, #3498db, #2980b9); padding: 40px 20px; color: white; }
+        .order-section h2 { text-align: center; font-size: 1.8em; }
+        .order-form { max-width: 500px; margin: 30px auto 0; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .form-group input, .form-group textarea { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 1em; font-family: inherit; }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .payment-option { background: rgba(255,255,255,0.15); border: 2px solid transparent; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .payment-option:hover { background: rgba(255,255,255,0.25); }
+        .payment-option.selected { background: var(--fundo-claro); color: #2980b9; border-color: #2980b9; }
+        .payment-option input { display: none; }
+        .payment-option .payment-icon { font-size: 1.8em; }
+        .payment-option .payment-text { font-weight: 600; font-size: 0.9em; display: block; margin-top: 5px; }
+        
+        .whatsapp-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--fundo-claro); padding: 10px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 200; }
+        .whatsapp-btn { background: #25d366; color: white; border: none; padding: 15px; font-size: 1.1em; font-weight: 700; border-radius: 50px; cursor: pointer; width: 100%; transition: background-color 0.3s ease, transform 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .whatsapp-btn:hover { background: #128c7e; transform: scale(1.02); }
+
+        @media (min-width: 768px) {
+            body { padding-bottom: 0; }
+            .container { margin: 20px auto; border-radius: 12px; overflow: hidden; }
+            .header h1 { font-size: 2.8em; }
+            .category { padding: 40px; }
+            .items-grid { grid-template-columns: 1fr 1fr; }
+            .nav-menu { justify-content: center; }
+            .whatsapp-btn-container { display: none; }
+            .order-form .whatsapp-btn-placeholder { display: block; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🍕 CasadasPizzaass</h1>
+            <p>As melhores pizzas da cidade</p>
+        </header>
+
+        <nav class="nav-menu">
+            <a href="#destaques">Destaques</a>
+            <a href="#especiais">Especiais</a>
+            <a href="#premium">Premium</a>
+            <a href="#bebidas">Bebidas</a>
+            <a href="#pedido">Pedido</a>
+        </nav>
+
+        <div style="padding-top: 20px;"> <!-- Apenas um espaçamento -->
+            <!-- NOVA SEÇÃO DE OFERTA DA SEMANA -->
+            <section class="strategy-section offer-section">
+                <h2>🔥 Oferta da Semana</h2>
+                <p>
+                    Uma Pizza Grande de Calabresa + Guaraná 2L. Perfeito para a família!
+                    <span class="price-highlight">Apenas R$ 49,90</span>
+                </p>
+            </section>
+        </div>
+
+        <div class="delivery-info">
+            🚚 ENTREGA GRÁTIS PARA TODOS OS BAIRROS DA CIDADE
+        </div>
+
+        <main class="menu">
+            <!-- CATEGORIAS DE PIZZA... -->
+            <section id="destaques" class="category category-destaques">
+                <h2>⭐ Destaques da Casa</h2>
+                <p class="category-subtitle">As Mais Pedidas</p>
+                <div class="items-grid">
+                    <!-- Seus itens de pizza aqui... -->
+                    <article class="item-card">
+                        <h3>Calabresa Ralada</h3>
+                        <p class="description">Mussarela, calabresa Ralada, cebola, azeitona e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Calabresa</h3>
+                        <p class="description">Mussarela, calabresa, cebola, azeitona e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Clássica da Casa</h3>
+                        <p class="description">Mussarela, Presunto, cebola, azeitona e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 28,90</span><span>G (8 fatias) - R$ 38,50</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Calabresa Paulista</h3>
+                        <p class="description">Calabresa, cebola, azeitonas e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 27,00</span><span>G (8 fatias) - R$ 35,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Frango</h3>
+                        <p class="description">Frango, mussarela, milho, azeitona e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Portuguesa</h3>
+                        <p class="description">Presunto, cebola, ervilhas, ovos e mussarela.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 47,00</span></p>
+                    </article>
+                </div>
+            </section>
+
+            <section id="especiais" class="category category-especiais">
+                <h2>✨ Variedades Especiais</h2>
+                <p class="category-subtitle">Experimente Novos Sabores</p>
+                <div class="items-grid">
+                    <!-- Seus itens de pizza aqui... -->
+                    <article class="item-card">
+                        <h3>Calabresa com Catupiry</h3>
+                        <p class="description">Calabresa, catupiry, cebola, azeitonas e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 44,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Frango com Requeijão</h3>
+                        <p class="description">Frango, Requeijão Cremoso, azeitona e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>4 Queijos</h3>
+                        <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Moda da Casa</h3>
+                        <p class="description">Mussarela, frango desfiado, bacon, milho e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 47,00</span></p>
+                    </article>
+                </div>
+            </section>
+
+            <section id="premium" class="category category-premium">
+                <h2>👑 Linha Premium</h2>
+                <p class="category-subtitle">Exclusivas e Sofisticadas</p>
+                <div class="items-grid">
+                    <!-- Seus itens de pizza aqui... -->
+                    <article class="item-card">
+                        <h3>Frango com Catupiry</h3>
+                        <p class="description">Frango, mussarela, catupiry, bacon e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 35,00</span><span>G (8 fatias) - R$ 47,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Carne Seca</h3>
+                        <p class="description">Mussarela, carne seca, bacon e cebola.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 36,00</span><span>G (8 fatias) - R$ 49,00</span></p>
+                    </article>
+                    <article class="item-card">
+                        <h3>Carne Seca Maluca</h3>
+                        <p class="description">Carne seca, mussarela, bacon, cebola e batata palha.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 40,00</span><span>G (8 fatias) - R$ 55,00</span></p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- NOVA SEÇÃO DO CLUBE DA PIZZA -->
+            <section id="fidelidade" class="category">
+                <div class="strategy-section loyalty-section">
+                    <h2>🏆 Clube da Pizza</h2>
+                    <p>
+                        A cada 5 pizzas pedidas pelo app, a 6ª é por nossa conta!* Nós anotamos seus pedidos pelo seu número de telefone.
+                          
+<small style="font-size: 0.8em;">(*Pizza grátis nos sabores Calabresa ou Frango, tamanho M).</small>
+                    </p>
+                </div>
+            </section>
+
+            <section id="bordas" class="category category-destaques">
+                <h2>🧀 BORDAS RECHEADAS</h2>
+                <div class="items-grid">
+                    <article class="item-card">
+                        <h3>Bordas Especiais</h3>
+                        <p class="description">Catupiry e Cheddar</p>
+                        <p class="price"><span>M - R$ 10,00</span><span>G - R$ 12,00</span></p>
+                    </article>
+                </div>
+            </section>
+
+            <section id="bebidas" class="category category-especiais">
+                <h2>🥤 BEBIDAS</h2>
+                <div class="items-grid">
+                    <article class="item-card">
+                        <h3>Refrigerantes</h3>
+                        <p class="description">Coca-Cola e Guaraná</p>
+                        <p class="price"><span>1 Litro - R$ 10,00</span><span>2 Litros - R$ 14,00</span></p>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <!-- Seção de Pedido e Script continuam os mesmos -->
+        <section id="pedido" class="order-section">
+            <h2>📝 Faça seu Pedido</h2>
+            <form class="order-form">
+                <div class="form-group">
+                    <label for="nome">Seu Nome:</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone/WhatsApp:</label>
+                    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                </div>
+                <div class="form-group">
+                    <label for="endereco">Endereço para Entrega:</label>
+                    <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro e referência" required>
+                </div>
+                <div class="form-group">
+                    <label for="pedido-texto">Seu Pedido:</label>
+                    <textarea id="pedido-texto" name="pedido" placeholder="Ex: 1 Pizza Calabresa G, 1 Refri 2L, Borda de Catupiry..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>💳 Forma de Pagamento:</label>
+                    <div class="payment-methods">
+                        <label class="payment-option" onclick="selectPayment('dinheiro')">
+                            <input type="radio" name="pagamento" value="dinheiro" id="dinheiro">
+                            <span class="payment-icon">💵</span>
+                            <span class="payment-text">Dinheiro</span>
+                        </label>
+                        <label class="payment-option" onclick="selectPayment('pix')">
+                            <input type="radio" name="pagamento" value="pix" id="pix">
+                            <span class="payment-icon">📱</span>
+                            <span class="payment-text">PIX</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="whatsapp-btn-placeholder" style="display: none; margin-top: 20px;">
+                    <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Enviar pelo WhatsApp</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="whatsapp-btn-container">
+        <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Finalizar Pedido</button>
+    </div>
+
+    <script>
+        // Seu JavaScript continua o mesmo, não precisa mudar nada
+        function selectPayment(paymentType ) {
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
+            selectedOption.classList.add('selected');
+            document.getElementById(paymentType).checked = true;
+        }
+
+        function enviarPedido() {
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const endereco = document.getElementById('endereco').value;
+            const pedido = document.getElementById('pedido-texto').value;
+            const pagamento = document.querySelector('input[name="pagamento"]:checked');
+            
+            if (!nome || !telefone || !endereco || !pedido) {
+                alert('Por favor, preencha todos os campos do pedido!');
+                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            if (!pagamento) {
+                alert('Por favor, selecione uma forma de pagamento!');
+                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
+            const numeroWhatsApp = '5598970100184';
+            
+            let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
+                           `*Cliente:* ${nome}\n` +
+                           `*Contato:* ${telefone}\n` +
+                           `*Endereço:* ${endereco}\n\n` +
+                           `*Pedido Detalhado:*\n${pedido}\n\n` +
+                           `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
+            
+            if (pagamento.value === 'pix') {
+                const chavePix = '98970100184';
+                const nomeRecebedorPix = 'Francisco de Sousa';
+                mensagem += `*Dados para PIX:*\n` +
+                            `*Chave (Celular):* ${chavePix}\n` +
+                            `*Nome:* ${nomeRecebedorPix}\n\n` +
+                            `_O pedido só é liberado após o envio do comprovante._\n\n`;
+            }
+
+            mensagem += `_Pedido enviado via cardápio digital._`;
+            
+            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
+            window.location.href = linkWhatsApp;
+        }
+
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value.slice(0, 15);
+        });
+
+        function handleResize() {
+            const floatingBtn = document.querySelector('.whatsapp-btn-container');
+            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
+            if (window.innerWidth < 768) {
+                floatingBtn.style.display = 'block';
+                if(formBtn) formBtn.style.display = 'none';
+            } else {
+                floatingBtn.style.display = 'none';
+                if(formBtn) formBtn.style.display = 'block';
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('load', handleResize);
+    </script>
+</body>
+</html>
