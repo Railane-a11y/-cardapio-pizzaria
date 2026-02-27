@@ -11,7 +11,6 @@
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
     <style>
-        /* Seu CSS, exatamente como estava, continua perfeito */
         :root {
             --cor-primaria: #e74c3c;
             --cor-secundaria: #c0392b;
@@ -53,14 +52,19 @@
         
         .category-destaques { background-color: var(--fundo-claro); }
         .category-destaques h2 { color: var(--cor-primaria); }
+        .category-destaques .price { color: var(--cor-primaria); } /* CORRIGIDO */
+
         .category-especiais { background-color: var(--fundo-neutro); }
         .category-especiais h2 { color: var(--cor-primaria); }
+        .category-especiais .price { color: var(--cor-primaria); } /* CORRIGIDO */
+
         .category-premium { background-color: var(--cor-premium-fundo); color: var(--cor-premium-texto); }
         .category-premium h2 { color: var(--cor-premium-destaque); }
         .category-premium .category-subtitle { color: #bdc3c7; }
         .category-premium .item-card h3 { color: var(--fundo-claro); }
         .category-premium .item-card .description { color: #bdc3c7; }
-        .category-premium .item-card .price { color: var(--cor-premium-destaque); }
+        .category-premium .item-card .price { color: var(--cor-premium-destaque); } /* CORRIGIDO */
+
         .order-section { background: linear-gradient(135deg, #3498db, #2980b9); padding: 40px 20px; color: white; }
         .order-section h2 { text-align: center; font-size: 1.8em; }
         .order-form { max-width: 500px; margin: 30px auto 0; }
@@ -97,7 +101,6 @@
             <a href="#pedido">Pedido</a>
         </nav>
 
-        <!-- A SEÇÃO DA OFERTA SERÁ PREENCHIDA AUTOMATICAMENTE PELO JAVASCRIPT -->
         <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;">
             <!-- Conteúdo dinâmico aqui -->
         </section>
@@ -107,7 +110,6 @@
         </div>
 
         <main class="menu">
-            <!-- O restante do seu cardápio continua aqui, como antes -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
@@ -217,7 +219,7 @@
             </section>
         </main>
 
-        <!-- Formulário de Pedido e Botão Flutuante (sem alterações) -->
+        <!-- Formulário de Pedido e Botão Flutuante -->
         <section id="pedido" class="order-section">
             <h2>📝 Faça seu Pedido</h2>
             <form class="order-form">
@@ -266,8 +268,6 @@
     // ==================================================================
     //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
     // ==================================================================
-
-    // 1. BANCO DE DADOS INTERNO DE PRODUTOS
     const products = {
         'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
         'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
@@ -278,18 +278,15 @@
         'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
         'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
     };
-
-    // 2. "RECEITAS" DOS COMBOS PARA CADA DIA DA SEMANA
     const dailyOffers = [
-        { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.05 },
-        { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05  },
-        { day: 2, title: 'Terça do Clássico', items: ['frango', 'coca1l'], discount: 0.05  },
-        { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'coca2l'], discount: 0.05  },
-        { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05  },
-        { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'coca2l'], discount: 0.05  },
-        { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.05  },
+        { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.15 },
+        { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.20 },
+        { day: 2, title: 'Terça do Clássico', items: ['frango', 'coca1l'], discount: 0.15 },
+        { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'coca2l'], discount: 0.18 },
+        { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.15 },
+        { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'coca2l'], discount: 0.10 },
+        { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.10 },
     ];
-
     function displayDailyOffer() {
         const today = new Date().getDay();
         const offer = dailyOffers.find(o => o.day === today);
@@ -315,11 +312,9 @@
         `;
         offerSection.style.display = 'block';
     }
-
     function formatCurrency(value) {
         return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
-
     document.addEventListener('DOMContentLoaded', displayDailyOffer);
 
     // =================================================
@@ -333,14 +328,12 @@
         selectedOption.classList.add('selected');
         document.getElementById(paymentType).checked = true;
     }
-
     function enviarPedido() {
         const nome = document.getElementById('nome').value;
         const telefone = document.getElementById('telefone').value;
         const endereco = document.getElementById('endereco').value;
         const pedido = document.getElementById('pedido-texto').value;
         const pagamento = document.querySelector('input[name="pagamento"]:checked');
-        
         if (!nome || !telefone || !endereco || !pedido) {
             alert('Por favor, preencha todos os campos do pedido!');
             document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
@@ -351,17 +344,14 @@
             document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
             return;
         }
-
         const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
         const numeroWhatsApp = '5598970100184';
-        
         let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
                        `*Cliente:* ${nome}\n` +
                        `*Contato:* ${telefone}\n` +
                        `*Endereço:* ${endereco}\n\n` +
                        `*Pedido Detalhado:*\n${pedido}\n\n` +
                        `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
-        
         if (pagamento.value === 'pix') {
             const chavePix = '98970100184';
             const nomeRecebedorPix = 'Francisco de Sousa';
@@ -370,20 +360,16 @@
                         `*Nome:* ${nomeRecebedorPix}\n\n` +
                         `_O pedido só é liberado após o envio do comprovante._\n\n`;
         }
-
         mensagem += `_Pedido enviado via cardápio digital._`;
-        
         const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
         window.location.href = linkWhatsApp;
     }
-
     document.getElementById('telefone').addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
         value = value.replace(/(\d{5})(\d)/, '$1-$2');
         e.target.value = value.slice(0, 15);
     });
-
     function handleResize() {
         const floatingBtn = document.querySelector('.whatsapp-btn-container');
         const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
@@ -400,5 +386,3 @@
     </script>
 </body>
 </html>
-
-
