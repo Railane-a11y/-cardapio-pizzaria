@@ -264,7 +264,60 @@
         <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Finalizar Pedido</button>
     </div>
 
+    <!-- SCRIPTS DO FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+
     <script>
+        // ==================================================================
+        //  INICIALIZAÇÃO E LÓGICA DO FIREBASE
+        // ==================================================================
+        
+        // Sua configuração pessoal do Firebase
+        const firebaseConfig = {
+          apiKey: "AIzaSyArFnFmJ5k3lB7-wbRmpzlrrDoq6jrTqxU",
+          authDomain: "casadaspizzaass-c25ee.firebaseapp.com",
+          projectId: "casadaspizzaass-c25ee",
+          storageBucket: "casadaspizzaass-c25ee.appspot.com", // Corrigi para o formato correto
+          messagingSenderId: "370746157871",
+          appId: "1:370746157871:web:24980faf10a5b566a94fda"
+        };
+
+        // Inicializa o Firebase
+        firebase.initializeApp(firebaseConfig );
+        const messaging = firebase.messaging();
+
+        // Função para pedir permissão de notificação
+        function requestNotificationPermission() {
+            console.log('Pedindo permissão...');
+            Notification.requestPermission().then((permission) => {
+                if (permission === 'granted') {
+                    console.log('Permissão para notificação concedida.');
+                    // Obter o token do dispositivo
+                    messaging.getToken({ vapidKey: 'SUA_VAPID_KEY_AQUI' }) // PRECISAMOS DA SUA VAPID KEY
+                    .then((currentToken) => {
+                        if (currentToken) {
+                            console.log('Token do dispositivo:', currentToken);
+                            // Aqui você enviaria o token para seu servidor para guardá-lo
+                        } else {
+                            console.log('Não foi possível obter o token. O usuário precisa permitir notificações.');
+                        }
+                    }).catch((err) => {
+                        console.log('Ocorreu um erro ao obter o token.', err);
+                    });
+                } else {
+                    console.log('Permissão para notificação negada.');
+                }
+            });
+        }
+
+        // Adiciona um botão ou lógica para chamar a função
+        // Vamos chamar 10 segundos depois que a página carregar
+        window.addEventListener('load', () => {
+            setTimeout(requestNotificationPermission, 10000);
+        });
+
+
         // ==================================================================
         //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
         // ==================================================================
@@ -361,52 +414,3 @@
             if (!nome || !telefone || !endereco || !pedido) {
                 alert('Por favor, preencha todos os campos do pedido!');
                 document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-            if (!pagamento) {
-                alert('Por favor, selecione uma forma de pagamento!');
-                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-            const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
-            const numeroWhatsApp = '5598970100184';
-            let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
-                           `*Cliente:* ${nome}\n` +
-                           `*Contato:* ${telefone}\n` +
-                           `*Endereço:* ${endereco}\n\n` +
-                           `*Pedido Detalhado:*\n${pedido}\n\n` +
-                           `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
-            if (pagamento.value === 'pix') {
-                const chavePix = '98970100184';
-                const nomeRecebedorPix = 'Francisco de Sousa';
-                mensagem += `*Dados para PIX:*\n` +
-                            `*Chave (Celular):* ${chavePix}\n` +
-                            `*Nome:* ${nomeRecebedorPix}\n\n` +
-                            `_O pedido só é liberado após o envio do comprovante._\n\n`;
-            }
-            mensagem += `_Pedido enviado via cardápio digital._`;
-            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
-            window.location.href = linkWhatsApp;
-        }
-        document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = value.slice(0, 15);
-        });
-        function handleResize() {
-            const floatingBtn = document.querySelector('.whatsapp-btn-container');
-            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
-            if (window.innerWidth < 768) {
-                floatingBtn.style.display = 'block';
-                if(formBtn) formBtn.style.display = 'none';
-            } else {
-                floatingBtn.style.display = 'none';
-                if(formBtn) formBtn.style.display = 'block';
-            }
-        }
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('load', handleResize);
-    </script>
-</body>
-</html>
