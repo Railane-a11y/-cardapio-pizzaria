@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
     <style>
-        /* Seu CSS existente... */
+        /* Seu CSS continua o mesmo, sem alterações */
         :root {
             --cor-primaria: #e74c3c;
             --cor-secundaria: #c0392b;
@@ -34,33 +34,15 @@
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
         
-        /* --- ESTILOS DA OFERTA E DO CONTADOR --- */
         .offer-section { padding: 20px; margin: 20px; border-radius: 12px; text-align: center; background: linear-gradient(45deg, #ffc107, #ff9800); color: #333; border: 2px dashed #ffffff; }
         .offer-section h2 { font-size: 1.5em; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .offer-section p { font-size: 1.05em; line-height: 1.5; }
         .offer-section .original-price { text-decoration: line-through; opacity: 0.8; font-size: 0.9em; }
         .offer-section .price-highlight { font-weight: 700; font-size: 1.3em; display: block; margin-top: 8px; }
         
-        /* NOVO ESTILO DO CONTADOR */
-        .countdown-timer {
-            margin-top: 15px;
-            background-color: rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .countdown-timer .timer-label {
-            font-size: 0.9em;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .countdown-timer #timer {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: var(--cor-secundaria);
-            letter-spacing: 2px;
-        }
-        /* ------------------------------------ */
+        .countdown-timer { margin-top: 15px; background-color: rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 8px; }
+        .countdown-timer .timer-label { font-size: 0.9em; font-weight: 600; display: block; margin-bottom: 5px; }
+        .countdown-timer #timer { font-size: 1.4em; font-weight: 700; color: var(--cor-secundaria); letter-spacing: 2px; }
 
         .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
         .category { padding: 30px 20px; border-bottom: 8px solid #f0f2f5; }
@@ -301,6 +283,7 @@
         'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
     };
 
+    // DESCONTOS ATUALIZADOS PARA 5% (0.05)
     const dailyOffers = [
         { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.05 },
         { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
@@ -311,14 +294,12 @@
         { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.05 },
     ];
 
-    // Variável global para o intervalo do contador
     let countdownInterval;
 
     function displayDailyOffer() {
         const today = new Date().getDay();
         const offer = dailyOffers.find(o => o.day === today);
         const offerSection = document.getElementById('oferta');
-
         if (!offer) return;
 
         let originalPrice = 0;
@@ -331,10 +312,8 @@
         });
 
         if (originalPrice === 0) return;
-
         const finalPrice = originalPrice * (1 - offer.discount);
 
-        // Adiciona o HTML do contador à oferta
         offerSection.innerHTML = `
             <h2>🔥 ${offer.title}</h2>
             <p>${offerDescription.join(' + ')}</p>
@@ -343,44 +322,40 @@
                 <span class="price-highlight">Por apenas ${formatCurrency(finalPrice)}</span>
             </div>
             <div class="countdown-timer">
-                <span class="timer-label">Esta oferta termina em:</span>
-                <div id="timer">00:00:00</div>
+                <span class="timer-label">Esta oferta relâmpago termina em:</span>
+                <div id="timer">00:00</div>
             </div>
         `;
         offerSection.style.display = 'block';
-
-        // Inicia o contador regressivo
         startCountdown();
     }
 
-    // NOVA FUNÇÃO: Inicia o contador regressivo
+    // LÓGICA DO CONTADOR ATUALIZADA
     function startCountdown() {
-        // Limpa qualquer contador anterior para evitar múltiplos contadores rodando
         if (countdownInterval) {
             clearInterval(countdownInterval);
         }
 
-        countdownInterval = setInterval(() => {
-            const now = new Date();
-            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 03, 59, 59, 999);
-            const timeLeft = endOfDay - now;
+        // Define a duração do contador: 3 minutos e 59 segundos
+        let durationInSeconds = (3 * 60) + 59; 
+        const timerElement = document.getElementById('timer');
 
-            if (timeLeft < 0) {
+        countdownInterval = setInterval(() => {
+            if (durationInSeconds < 0) {
                 clearInterval(countdownInterval);
-                document.getElementById('timer').textContent = "OFERTA ENCERRADA";
+                timerElement.textContent = "OFERTA ENCERRADA";
                 return;
             }
 
-            const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((timeLeft / 1000 / 60) % 60);
-            const seconds = Math.floor((timeLeft / 1000) % 60);
+            const minutes = Math.floor(durationInSeconds / 60);
+            const seconds = durationInSeconds % 60;
 
-            // Formata para sempre ter dois dígitos (ex: 09, 08, 07)
-            const formattedHours = String(hours).padStart(2, '0');
             const formattedMinutes = String(minutes).padStart(2, '0');
             const formattedSeconds = String(seconds).padStart(2, '0');
 
-            document.getElementById('timer').textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+            timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+            
+            durationInSeconds--;
         }, 1000);
     }
 
@@ -457,5 +432,3 @@
     </script>
 </body>
 </html>
-
-
