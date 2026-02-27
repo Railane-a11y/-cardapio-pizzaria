@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyArFnFmJ5k3lB7-wbRmpzlrrDoq6jrTqxU",
   authDomain: "casadaspizzaass-c25ee.firebaseapp.com",
   projectId: "casadaspizzaass-c25ee",
-  storageBucket: "casadaspizzaass-c25ee.appspot.com", // Corrigi para o formato correto
+  storageBucket: "casadaspizzaass-c25ee.appspot.com",
   messagingSenderId: "370746157871",
   appId: "1:370746157871:web:24980faf10a5b566a94fda"
 };
