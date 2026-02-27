@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
     <style>
-        /* Seu CSS continua o mesmo, sem alterações */
+        /* Seu CSS existente... */
         :root {
             --cor-primaria: #e74c3c;
             --cor-secundaria: #c0392b;
@@ -54,6 +54,23 @@
         .item-card .description { color: var(--cor-texto-claro); margin-bottom: 12px; flex-grow: 1; }
         .item-card .price { font-weight: 600; font-size: 1.1em; }
         .item-card .price span { display: block; margin-top: 4px; }
+
+        /* --- NOVO ESTILO PARA SUGESTÃO DE UPSELL --- */
+        .upsell-suggestion {
+            background-color: #e8f5e9; /* Verde bem claro */
+            border-left: 4px solid var(--cor-destaque);
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9em;
+            color: #1b5e20; /* Verde escuro */
+        }
+        .upsell-suggestion::before {
+            content: '💡';
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+        /* ------------------------------------------- */
         
         .category-destaques { background-color: var(--fundo-claro); }
         .category-destaques h2 { color: var(--cor-primaria); }
@@ -94,7 +111,6 @@
             <p>As melhores pizzas da cidade</p>
         </header>
 
-        <!-- BARRA DE ENTREGA MOVIDA PARA CIMA E TEXTO ATUALIZADO -->
         <div class="delivery-info">
             🚚 ENTREGA GRÁTIS PARA TODA CIDADE
         </div>
@@ -113,7 +129,6 @@
         </section>
 
         <main class="menu">
-            <!-- Seu cardápio continua aqui, sem alterações no HTML -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
@@ -126,6 +141,10 @@
                     <article class="item-card">
                         <h3>Calabresa</h3>
                         <p class="description">Mussarela, calabresa, cebola, azeitona e orégano.</p>
+                        <!-- SUGESTÃO DE UPSELL ADICIONADA AQUI -->
+                        <div class="upsell-suggestion">
+                            Fica perfeita com borda de Catupiry!
+                        </div>
                         <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
                     </article>
                     <article class="item-card">
@@ -168,6 +187,10 @@
                     <article class="item-card">
                         <h3>4 Queijos</h3>
                         <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p>
+                        <!-- SUGESTÃO DE UPSELL ADICIONADA AQUI -->
+                        <div class="upsell-suggestion">
+                            Que tal uma Coca-Cola 2L para acompanhar?
+                        </div>
                         <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
                     </article>
                     <article class="item-card">
@@ -178,6 +201,7 @@
                 </div>
             </section>
 
+            <!-- O resto do seu cardápio continua igual -->
             <section id="premium" class="category category-premium">
                 <h2>👑 Linha Premium</h2>
                 <p class="category-subtitle">Exclusivas e Sofisticadas</p>
@@ -272,7 +296,6 @@
     // ==================================================================
     //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
     // ==================================================================
-
     const products = {
         'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
         'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
@@ -283,25 +306,21 @@
         'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
         'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
     };
-
     const dailyOffers = [
-        { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
+        { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.05 },
         { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-        { day: 2, title: 'Terça do Clássico', items: ['frango', 'guarana1l'], discount: 0.05 },
-        { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l'], discount: 0.05 },
+        { day: 2, title: 'Terça do Clássico', items: ['frango', 'coca1l'], discount: 0.05 },
+        { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'coca2l'], discount: 0.05 },
         { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
-        { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-        { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'guarana2l'], discount: 0.05 },
+        { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'coca2l'], discount: 0.05 },
+        { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.05 },
     ];
-
     let countdownInterval;
-
     function displayDailyOffer() {
         const today = new Date().getDay();
         const offer = dailyOffers.find(o => o.day === today);
         const offerSection = document.getElementById('oferta');
         if (!offer) return;
-
         let originalPrice = 0;
         let offerDescription = [];
         offer.items.forEach(itemId => {
@@ -310,10 +329,8 @@
                 offerDescription.push(products[itemId].name);
             }
         });
-
         if (originalPrice === 0) return;
         const finalPrice = originalPrice * (1 - offer.discount);
-
         offerSection.innerHTML = `
             <h2>🔥 ${offer.title}</h2>
             <p>${offerDescription.join(' + ')}</p>
@@ -329,7 +346,6 @@
         offerSection.style.display = 'block';
         startCountdown();
     }
-
     function startCountdown() {
         if (countdownInterval) {
             clearInterval(countdownInterval);
@@ -350,11 +366,9 @@
             durationInSeconds--;
         }, 1000);
     }
-
     function formatCurrency(value) {
         return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
-
     document.addEventListener('DOMContentLoaded', displayDailyOffer);
 
     // --- O resto do seu script (formulário, etc.) continua igual ---
@@ -424,4 +438,3 @@
     </script>
 </body>
 </html>
-
