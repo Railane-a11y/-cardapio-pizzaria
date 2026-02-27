@@ -10,8 +10,11 @@
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
+    <!-- SCRIPT ONESIGNAL (PARTE 1) -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
     <style>
-        /* Seu CSS existente... */
+        /* Seu CSS continua o mesmo, sem alterações */
         :root {
             --cor-primaria: #e74c3c;
             --cor-secundaria: #c0392b;
@@ -26,7 +29,7 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; line-height: 1.6; padding-bottom: 80px; }
-        .container { max-width: 900px; margin: 0 auto; background: var(--fundo-claro); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .container { max-width: 900px; margin: 0 auto; background: var(--fundo-claro ); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
         .header { background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria)); color: white; text-align: center; padding: 30px 20px; }
         .header h1 { font-size: 2.2em; font-weight: 700; }
         .header p { font-size: 1.1em; opacity: 0.9; }
@@ -55,22 +58,8 @@
         .item-card .price { font-weight: 600; font-size: 1.1em; }
         .item-card .price span { display: block; margin-top: 4px; }
 
-        /* --- NOVO ESTILO PARA SUGESTÃO DE UPSELL --- */
-        .upsell-suggestion {
-            background-color: #e8f5e9; /* Verde bem claro */
-            border-left: 4px solid var(--cor-destaque);
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 0 4px 4px 0;
-            font-size: 0.9em;
-            color: #1b5e20; /* Verde escuro */
-        }
-        .upsell-suggestion::before {
-            content: '💡';
-            margin-right: 8px;
-            font-size: 1.1em;
-        }
-        /* ------------------------------------------- */
+        .upsell-suggestion { background-color: #e8f5e9; border-left: 4px solid var(--cor-destaque); padding: 10px; margin-top: 15px; border-radius: 0 4px 4px 0; font-size: 0.9em; color: #1b5e20; }
+        .upsell-suggestion::before { content: '💡'; margin-right: 8px; font-size: 1.1em; }
         
         .category-destaques { background-color: var(--fundo-claro); }
         .category-destaques h2 { color: var(--cor-primaria); }
@@ -124,9 +113,7 @@
             <a href="#pedido">Pedido</a>
         </nav>
 
-        <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;">
-            <!-- Conteúdo dinâmico da oferta e do contador será inserido aqui -->
-        </section>
+        <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;"></section>
 
         <main class="menu">
             <section id="destaques" class="category category-destaques">
@@ -141,10 +128,7 @@
                     <article class="item-card">
                         <h3>Calabresa</h3>
                         <p class="description">Mussarela, calabresa, cebola, azeitona e orégano.</p>
-                        <!-- SUGESTÃO DE UPSELL ADICIONADA AQUI -->
-                        <div class="upsell-suggestion">
-                            Fica perfeita com borda de Catupiry!
-                        </div>
+                        <div class="upsell-suggestion">Fica perfeita com borda de Catupiry!</div>
                         <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
                     </article>
                     <article class="item-card">
@@ -169,7 +153,6 @@
                     </article>
                 </div>
             </section>
-
             <section id="especiais" class="category category-especiais">
                 <h2>✨ Variedades Especiais</h2>
                 <p class="category-subtitle">Experimente Novos Sabores</p>
@@ -187,10 +170,7 @@
                     <article class="item-card">
                         <h3>4 Queijos</h3>
                         <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p>
-                        <!-- SUGESTÃO DE UPSELL ADICIONADA AQUI -->
-                        <div class="upsell-suggestion">
-                            Que tal uma Coca-Cola 2L para acompanhar?
-                        </div>
+                        <div class="upsell-suggestion">Que tal uma Coca-Cola 2L para acompanhar?</div>
                         <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
                     </article>
                     <article class="item-card">
@@ -200,8 +180,6 @@
                     </article>
                 </div>
             </section>
-
-            <!-- O resto do seu cardápio continua igual -->
             <section id="premium" class="category category-premium">
                 <h2>👑 Linha Premium</h2>
                 <p class="category-subtitle">Exclusivas e Sofisticadas</p>
@@ -223,7 +201,6 @@
                     </article>
                 </div>
             </section>
-
             <section id="bordas" class="category category-destaques">
                 <h2>🧀 BORDAS RECHEADAS</h2>
                 <div class="items-grid">
@@ -234,7 +211,6 @@
                     </article>
                 </div>
             </section>
-
             <section id="bebidas" class="category category-especiais">
                 <h2>🥤 BEBIDAS</h2>
                 <div class="items-grid">
@@ -246,8 +222,6 @@
                 </div>
             </section>
         </main>
-
-        <!-- Formulário de Pedido e Botão Flutuante -->
         <section id="pedido" class="order-section">
             <h2>📝 Faça seu Pedido</h2>
             <form class="order-form">
@@ -293,149 +267,156 @@
     </div>
 
     <script>
-    // ==================================================================
-    //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
-    // ==================================================================
-    const products = {
-        'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
-        'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
-        'portuguesa': { name: 'Pizza Portuguesa (G)', price: 47.00 },
-        '4queijos': { name: 'Pizza 4 Queijos (G)', price: 42.00 },
-        'modadacasa': { name: 'Pizza Moda da Casa (G)', price: 47.00 },
-        'coca2l': { name: 'Coca-Cola 2L', price: 14.00 },
-        'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
-        'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
-    };
-    const dailyOffers = [
-        { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-        { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-        { day: 2, title: 'Terça do Clássico', items: ['frango', 'guarana1l'], discount: 0.05 },
-        { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l'], discount: 0.05 },
-        { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
-        { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-        { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-    ];
-    let countdownInterval;
-    function displayDailyOffer() {
-        const today = new Date().getDay();
-        const offer = dailyOffers.find(o => o.day === today);
-        const offerSection = document.getElementById('oferta');
-        if (!offer) return;
-        let originalPrice = 0;
-        let offerDescription = [];
-        offer.items.forEach(itemId => {
-            if (products[itemId]) {
-                originalPrice += products[itemId].price;
-                offerDescription.push(products[itemId].name);
-            }
+        // SCRIPT DE INICIALIZAÇÃO DO ONESIGNAL (PARTE 2)
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+          await OneSignal.init({
+            appId: "26414814-d6b9-454c-bb00-d1a0fc85c852",
+          });
         });
-        if (originalPrice === 0) return;
-        const finalPrice = originalPrice * (1 - offer.discount);
-        offerSection.innerHTML = `
-            <h2>🔥 ${offer.title}</h2>
-            <p>${offerDescription.join(' + ')}</p>
-            <div>
-                <span class="original-price">De ${formatCurrency(originalPrice)}</span>
-                <span class="price-highlight">Por apenas ${formatCurrency(finalPrice)}</span>
-            </div>
-            <div class="countdown-timer">
-                <span class="timer-label">Esta oferta relâmpago termina em:</span>
-                <div id="timer">00:00</div>
-            </div>
-        `;
-        offerSection.style.display = 'block';
-        startCountdown();
-    }
-    function startCountdown() {
-        if (countdownInterval) {
-            clearInterval(countdownInterval);
+
+        // ==================================================================
+        //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
+        // ==================================================================
+        const products = {
+            'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
+            'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
+            'portuguesa': { name: 'Pizza Portuguesa (G)', price: 47.00 },
+            '4queijos': { name: 'Pizza 4 Queijos (G)', price: 42.00 },
+            'modadacasa': { name: 'Pizza Moda da Casa (G)', price: 47.00 },
+            'coca2l': { name: 'Coca-Cola 2L', price: 14.00 },
+            'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
+            'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
+        };
+        const dailyOffers = [
+            { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.05 },
+            { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
+            { day: 2, title: 'Terça do Clássico', items: ['frango', 'coca1l'], discount: 0.05 },
+            { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'coca2l'], discount: 0.05 },
+            { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
+            { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'coca2l'], discount: 0.05 },
+            { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.05 },
+        ];
+        let countdownInterval;
+        function displayDailyOffer() {
+            const today = new Date().getDay();
+            const offer = dailyOffers.find(o => o.day === today);
+            const offerSection = document.getElementById('oferta');
+            if (!offer) return;
+            let originalPrice = 0;
+            let offerDescription = [];
+            offer.items.forEach(itemId => {
+                if (products[itemId]) {
+                    originalPrice += products[itemId].price;
+                    offerDescription.push(products[itemId].name);
+                }
+            });
+            if (originalPrice === 0) return;
+            const finalPrice = originalPrice * (1 - offer.discount);
+            offerSection.innerHTML = `
+                <h2>🔥 ${offer.title}</h2>
+                <p>${offerDescription.join(' + ')}</p>
+                <div>
+                    <span class="original-price">De ${formatCurrency(originalPrice)}</span>
+                    <span class="price-highlight">Por apenas ${formatCurrency(finalPrice)}</span>
+                </div>
+                <div class="countdown-timer">
+                    <span class="timer-label">Esta oferta relâmpago termina em:</span>
+                    <div id="timer">00:00</div>
+                </div>
+            `;
+            offerSection.style.display = 'block';
+            startCountdown();
         }
-        let durationInSeconds = (3 * 60) + 59; 
-        const timerElement = document.getElementById('timer');
-        countdownInterval = setInterval(() => {
-            if (durationInSeconds < 0) {
+        function startCountdown() {
+            if (countdownInterval) {
                 clearInterval(countdownInterval);
-                timerElement.textContent = "OFERTA ENCERRADA";
+            }
+            let durationInSeconds = (3 * 60) + 59; 
+            const timerElement = document.getElementById('timer');
+            countdownInterval = setInterval(() => {
+                if (durationInSeconds < 0) {
+                    clearInterval(countdownInterval);
+                    timerElement.textContent = "OFERTA ENCERRADA";
+                    return;
+                }
+                const minutes = Math.floor(durationInSeconds / 60);
+                const seconds = durationInSeconds % 60;
+                const formattedMinutes = String(minutes).padStart(2, '0');
+                const formattedSeconds = String(seconds).padStart(2, '0');
+                timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+                durationInSeconds--;
+            }, 1000);
+        }
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+        document.addEventListener('DOMContentLoaded', displayDailyOffer);
+
+        // --- O resto do seu script (formulário, etc.) continua igual ---
+        function selectPayment(paymentType) {
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
+            selectedOption.classList.add('selected');
+            document.getElementById(paymentType).checked = true;
+        }
+        function enviarPedido() {
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const endereco = document.getElementById('endereco').value;
+            const pedido = document.getElementById('pedido-texto').value;
+            const pagamento = document.querySelector('input[name="pagamento"]:checked');
+            if (!nome || !telefone || !endereco || !pedido) {
+                alert('Por favor, preencha todos os campos do pedido!');
+                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
-            const minutes = Math.floor(durationInSeconds / 60);
-            const seconds = durationInSeconds % 60;
-            const formattedMinutes = String(minutes).padStart(2, '0');
-            const formattedSeconds = String(seconds).padStart(2, '0');
-            timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
-            durationInSeconds--;
-        }, 1000);
-    }
-    function formatCurrency(value) {
-        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-    document.addEventListener('DOMContentLoaded', displayDailyOffer);
-
-    // --- O resto do seu script (formulário, etc.) continua igual ---
-    function selectPayment(paymentType) {
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.classList.remove('selected');
+            if (!pagamento) {
+                alert('Por favor, selecione uma forma de pagamento!');
+                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
+            const numeroWhatsApp = '5598970100184';
+            let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
+                           `*Cliente:* ${nome}\n` +
+                           `*Contato:* ${telefone}\n` +
+                           `*Endereço:* ${endereco}\n\n` +
+                           `*Pedido Detalhado:*\n${pedido}\n\n` +
+                           `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
+            if (pagamento.value === 'pix') {
+                const chavePix = '98970100184';
+                const nomeRecebedorPix = 'Francisco de Sousa';
+                mensagem += `*Dados para PIX:*\n` +
+                            `*Chave (Celular):* ${chavePix}\n` +
+                            `*Nome:* ${nomeRecebedorPix}\n\n` +
+                            `_O pedido só é liberado após o envio do comprovante._\n\n`;
+            }
+            mensagem += `_Pedido enviado via cardápio digital._`;
+            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
+            window.location.href = linkWhatsApp;
+        }
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value.slice(0, 15);
         });
-        const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
-        selectedOption.classList.add('selected');
-        document.getElementById(paymentType).checked = true;
-    }
-    function enviarPedido() {
-        const nome = document.getElementById('nome').value;
-        const telefone = document.getElementById('telefone').value;
-        const endereco = document.getElementById('endereco').value;
-        const pedido = document.getElementById('pedido-texto').value;
-        const pagamento = document.querySelector('input[name="pagamento"]:checked');
-        if (!nome || !telefone || !endereco || !pedido) {
-            alert('Por favor, preencha todos os campos do pedido!');
-            document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-            return;
+        function handleResize() {
+            const floatingBtn = document.querySelector('.whatsapp-btn-container');
+            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
+            if (window.innerWidth < 768) {
+                floatingBtn.style.display = 'block';
+                if(formBtn) formBtn.style.display = 'none';
+            } else {
+                floatingBtn.style.display = 'none';
+                if(formBtn) formBtn.style.display = 'block';
+            }
         }
-        if (!pagamento) {
-            alert('Por favor, selecione uma forma de pagamento!');
-            document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-            return;
-        }
-        const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
-        const numeroWhatsApp = '5598970100184';
-        let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
-                       `*Cliente:* ${nome}\n` +
-                       `*Contato:* ${telefone}\n` +
-                       `*Endereço:* ${endereco}\n\n` +
-                       `*Pedido Detalhado:*\n${pedido}\n\n` +
-                       `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
-        if (pagamento.value === 'pix') {
-            const chavePix = '98970100184';
-            const nomeRecebedorPix = 'Francisco de Sousa';
-            mensagem += `*Dados para PIX:*\n` +
-                        `*Chave (Celular):* ${chavePix}\n` +
-                        `*Nome:* ${nomeRecebedorPix}\n\n` +
-                        `_O pedido só é liberado após o envio do comprovante._\n\n`;
-        }
-        mensagem += `_Pedido enviado via cardápio digital._`;
-        const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
-        window.location.href = linkWhatsApp;
-    }
-    document.getElementById('telefone').addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-        value = value.replace(/(\d{5})(\d)/, '$1-$2');
-        e.target.value = value.slice(0, 15);
-    });
-    function handleResize() {
-        const floatingBtn = document.querySelector('.whatsapp-btn-container');
-        const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
-        if (window.innerWidth < 768) {
-            floatingBtn.style.display = 'block';
-            if(formBtn) formBtn.style.display = 'none';
-        } else {
-            floatingBtn.style.display = 'none';
-            if(formBtn) formBtn.style.display = 'block';
-        }
-    }
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('load', handleResize);
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('load', handleResize);
     </script>
 </body>
 </html>
-
