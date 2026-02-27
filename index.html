@@ -96,7 +96,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- O corpo do seu HTML continua o mesmo -->
         <header class="header">
             <h1>🍕 CasadasPizzaass</h1>
             <p>As melhores pizzas da cidade</p>
@@ -118,7 +117,6 @@
         <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;"></section>
 
         <main class="menu">
-            <!-- Seu cardápio continua aqui -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
@@ -424,7 +422,9 @@
         }
         document.addEventListener('DOMContentLoaded', displayDailyOffer);
 
-        // --- FUNÇÕES DO FORMULÁRIO E WHATSAPP (CORRIGIDAS) ---
+        // ==================================================================
+        //  FUNÇÕES DO FORMULÁRIO E WHATSAPP (COMPLETAS E CORRIGIDAS)
+        // ==================================================================
         function selectPayment(paymentType) {
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
@@ -435,16 +435,3 @@
         }
 
         function enviarPedido() {
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const endereco = document.getElementById('endereco').value;
-            const pedido = document.getElementById('pedido-texto').value;
-            const pagamento = document.querySelector('input[name="pagamento"]:checked');
-            
-            if (!nome || !telefone || !endereco || !pedido) {
-                alert('Por favor, preencha todos os campos do pedido!');
-                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-            if (!pagamento) {
-                alert
