@@ -82,7 +82,6 @@
         .whatsapp-btn { background: #25d366; color: white; border: none; padding: 15px; font-size: 1.1em; font-weight: 700; border-radius: 50px; cursor: pointer; width: 100%; transition: background-color 0.3s ease, transform 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .whatsapp-btn:hover { background: #128c7e; transform: scale(1.02); }
         
-        /* ESTILO CORRIGIDO PARA DESKTOP */
         @media (min-width: 768px) { 
             body { padding-bottom: 0; } 
             .container { margin: 20px auto; border-radius: 12px; overflow: hidden; } 
@@ -91,7 +90,7 @@
             .items-grid { grid-template-columns: 1fr 1fr; } 
             .nav-menu { justify-content: center; } 
             .whatsapp-btn-container { display: none; } 
-            .order-form .whatsapp-btn-placeholder { display: block; } /* LINHA CORRIGIDA */
+            .order-form .whatsapp-btn-placeholder { display: block; }
         }
     </style>
 </head>
@@ -430,4 +429,22 @@
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
             });
+            const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
+            selectedOption.classList.add('selected');
+            document.getElementById(paymentType).checked = true;
+        }
+
+        function enviarPedido() {
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const endereco = document.getElementById('endereco').value;
+            const pedido = document.getElementById('pedido-texto').value;
+            const pagamento = document.querySelector('input[name="pagamento"]:checked');
             
+            if (!nome || !telefone || !endereco || !pedido) {
+                alert('Por favor, preencha todos os campos do pedido!');
+                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            if (!pagamento) {
+                alert
