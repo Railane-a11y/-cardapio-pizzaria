@@ -11,6 +11,7 @@
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
     <style>
+        /* Seu CSS existente... */
         :root {
             --cor-primaria: #e74c3c;
             --cor-secundaria: #c0392b;
@@ -33,12 +34,34 @@
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
         
+        /* --- ESTILOS DA OFERTA E DO CONTADOR --- */
         .offer-section { padding: 20px; margin: 20px; border-radius: 12px; text-align: center; background: linear-gradient(45deg, #ffc107, #ff9800); color: #333; border: 2px dashed #ffffff; }
         .offer-section h2 { font-size: 1.5em; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .offer-section p { font-size: 1.05em; line-height: 1.5; }
         .offer-section .original-price { text-decoration: line-through; opacity: 0.8; font-size: 0.9em; }
         .offer-section .price-highlight { font-weight: 700; font-size: 1.3em; display: block; margin-top: 8px; }
         
+        /* NOVO ESTILO DO CONTADOR */
+        .countdown-timer {
+            margin-top: 15px;
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .countdown-timer .timer-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .countdown-timer #timer {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--cor-secundaria);
+            letter-spacing: 2px;
+        }
+        /* ------------------------------------ */
+
         .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
         .category { padding: 30px 20px; border-bottom: 8px solid #f0f2f5; }
         .category h2 { font-size: 1.7em; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
@@ -52,19 +75,16 @@
         
         .category-destaques { background-color: var(--fundo-claro); }
         .category-destaques h2 { color: var(--cor-primaria); }
-        .category-destaques .price { color: var(--cor-primaria); } /* CORRIGIDO */
-
+        .category-destaques .price { color: var(--cor-primaria); }
         .category-especiais { background-color: var(--fundo-neutro); }
         .category-especiais h2 { color: var(--cor-primaria); }
-        .category-especiais .price { color: var(--cor-primaria); } /* CORRIGIDO */
-
+        .category-especiais .price { color: var(--cor-primaria); }
         .category-premium { background-color: var(--cor-premium-fundo); color: var(--cor-premium-texto); }
         .category-premium h2 { color: var(--cor-premium-destaque); }
         .category-premium .category-subtitle { color: #bdc3c7; }
         .category-premium .item-card h3 { color: var(--fundo-claro); }
         .category-premium .item-card .description { color: #bdc3c7; }
-        .category-premium .item-card .price { color: var(--cor-premium-destaque); } /* CORRIGIDO */
-
+        .category-premium .item-card .price { color: var(--cor-premium-destaque); }
         .order-section { background: linear-gradient(135deg, #3498db, #2980b9); padding: 40px 20px; color: white; }
         .order-section h2 { text-align: center; font-size: 1.8em; }
         .order-form { max-width: 500px; margin: 30px auto 0; }
@@ -102,7 +122,7 @@
         </nav>
 
         <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;">
-            <!-- Conteúdo dinâmico aqui -->
+            <!-- Conteúdo dinâmico da oferta e do contador será inserido aqui -->
         </section>
 
         <div class="delivery-info">
@@ -110,6 +130,7 @@
         </div>
 
         <main class="menu">
+            <!-- Seu cardápio continua aqui, sem alterações no HTML -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
@@ -268,6 +289,7 @@
     // ==================================================================
     //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
     // ==================================================================
+
     const products = {
         'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
         'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
@@ -278,20 +300,27 @@
         'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
         'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
     };
+
     const dailyOffers = [
-        { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.05 },
-        { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-        { day: 2, title: 'Terça do Clássico', items: ['frango', 'coca1l'], discount: 0.05 },
-        { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'coca2l'], discount: 0.05 },
-        { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
-        { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'coca2l'], discount: 0.05 },
-        { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.05 },
+        { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.15 },
+        { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.20 },
+        { day: 2, title: 'Terça do Clássico', items: ['frango', 'coca1l'], discount: 0.15 },
+        { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'coca2l'], discount: 0.18 },
+        { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.15 },
+        { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'coca2l'], discount: 0.10 },
+        { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.10 },
     ];
+
+    // Variável global para o intervalo do contador
+    let countdownInterval;
+
     function displayDailyOffer() {
         const today = new Date().getDay();
         const offer = dailyOffers.find(o => o.day === today);
         const offerSection = document.getElementById('oferta');
+
         if (!offer) return;
+
         let originalPrice = 0;
         let offerDescription = [];
         offer.items.forEach(itemId => {
@@ -300,8 +329,12 @@
                 offerDescription.push(products[itemId].name);
             }
         });
+
         if (originalPrice === 0) return;
+
         const finalPrice = originalPrice * (1 - offer.discount);
+
+        // Adiciona o HTML do contador à oferta
         offerSection.innerHTML = `
             <h2>🔥 ${offer.title}</h2>
             <p>${offerDescription.join(' + ')}</p>
@@ -309,17 +342,55 @@
                 <span class="original-price">De ${formatCurrency(originalPrice)}</span>
                 <span class="price-highlight">Por apenas ${formatCurrency(finalPrice)}</span>
             </div>
+            <div class="countdown-timer">
+                <span class="timer-label">Esta oferta termina em:</span>
+                <div id="timer">00:00:00</div>
+            </div>
         `;
         offerSection.style.display = 'block';
+
+        // Inicia o contador regressivo
+        startCountdown();
     }
+
+    // NOVA FUNÇÃO: Inicia o contador regressivo
+    function startCountdown() {
+        // Limpa qualquer contador anterior para evitar múltiplos contadores rodando
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+        }
+
+        countdownInterval = setInterval(() => {
+            const now = new Date();
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+            const timeLeft = endOfDay - now;
+
+            if (timeLeft < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('timer').textContent = "OFERTA ENCERRADA";
+                return;
+            }
+
+            const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((timeLeft / 1000 / 60) % 60);
+            const seconds = Math.floor((timeLeft / 1000) % 60);
+
+            // Formata para sempre ter dois dígitos (ex: 09, 08, 07)
+            const formattedHours = String(hours).padStart(2, '0');
+            const formattedMinutes = String(minutes).padStart(2, '0');
+            const formattedSeconds = String(seconds).padStart(2, '0');
+
+            document.getElementById('timer').textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        }, 1000);
+    }
+
     function formatCurrency(value) {
         return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
+
     document.addEventListener('DOMContentLoaded', displayDailyOffer);
 
-    // =================================================
-    //  SCRIPT ANTIGO DO FORMULÁRIO (sem alterações)
-    // =================================================
+    // --- O resto do seu script (formulário, etc.) continua igual ---
     function selectPayment(paymentType) {
         document.querySelectorAll('.payment-option').forEach(option => {
             option.classList.remove('selected');
@@ -386,4 +457,3 @@
     </script>
 </body>
 </html>
-
