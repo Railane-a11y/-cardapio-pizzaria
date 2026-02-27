@@ -267,83 +267,7 @@
         <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Finalizar Pedido</button>
     </div>
 
-    <!-- SCRIPTS DO FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
-
     <script>
-        // ==================================================================
-        //  INICIALIZAÇÃO E LÓGICA DO FIREBASE
-        // ==================================================================
-        
-        const firebaseConfig = {
-          apiKey: "AIzaSyArFnFmJ5k3lB7-wbRmpzlrrDoq6jrTqxU",
-          authDomain: "casadaspizzaass-c25ee.firebaseapp.com",
-          projectId: "casadaspizzaass-c25ee",
-          storageBucket: "casadaspizzaass-c25ee.appspot.com",
-          messagingSenderId: "370746157871",
-          appId: "1:370746157871:web:24980faf10a5b566a94fda"
-        };
-
-        firebase.initializeApp(firebaseConfig );
-        const messaging = firebase.messaging();
-
-        function requestNotificationPermission() {
-            console.log('Pedindo permissão...');
-            Notification.requestPermission().then((permission) => {
-                if (permission === 'granted') {
-                    console.log('Permissão para notificação concedida.');
-                    messaging.getToken({ vapidKey: 'BFBrzPlxitE7zShHuqwsti_FYjrVDkc2TTdZJRza0iLgcMxlZ8Wv4TG-YtHkpt9VBy1faztGGHREqklaMyQY7rM' })
-                    .then((currentToken) => {
-                        if (currentToken) {
-                            console.log('Token do dispositivo:', currentToken);
-                        } else {
-                            console.log('Não foi possível obter o token.');
-                        }
-                    }).catch((err) => {
-                        console.log('Ocorreu um erro ao obter o token.', err);
-                    });
-                } else {
-                    console.log('Permissão para notificação negada.');
-                }
-            });
-        }
-
-        function showPermissionPrompt() {
-            const customPrompt = document.createElement('div');
-            customPrompt.style.position = 'fixed';
-            customPrompt.style.bottom = '80px';
-            customPrompt.style.left = '50%';
-            customPrompt.style.transform = 'translateX(-50%)';
-            customPrompt.style.backgroundColor = 'var(--cor-texto-escuro)';
-            customPrompt.style.color = 'white';
-            customPrompt.style.padding = '15px 20px';
-            customPrompt.style.borderRadius = '12px';
-            customPrompt.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
-            customPrompt.style.zIndex = '1001';
-            customPrompt.style.textAlign = 'center';
-            customPrompt.style.maxWidth = '90%';
-
-            customPrompt.innerHTML = `
-                <p style="margin: 0 0 10px 0; font-size: 1em;">Quer receber nossas ofertas exclusivas?</p>
-                <button id="acceptBtn" style="background-color: var(--cor-destaque); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">Sim, quero!</button>
-                <button id="cancelBtn" style="background-color: transparent; color: white; border: 1px solid white; padding: 8px 15px; border-radius: 8px; cursor: pointer;">Agora não</button>
-            `;
-            document.body.appendChild(customPrompt);
-
-            document.getElementById('acceptBtn').onclick = () => {
-                requestNotificationPermission();
-                customPrompt.remove();
-            };
-            document.getElementById('cancelBtn').onclick = () => {
-                customPrompt.remove();
-            };
-        }
-
-        if ('Notification' in window && Notification.permission === 'default') {
-            setTimeout(showPermissionPrompt, 10000);
-        }
-
         // ==================================================================
         //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
         // ==================================================================
@@ -435,3 +359,68 @@
         }
 
         function enviarPedido() {
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const endereco = document.getElementById('endereco').value;
+            const pedido = document.getElementById('pedido-texto').value;
+            const pagamento = document.querySelector('input[name="pagamento"]:checked');
+            
+            if (!nome || !telefone || !endereco || !pedido) {
+                alert('Por favor, preencha todos os campos do pedido!');
+                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            if (!pagamento) {
+                alert('Por favor, selecione uma forma de pagamento!');
+                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
+            const numeroWhatsApp = '5598970100184';
+            
+            let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
+                           `*Cliente:* ${nome}\n` +
+                           `*Contato:* ${telefone}\n` +
+                           `*Endereço:* ${endereco}\n\n` +
+                           `*Pedido Detalhado:*\n${pedido}\n\n` +
+                           `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
+            
+            if (pagamento.value === 'pix') {
+                const chavePix = '98970100184';
+                const nomeRecebedorPix = 'Francisco de Sousa';
+                mensagem += `*Dados para PIX:*\n` +
+                            `*Chave (Celular):* ${chavePix}\n` +
+                            `*Nome:* ${nomeRecebedorPix}\n\n` +
+                            `_O pedido só é liberado após o envio do comprovante._\n\n`;
+            }
+
+            mensagem += `_Pedido enviado via cardápio digital._`;
+            
+            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
+            window.open(linkWhatsApp, '_blank');
+        }
+
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value.slice(0, 15);
+        });
+
+        function handleResize() {
+            const floatingBtn = document.querySelector('.whatsapp-btn-container');
+            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
+            if (window.innerWidth < 768) {
+                floatingBtn.style.display = 'block';
+                if(formBtn) formBtn.style.display = 'none';
+            } else {
+                floatingBtn.style.display = 'none';
+                if(formBtn) formBtn.style.display = 'block';
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('load', handleResize);
+    </script>
+</body>
+</html>
