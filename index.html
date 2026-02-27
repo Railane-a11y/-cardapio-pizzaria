@@ -11,7 +11,6 @@
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
     <style>
-        /* Seu CSS continua o mesmo, sem alterações */
         :root {
             --cor-primaria: #e74c3c;
             --cor-secundaria: #c0392b;
@@ -33,17 +32,14 @@
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
-        
         .offer-section { padding: 20px; margin: 20px; border-radius: 12px; text-align: center; background: linear-gradient(45deg, #ffc107, #ff9800); color: #333; border: 2px dashed #ffffff; }
         .offer-section h2 { font-size: 1.5em; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .offer-section p { font-size: 1.05em; line-height: 1.5; }
         .offer-section .original-price { text-decoration: line-through; opacity: 0.8; font-size: 0.9em; }
         .offer-section .price-highlight { font-weight: 700; font-size: 1.3em; display: block; margin-top: 8px; }
-        
         .countdown-timer { margin-top: 15px; background-color: rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 8px; }
         .countdown-timer .timer-label { font-size: 0.9em; font-weight: 600; display: block; margin-bottom: 5px; }
         .countdown-timer #timer { font-size: 1.4em; font-weight: 700; color: var(--cor-secundaria); letter-spacing: 2px; }
-
         .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
         .category { padding: 30px 20px; border-bottom: 8px solid #f0f2f5; }
         .category h2 { font-size: 1.7em; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
@@ -54,10 +50,8 @@
         .item-card .description { color: var(--cor-texto-claro); margin-bottom: 12px; flex-grow: 1; }
         .item-card .price { font-weight: 600; font-size: 1.1em; }
         .item-card .price span { display: block; margin-top: 4px; }
-
         .upsell-suggestion { background-color: #e8f5e9; border-left: 4px solid var(--cor-destaque); padding: 10px; margin-top: 15px; border-radius: 0 4px 4px 0; font-size: 0.9em; color: #1b5e20; }
         .upsell-suggestion::before { content: '💡'; margin-right: 8px; font-size: 1.1em; }
-        
         .category-destaques { background-color: var(--fundo-claro); }
         .category-destaques h2 { color: var(--cor-primaria); }
         .category-destaques .price { color: var(--cor-primaria); }
@@ -87,7 +81,18 @@
         .whatsapp-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--fundo-claro); padding: 10px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 200; }
         .whatsapp-btn { background: #25d366; color: white; border: none; padding: 15px; font-size: 1.1em; font-weight: 700; border-radius: 50px; cursor: pointer; width: 100%; transition: background-color 0.3s ease, transform 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .whatsapp-btn:hover { background: #128c7e; transform: scale(1.02); }
-        @media (min-width: 768px) { body { padding-bottom: 0; } .container { margin: 20px auto; border-radius: 12px; overflow: hidden; } .header h1 { font-size: 2.8em; } .category { padding: 40px; } .items-grid { grid-template-columns: 1fr 1fr; } .nav-menu { justify-content: center; } .whatsapp-btn-container { display: none; } .order-form .whatsapp-btn-placeholder { display: block; } }
+        
+        /* ESTILO CORRIGIDO PARA DESKTOP */
+        @media (min-width: 768px) { 
+            body { padding-bottom: 0; } 
+            .container { margin: 20px auto; border-radius: 12px; overflow: hidden; } 
+            .header h1 { font-size: 2.8em; } 
+            .category { padding: 40px; } 
+            .items-grid { grid-template-columns: 1fr 1fr; } 
+            .nav-menu { justify-content: center; } 
+            .whatsapp-btn-container { display: none; } 
+            .order-form .whatsapp-btn-placeholder { display: block; } /* LINHA CORRIGIDA */
+        }
     </style>
 </head>
 <body>
@@ -325,7 +330,7 @@
             customPrompt.innerHTML = `
                 <p style="margin: 0 0 10px 0; font-size: 1em;">Quer receber nossas ofertas exclusivas?</p>
                 <button id="acceptBtn" style="background-color: var(--cor-destaque); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">Sim, quero!</button>
-                <button id="cancelBtn" style="background-color: transparent; color: 1px solid white; padding: 8px 15px; border-radius: 8px; cursor: pointer;">Agora não</button>
+                <button id="cancelBtn" style="background-color: transparent; color: white; border: 1px solid white; padding: 8px 15px; border-radius: 8px; cursor: pointer;">Agora não</button>
             `;
             document.body.appendChild(customPrompt);
 
@@ -420,26 +425,9 @@
         }
         document.addEventListener('DOMContentLoaded', displayDailyOffer);
 
-        // --- FUNÇÕES DO FORMULÁRIO E WHATSAPP ---
+        // --- FUNÇÕES DO FORMULÁRIO E WHATSAPP (CORRIGIDAS) ---
         function selectPayment(paymentType) {
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
             });
-            const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
-            selectedOption.classList.add('selected');
-            document.getElementById(paymentType).checked = true;
-        }
-        function enviarPedido() {
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const endereco = document.getElementById('endereco').value;
-            const pedido = document.getElementById('pedido-texto').value;
-            const pagamento = document.querySelector('input[name="pagamento"]:checked');
-            if (!nome || !telefone || !endereco || !pedido) {
-                alert('Por favor, preencha todos os campos do pedido!');
-                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-            if (!pagamento) {
-                alert('Por favor, selecione uma forma de pagamento!');
-                document.
+            
