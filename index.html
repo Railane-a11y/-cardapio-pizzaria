@@ -94,6 +94,11 @@
             <p>As melhores pizzas da cidade</p>
         </header>
 
+        <!-- BARRA DE ENTREGA MOVIDA PARA CIMA E TEXTO ATUALIZADO -->
+        <div class="delivery-info">
+            🚚 ENTREGA GRÁTIS PARA TODA CIDADE
+        </div>
+
         <nav class="nav-menu">
             <a href="#oferta">Oferta do Dia</a>
             <a href="#destaques">Destaques</a>
@@ -106,10 +111,6 @@
         <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;">
             <!-- Conteúdo dinâmico da oferta e do contador será inserido aqui -->
         </section>
-
-        <div class="delivery-info">
-            🚚 ENTREGA GRÁTIS PARA TODOS OS BAIRROS DA CIDADE
-        </div>
 
         <main class="menu">
             <!-- Seu cardápio continua aqui, sem alterações no HTML -->
@@ -283,7 +284,6 @@
         'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
     };
 
-    // DESCONTOS ATUALIZADOS PARA 5% (0.05)
     const dailyOffers = [
         { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.05 },
         { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
@@ -330,31 +330,23 @@
         startCountdown();
     }
 
-    // LÓGICA DO CONTADOR ATUALIZADA
     function startCountdown() {
         if (countdownInterval) {
             clearInterval(countdownInterval);
         }
-
-        // Define a duração do contador: 3 minutos e 59 segundos
         let durationInSeconds = (3 * 60) + 59; 
         const timerElement = document.getElementById('timer');
-
         countdownInterval = setInterval(() => {
             if (durationInSeconds < 0) {
                 clearInterval(countdownInterval);
                 timerElement.textContent = "OFERTA ENCERRADA";
                 return;
             }
-
             const minutes = Math.floor(durationInSeconds / 60);
             const seconds = durationInSeconds % 60;
-
             const formattedMinutes = String(minutes).padStart(2, '0');
             const formattedSeconds = String(seconds).padStart(2, '0');
-
             timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
-            
             durationInSeconds--;
         }, 1000);
     }
