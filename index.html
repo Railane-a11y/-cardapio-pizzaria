@@ -116,6 +116,7 @@
         <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;"></section>
 
         <main class="menu">
+            <!-- Seu cardápio continua aqui -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
@@ -267,11 +268,22 @@
     </div>
 
     <script>
-        // SCRIPT DE INICIALIZAÇÃO DO ONESIGNAL (PARTE 2)
+        // SCRIPT DE INICIALIZAÇÃO DO ONESIGNAL COM TRADUÇÃO FORÇADA
         window.OneSignalDeferred = window.OneSignalDeferred || [];
         OneSignalDeferred.push(async function(OneSignal) {
           await OneSignal.init({
             appId: "26414814-d6b9-454c-bb00-d1a0fc85c852",
+            promptOptions: {
+                slide: {
+                    enabled: true,
+                    autoPrompt: true,
+                    timeDelay: 10,
+                    pageViews: 1,
+                    actionMessage: "Quer receber nossas ofertas exclusivas?",
+                    acceptButtonText: "Sim, quero!",
+                    cancelButtonText: "Agora não",
+                }
+            }
           });
         });
 
