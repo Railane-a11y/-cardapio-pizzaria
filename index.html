@@ -92,6 +92,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- O corpo do seu HTML continua o mesmo -->
         <header class="header">
             <h1>🍕 CasadasPizzaass</h1>
             <p>As melhores pizzas da cidade</p>
@@ -278,7 +279,7 @@
           apiKey: "AIzaSyArFnFmJ5k3lB7-wbRmpzlrrDoq6jrTqxU",
           authDomain: "casadaspizzaass-c25ee.firebaseapp.com",
           projectId: "casadaspizzaass-c25ee",
-          storageBucket: "casadaspizzaass-c25ee.appspot.com", // Corrigi para o formato correto
+          storageBucket: "casadaspizzaass-c25ee.appspot.com",
           messagingSenderId: "370746157871",
           appId: "1:370746157871:web:24980faf10a5b566a94fda"
         };
@@ -294,13 +295,13 @@
                 if (permission === 'granted') {
                     console.log('Permissão para notificação concedida.');
                     // Obter o token do dispositivo
-                    messaging.getToken({ vapidKey: 'SUA_VAPID_KEY_AQUI' }) // PRECISAMOS DA SUA VAPID KEY
+                    messaging.getToken({ vapidKey: 'BFBrzPlxitE7zShHuqwsti_FYjrVDkc2TTdZJRza0iLgcMxlZ8Wv4TG-YtHkpt9VBy1faztGGHREqklaMyQY7rM' })
                     .then((currentToken) => {
                         if (currentToken) {
                             console.log('Token do dispositivo:', currentToken);
-                            // Aqui você enviaria o token para seu servidor para guardá-lo
+                            // No futuro, enviaremos este token para um banco de dados
                         } else {
-                            console.log('Não foi possível obter o token. O usuário precisa permitir notificações.');
+                            console.log('Não foi possível obter o token. O usuário precisa permitir notificações no navegador.');
                         }
                     }).catch((err) => {
                         console.log('Ocorreu um erro ao obter o token.', err);
@@ -312,10 +313,43 @@
         }
 
         // Adiciona um botão ou lógica para chamar a função
-        // Vamos chamar 10 segundos depois que a página carregar
-        window.addEventListener('load', () => {
-            setTimeout(requestNotificationPermission, 10000);
-        });
+        // Vamos criar um botão customizado para isso
+        function showPermissionPrompt() {
+            // Cria um pop-up customizado
+            const customPrompt = document.createElement('div');
+            customPrompt.style.position = 'fixed';
+            customPrompt.style.bottom = '80px';
+            customPrompt.style.left = '50%';
+            customPrompt.style.transform = 'translateX(-50%)';
+            customPrompt.style.backgroundColor = 'var(--cor-texto-escuro)';
+            customPrompt.style.color = 'white';
+            customPrompt.style.padding = '15px 20px';
+            customPrompt.style.borderRadius = '12px';
+            customPrompt.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            customPrompt.style.zIndex = '1001';
+            customPrompt.style.textAlign = 'center';
+            customPrompt.style.maxWidth = '90%';
+
+            customPrompt.innerHTML = `
+                <p style="margin: 0 0 10px 0; font-size: 1em;">Quer receber nossas ofertas exclusivas?</p>
+                <button id="acceptBtn" style="background-color: var(--cor-destaque); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">Sim, quero!</button>
+                <button id="cancelBtn" style="background-color: transparent; color: white; border: 1px solid white; padding: 8px 15px; border-radius: 8px; cursor: pointer;">Agora não</button>
+            `;
+            document.body.appendChild(customPrompt);
+
+            document.getElementById('acceptBtn').onclick = () => {
+                requestNotificationPermission();
+                customPrompt.remove();
+            };
+            document.getElementById('cancelBtn').onclick = () => {
+                customPrompt.remove();
+            };
+        }
+
+        // Verifica se o navegador suporta notificações e se a permissão ainda não foi dada
+        if ('Notification' in window && Notification.permission === 'default') {
+            setTimeout(showPermissionPrompt, 10000); // Mostra o pop-up após 10 segundos
+        }
 
 
         // ==================================================================
@@ -368,49 +402,4 @@
                     <div id="timer">00:00</div>
                 </div>
             `;
-            offerSection.style.display = 'block';
-            startCountdown();
-        }
-        function startCountdown() {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-            }
-            let durationInSeconds = (3 * 60) + 59; 
-            const timerElement = document.getElementById('timer');
-            countdownInterval = setInterval(() => {
-                if (durationInSeconds < 0) {
-                    clearInterval(countdownInterval);
-                    timerElement.textContent = "OFERTA ENCERRADA";
-                    return;
-                }
-                const minutes = Math.floor(durationInSeconds / 60);
-                const seconds = durationInSeconds % 60;
-                const formattedMinutes = String(minutes).padStart(2, '0');
-                const formattedSeconds = String(seconds).padStart(2, '0');
-                timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
-                durationInSeconds--;
-            }, 1000);
-        }
-        function formatCurrency(value) {
-            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-        document.addEventListener('DOMContentLoaded', displayDailyOffer);
-
-        // --- O resto do seu script (formulário, etc.) continua igual ---
-        function selectPayment(paymentType) {
-            document.querySelectorAll('.payment-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
-            selectedOption.classList.add('selected');
-            document.getElementById(paymentType).checked = true;
-        }
-        function enviarPedido() {
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const endereco = document.getElementById('endereco').value;
-            const pedido = document.getElementById('pedido-texto').value;
-            const pagamento = document.querySelector('input[name="pagamento"]:checked');
-            if (!nome || !telefone || !endereco || !pedido) {
-                alert('Por favor, preencha todos os campos do pedido!');
-                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+            offer
