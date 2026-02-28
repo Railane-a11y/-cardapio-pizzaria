@@ -29,48 +29,10 @@
         .header { background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria)); color: white; text-align: center; padding: 30px 20px; }
         .header h1 { font-size: 2.2em; font-weight: 700; }
         .header p { font-size: 1.1em; opacity: 0.9; }
+        .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
-        
-        /* BANNER DO CLUBE VIP */
-        .vip-club-banner {
-            background: var(--cor-premium-fundo);
-            color: var(--cor-premium-texto);
-            padding: 25px;
-            margin: 20px;
-            border-radius: 12px;
-            text-align: center;
-            border: 2px solid var(--cor-premium-destaque);
-        }
-        .vip-club-banner h2 {
-            color: var(--cor-premium-destaque);
-            font-size: 1.6em;
-            margin-bottom: 10px;
-        }
-        .vip-club-banner p {
-            font-size: 1.05em;
-            margin-bottom: 20px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .vip-club-banner .vip-button {
-            background-color: var(--cor-premium-destaque);
-            color: var(--cor-premium-fundo);
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.1em;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: inline-block;
-        }
-        .vip-club-banner .vip-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-        }
-
         .offer-section { padding: 20px; margin: 20px; border-radius: 12px; text-align: center; background: linear-gradient(45deg, #ffc107, #ff9800); color: #333; border: 2px dashed #ffffff; }
         .offer-section h2 { font-size: 1.5em; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .offer-section p { font-size: 1.05em; line-height: 1.5; }
@@ -79,7 +41,6 @@
         .countdown-timer { margin-top: 15px; background-color: rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 8px; }
         .countdown-timer .timer-label { font-size: 0.9em; font-weight: 600; display: block; margin-bottom: 5px; }
         .countdown-timer #timer { font-size: 1.4em; font-weight: 700; color: var(--cor-secundaria); letter-spacing: 2px; }
-        .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
         .category { padding: 30px 20px; border-bottom: 8px solid #f0f2f5; }
         .category h2 { font-size: 1.7em; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
         .category .category-subtitle { font-size: 1em; color: var(--cor-texto-claro); margin-bottom: 25px; font-style: italic; }
@@ -89,8 +50,6 @@
         .item-card .description { color: var(--cor-texto-claro); margin-bottom: 12px; flex-grow: 1; }
         .item-card .price { font-weight: 600; font-size: 1.1em; }
         .item-card .price span { display: block; margin-top: 4px; }
-        .upsell-suggestion { background-color: #e8f5e9; border-left: 4px solid var(--cor-destaque); padding: 10px; margin-top: 15px; border-radius: 0 4px 4px 0; font-size: 0.9em; color: #1b5e20; }
-        .upsell-suggestion::before { content: '💡'; margin-right: 8px; font-size: 1.1em; }
         .category-destaques { background-color: var(--fundo-claro); }
         .category-destaques h2 { color: var(--cor-primaria); }
         .category-destaques .price { color: var(--cor-primaria); }
@@ -120,7 +79,6 @@
         .whatsapp-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--fundo-claro); padding: 10px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 200; }
         .whatsapp-btn { background: #25d366; color: white; border: none; padding: 15px; font-size: 1.1em; font-weight: 700; border-radius: 50px; cursor: pointer; width: 100%; transition: background-color 0.3s ease, transform 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .whatsapp-btn:hover { background: #128c7e; transform: scale(1.02); }
-        
         @media (min-width: 768px) { 
             body { padding-bottom: 0; } 
             .container { margin: 20px auto; border-radius: 12px; overflow: hidden; } 
@@ -145,7 +103,6 @@
         </div>
 
         <nav class="nav-menu">
-            <a href="#clube-vip">Clube VIP</a>
             <a href="#oferta">Oferta do Dia</a>
             <a href="#destaques">Destaques</a>
             <a href="#especiais">Especiais</a>
@@ -154,17 +111,9 @@
             <a href="#pedido">Pedido</a>
         </nav>
 
-        <!-- SEÇÃO DO CLUBE VIP -->
-        <section id="clube-vip" class="vip-club-banner">
-            <h2>👑 CLUBE DA PIZZA VIP 👑</h2>
-            <p>Garanta <strong>1 pizza grande por semana</strong> (4 por mês) e pague muito mais barato! Assine nosso plano mensal e entre para o clube mais saboroso da cidade.</p>
-            <a href="https://pay.kiwify.com.br/Q8nIm48" target="_blank" class="vip-button">QUERO SER VIP E ECONOMIZAR!</a>
-        </section>
-
         <section id="oferta" class="offer-section" style="display: none;"></section>
 
         <main class="menu">
-            <!-- O RESTO DO SEU CARDÁPIO CONTINUA AQUI... -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
@@ -172,12 +121,11 @@
                     <article class="item-card">
                         <h3>Calabresa Ralada</h3>
                         <p class="description">Mussarela, calabresa Ralada, cebola, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias ) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
+                        <p class="price"><span>M (6 fatias) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
                     </article>
                     <article class="item-card">
                         <h3>Calabresa</h3>
                         <p class="description">Mussarela, calabresa, cebola, azeitona e orégano.</p>
-                        <div class="upsell-suggestion">Fica perfeita com borda de Catupiry!</div>
                         <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
                     </article>
                     <article class="item-card">
@@ -219,7 +167,6 @@
                     <article class="item-card">
                         <h3>4 Queijos</h3>
                         <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p>
-                        <div class="upsell-suggestion">Que tal uma Coca-Cola 2L para acompanhar?</div>
                         <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
                     </article>
                     <article class="item-card">
@@ -316,9 +263,6 @@
     </div>
 
     <script>
-        // ==================================================================
-        //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
-        // ==================================================================
         const products = {
             'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
             'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
@@ -394,9 +338,6 @@
         }
         document.addEventListener('DOMContentLoaded', displayDailyOffer);
 
-        // ==================================================================
-        //  FUNÇÕES DO FORMULÁRIO E WHATSAPP (COMPLETAS E CORRIGIDAS)
-        // ==================================================================
         function selectPayment(paymentType) {
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
@@ -432,4 +373,43 @@
                            `*Contato:* ${telefone}\n` +
                            `*Endereço:* ${endereco}\n\n` +
                            `*Pedido Detalhado:*\n${pedido}\n\n` +
-                           `*Pag
+                           `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
+            
+            if (pagamento.value === 'pix') {
+                const chavePix = '98970100184';
+                const nomeRecebedorPix = 'Francisco de Sousa';
+                mensagem += `*Dados para PIX:*\n` +
+                            `*Chave (Celular):* ${chavePix}\n` +
+                            `*Nome:* ${nomeRecebedorPix}\n\n` +
+                            `_O pedido só é liberado após o envio do comprovante._\n\n`;
+            }
+
+            mensagem += `_Pedido enviado via cardápio digital._`;
+            
+            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
+            window.open(linkWhatsApp, '_blank');
+        }
+
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value.slice(0, 15);
+        });
+
+        function handleResize() {
+            const floatingBtn = document.querySelector('.whatsapp-btn-container');
+            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
+            if (window.innerWidth < 768) {
+                floatingBtn.style.display = 'block';
+                if(formBtn) formBtn.style.display = 'none';
+            } else {
+                floatingBtn.style.display = 'none';
+                if(formBtn) formBtn.style.display = 'block';
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('load', handleResize);
+    </script>
+</body>
+</html>
