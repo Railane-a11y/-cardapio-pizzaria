@@ -238,6 +238,16 @@
             font-size: 0.75rem;
             color: #666;
         }
+        .debug-info {
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: #555;
+            display: none;
+        }
         @media (min-width: 600px) { .planos-container { grid-template-columns: 1fr 1fr; } }
         @media (min-width: 900px) {
             .planos-container { grid-template-columns: repeat(4, 1fr); }
@@ -357,182 +367,25 @@
             <h2 class="modal-titulo">🍕 Preencha seus Dados</h2>
             <div id="resumo-plano" class="resumo-plano"></div>
             <div id="erro-msg" class="erro-msg"></div>
-            <form id="form-checkout" onsubmit="irParaPagamento(event)">
+
+            <!-- IMPORTANTE: NÃO É UM FORM — É UMA DIV -->
+            <!-- Isso evita o problema de redirecionamento -->
+            <div id="formulario-dados">
                 <div class="form-group">
                     <label>Nome Completo</label>
-                    <input type="text" id="cli-nome" required placeholder="Seu nome completo">
+                    <input type="text" id="cli-nome" placeholder="Seu nome completo">
                 </div>
                 <div class="form-group">
                     <label>WhatsApp (para combinar entregas)</label>
-                    <input type="tel" id="cli-whatsapp" required placeholder="(00) 00000-0000">
+                    <input type="tel" id="cli-whatsapp" placeholder="(00) 00000-0000">
                 </div>
                 <div class="form-group">
                     <label>CPF</label>
-                    <input type="text" id="cli-cpf" required placeholder="000.000.000-00" maxlength="14">
+                    <input type="text" id="cli-cpf" placeholder="000.000.000-00" maxlength="14">
                 </div>
                 <div class="form-group">
                     <label>E-mail (mesmo que vai usar no pagamento)</label>
-                    <input type="email" id="cli-email" required placeholder="seu@email.com">
+                    <input type="email" id="cli-email" placeholder="seu@email.com">
                 </div>
                 <div class="form-group">
-                    <label>Endereço de Entrega</label>
-                    <input type="text" id="cli-endereco" required placeholder="Rua, número, bairro e referência">
-                </div>
-                <button type="submit" class="btn-finalizar" id="btn-finalizar">
-                    🔒 IR PARA PAGAMENTO SEGURO
-                </button>
-                <p class="seguranca-info">
-                    Ao clicar, você será redirecionado para o<br>checkout seguro da Kiwify (PIX ou Cartão até 12x)
-                </p>
-                <div class="kiwify-badge">
-                    🔐 Pagamento processado pela Kiwify &nbsp;|&nbsp; 🛡️ 100% Seguro
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-    var KIWIFY_LINKS = {
-        basico:  'https://kiwify.app/mMGFitO',
-        premium: 'https://pay.kiwify.com.br/K6pHuq5',
-        familia: 'https://kiwify.app/zSuHA8c',
-        vip:     'https://kiwify.app/DDXekaN'
-    };
-
-    var SUPABASE_URL = 'https://yvwvxdykqtyukcrybkkr.supabase.co';
-    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2d3Z4ZHlrcXR5dWtjcnlia2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMDMyNjcsImV4cCI6MjA4Nzg3OTI2N30.iNGafZjipSoKm0lZA9AMYEA69qWNUIQLn04Jas1IH5Q';
-
-    var PLANOS = {
-        basico:  { nome: 'Plano Básico',  nomeExibicao: '🔥 Plano Básico',  descricao: '2 pizzas G/mês • Sabores tradicionais • Entrega grátis', preco: 49.90, entregas: 2 },
-        premium: { nome: 'Plano Premium', nomeExibicao: '🔥 Plano Premium', descricao: '4 pizzas G/mês • Todos sabores • 1 Refri 2L • Entrega grátis', preco: 89.90, entregas: 4 },
-        familia: { nome: 'Plano Família', nomeExibicao: '🔥 Plano Família', descricao: '8 pizzas G/mês • Todos sabores • 2 Refri 2L • Borda grátis', preco: 139.90, entregas: 8 },
-        vip:     { nome: 'Plano VIP',     nomeExibicao: '👑 Plano VIP',     descricao: '12 pizzas G/mês • Premium inclusa • 4 Refri 2L • Borda grátis', preco: 199.90, entregas: 12 }
-    };
-
-    var planoEscolhido = null;
-
-    function selecionarPlano(plano) {
-        planoEscolhido = plano;
-        var info = PLANOS[plano];
-        document.getElementById('resumo-plano').innerHTML =
-            '<h3>' + info.nomeExibicao + '</h3>' +
-            '<p class="resumo-desc">' + info.descricao + '</p>' +
-            '<p class="resumo-preco">R$ ' + info.preco.toFixed(2).replace('.', ',') + ' <small>/mês</small></p>';
-        document.getElementById('erro-msg').style.display = 'none';
-        document.getElementById('btn-finalizar').innerHTML = '🔒 IR PARA PAGAMENTO SEGURO';
-        document.getElementById('btn-finalizar').disabled = false;
-        document.getElementById('modal-checkout').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function fecharModal() {
-        document.getElementById('modal-checkout').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('modal-overlay')) fecharModal();
-    });
-
-    async function irParaPagamento(event) {
-        event.preventDefault();
-        var nome = document.getElementById('cli-nome').value.trim();
-        var whatsapp = document.getElementById('cli-whatsapp').value.trim();
-        var cpf = document.getElementById('cli-cpf').value.trim();
-        var email = document.getElementById('cli-email').value.trim();
-        var endereco = document.getElementById('cli-endereco').value.trim();
-
-        if (!nome || !whatsapp || !cpf || !email || !endereco) {
-            mostrarErro('Preencha todos os campos!');
-            return;
-        }
-        if (cpf.replace(/\D/g, '').length !== 11) {
-            mostrarErro('CPF inválido! Digite os 11 números.');
-            return;
-        }
-        if (!email.includes('@') || !email.includes('.')) {
-            mostrarErro('E-mail inválido!');
-            return;
-        }
-
-        var btn = document.getElementById('btn-finalizar');
-        btn.innerHTML = '<span class="spinner"></span> Salvando dados...';
-        btn.disabled = true;
-        var info = PLANOS[planoEscolhido];
-
-        try {
-            var response = await fetch(SUPABASE_URL + '/rest/v1/assinantes', {
-                method: 'POST',
-                headers: {
-                    'apikey': SUPABASE_KEY,
-                    'Authorization': 'Bearer ' + SUPABASE_KEY,
-                    'Content-Type': 'application/json',
-                    'Prefer': 'return=representation'
-                },
-                body: JSON.stringify({
-                    nome: nome,
-                    whatsapp: whatsapp,
-                    cpf: cpf,
-                    email: email,
-                    endereco: endereco,
-                    plano: planoEscolhido,
-                    plano_nome: info.nome,
-                    valor: info.preco,
-                    forma_pagamento: 'pendente',
-                    status: 'aguardando_pagamento',
-                    ativo: false,
-                    total_entregas_mes: info.entregas,
-                    entregas_feitas: 0
-                })
-            });
-
-            if (!response.ok) {
-                var errData = await response.json();
-                throw new Error(errData.message || 'Erro ao salvar dados');
-            }
-
-            localStorage.setItem('assinatura_clube', JSON.stringify({
-                plano: planoEscolhido,
-                planoNome: info.nome,
-                nome: nome,
-                whatsapp: whatsapp,
-                email: email,
-                endereco: endereco,
-                valor: info.preco,
-                data: new Date().toISOString()
-            }));
-
-            btn.innerHTML = '<span class="spinner"></span> Indo para pagamento...';
-            window.location.href = KIWIFY_LINKS[planoEscolhido];
-
-        } catch (error) {
-            console.error('Erro:', error);
-            mostrarErro('Erro: ' + error.message + '. Tente novamente.');
-            btn.innerHTML = '🔒 IR PARA PAGAMENTO SEGURO';
-            btn.disabled = false;
-        }
-    }
-
-    function mostrarErro(msg) {
-        var el = document.getElementById('erro-msg');
-        el.textContent = '⚠️ ' + msg;
-        el.style.display = 'block';
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('cli-whatsapp').addEventListener('input', function(e) {
-            var v = e.target.value.replace(/\D/g, '');
-            v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
-            v = v.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = v.slice(0, 15);
-        });
-        document.getElementById('cli-cpf').addEventListener('input', function(e) {
-            var v = e.target.value.replace(/\D/g, '');
-            v = v.replace(/(\d{3})(\d)/, '$1.$2');
-            v = v.replace(/(\d{3})(\d)/, '$1.$2');
-            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = v;
-        });
-    });
-    </script>
-</body>
-</html>
+                    <label>Endereço 
