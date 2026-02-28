@@ -235,4 +235,319 @@
         <h1>🍕 Clube da Pizza</h1>
     </div>
 
-    <!-- 
+    <!-- PLANOS -->
+    <div class="conteudo">
+        <h2 class="titulo">👑 Escolha seu Plano</h2>
+        <p class="subtitulo">Receba pizzas artesanais toda semana! Cancele quando quiser.</p>
+
+        <div class="planos">
+
+            <!-- BÁSICO -->
+            <div class="card">
+                <div class="card-topo bg-basico">
+                    <span>🔥</span>
+                    <h3>Plano Básico</h3>
+                </div>
+                <div class="card-corpo">
+                    <div class="preco"><b>R$ 49,90</b> <small>/mês</small></div>
+                    <ul class="lista">
+                        <li>✅ 2 pizzas por mês (G)</li>
+                        <li>✅ Sabores tradicionais</li>
+                        <li>✅ Entrega grátis</li>
+                        <li>❌ Pizzas Premium</li>
+                        <li>❌ Bebidas inclusas</li>
+                    </ul>
+                    <button class="btn-plano" id="btn-basico">ASSINAR AGORA</button>
+                </div>
+            </div>
+
+            <!-- PREMIUM -->
+            <div class="card popular">
+                <div class="tag-popular">⭐ MAIS POPULAR</div>
+                <div class="card-topo bg-premium">
+                    <span>🔥</span>
+                    <h3>Plano Premium</h3>
+                </div>
+                <div class="card-corpo">
+                    <div class="preco"><b>R$ 89,90</b> <small>/mês</small></div>
+                    <ul class="lista">
+                        <li>✅ 4 pizzas por mês (G)</li>
+                        <li>✅ Sabores tradicionais</li>
+                        <li>✅ Sabores especiais</li>
+                        <li>✅ Entrega grátis</li>
+                        <li>✅ 1 Refri 2L incluso</li>
+                    </ul>
+                    <button class="btn-plano" id="btn-premium">ASSINAR AGORA</button>
+                </div>
+            </div>
+
+            <!-- FAMÍLIA -->
+            <div class="card">
+                <div class="card-topo bg-familia">
+                    <span>🔥</span>
+                    <h3>Plano Família</h3>
+                </div>
+                <div class="card-corpo">
+                    <div class="preco"><b>R$ 139,90</b> <small>/mês</small></div>
+                    <ul class="lista">
+                        <li>✅ 8 pizzas por mês (G)</li>
+                        <li>✅ Todos os sabores</li>
+                        <li>✅ Entrega grátis</li>
+                        <li>✅ 2 Refri 2L inclusos</li>
+                        <li>✅ Borda recheada grátis</li>
+                    </ul>
+                    <button class="btn-plano" id="btn-familia">ASSINAR AGORA</button>
+                </div>
+            </div>
+
+            <!-- VIP -->
+            <div class="card">
+                <div class="card-topo bg-vip">
+                    <span>👑</span>
+                    <h3>Plano VIP</h3>
+                </div>
+                <div class="card-corpo">
+                    <div class="preco"><b>R$ 199,90</b> <small>/mês</small></div>
+                    <ul class="lista">
+                        <li>✅ 12 pizzas por mês (G)</li>
+                        <li>✅ Todos os sabores</li>
+                        <li>✅ Linha Premium inclusa</li>
+                        <li>✅ Entrega grátis prioritária</li>
+                        <li>✅ 4 Refri 2L inclusos</li>
+                        <li>✅ Borda recheada grátis</li>
+                    </ul>
+                    <button class="btn-plano btn-vip" id="btn-vip">ASSINAR AGORA</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="text-align:center; padding:20px; background:#111; border-radius:12px; border:1px solid #222;">
+            <span style="font-size:2rem;">🛡️</span>
+            <p style="color:#888; font-size:0.85rem; margin-top:8px;">Pagamento seguro via Kiwify • PIX ou Cartão até 12x • Cancele quando quiser</p>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-fundo" id="meu-modal">
+        <div class="modal-caixa">
+            <button class="modal-fechar" id="btn-fechar-modal">✕</button>
+            <h2 class="modal-titulo">🍕 Preencha seus Dados</h2>
+
+            <div class="resumo" id="resumo-plano"></div>
+
+            <div class="erro" id="msg-erro"></div>
+
+            <div class="campo">
+                <label>Nome Completo</label>
+                <input type="text" id="input-nome" placeholder="Seu nome completo">
+            </div>
+            <div class="campo">
+                <label>WhatsApp</label>
+                <input type="tel" id="input-whatsapp" placeholder="(00) 00000-0000">
+            </div>
+            <div class="campo">
+                <label>CPF</label>
+                <input type="text" id="input-cpf" placeholder="000.000.000-00" maxlength="14">
+            </div>
+            <div class="campo">
+                <label>E-mail</label>
+                <input type="email" id="input-email" placeholder="seu@email.com">
+            </div>
+            <div class="campo">
+                <label>Endereço de Entrega</label>
+                <input type="text" id="input-endereco" placeholder="Rua, número, bairro e referência">
+            </div>
+
+            <button class="btn-pagar" id="btn-pagar">🔒 IR PARA PAGAMENTO SEGURO</button>
+
+            <p class="rodape-seguro">
+                Ao clicar, você será redirecionado para o checkout seguro da Kiwify<br>
+                🔐 PIX ou Cartão até 12x &nbsp;|&nbsp; 🛡️ 100% Seguro
+            </p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT - TUDO SEPARADO E SIMPLES -->
+    <script>
+
+    // =============================================
+    //  LINKS DA KIWIFY
+    // =============================================
+    var linkBasico  = 'https://kiwify.app/mMGFitO';
+    var linkPremium = 'https://pay.kiwify.com.br/K6pHuq5';
+    var linkFamilia = 'https://kiwify.app/zSuHA8c';
+    var linkVip     = 'https://kiwify.app/DDXekaN';
+
+    // =============================================
+    //  VARIÁVEIS
+    // =============================================
+    var planoAtual = '';
+    var linkAtual = '';
+
+    // =============================================
+    //  ABRIR MODAL - CADA BOTÃO SEPARADO
+    // =============================================
+
+    document.getElementById('btn-basico').addEventListener('click', function() {
+        planoAtual = 'basico';
+        linkAtual = linkBasico;
+        document.getElementById('resumo-plano').innerHTML = '<h3>🔥 Plano Básico</h3><p class="desc">2 pizzas G/mês • Entrega grátis</p><p class="valor">R$ 49,90/mês</p>';
+        abrirModal();
+    });
+
+    document.getElementById('btn-premium').addEventListener('click', function() {
+        planoAtual = 'premium';
+        linkAtual = linkPremium;
+        document.getElementById('resumo-plano').innerHTML = '<h3>🔥 Plano Premium</h3><p class="desc">4 pizzas G/mês • 1 Refri 2L • Entrega grátis</p><p class="valor">R$ 89,90/mês</p>';
+        abrirModal();
+    });
+
+    document.getElementById('btn-familia').addEventListener('click', function() {
+        planoAtual = 'familia';
+        linkAtual = linkFamilia;
+        document.getElementById('resumo-plano').innerHTML = '<h3>🔥 Plano Família</h3><p class="desc">8 pizzas G/mês • 2 Refri 2L • Borda grátis</p><p class="valor">R$ 139,90/mês</p>';
+        abrirModal();
+    });
+
+    document.getElementById('btn-vip').addEventListener('click', function() {
+        planoAtual = 'vip';
+        linkAtual = linkVip;
+        document.getElementById('resumo-plano').innerHTML = '<h3>👑 Plano VIP</h3><p class="desc">12 pizzas G/mês • 4 Refri 2L • Premium inclusa</p><p class="valor">R$ 199,90/mês</p>';
+        abrirModal();
+    });
+
+    // =============================================
+    //  ABRIR E FECHAR MODAL
+    // =============================================
+
+    function abrirModal() {
+        document.getElementById('msg-erro').style.display = 'none';
+        document.getElementById('btn-pagar').textContent = '🔒 IR PARA PAGAMENTO SEGURO';
+        document.getElementById('btn-pagar').disabled = false;
+        document.getElementById('meu-modal').classList.add('aberto');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModalFn() {
+        document.getElementById('meu-modal').classList.remove('aberto');
+        document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('btn-fechar-modal').addEventListener('click', fecharModalFn);
+
+    document.getElementById('meu-modal').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('meu-modal')) {
+            fecharModalFn();
+        }
+    });
+
+    // =============================================
+    //  BOTÃO PAGAR - REDIRECIONA PARA KIWIFY
+    // =============================================
+
+    document.getElementById('btn-pagar').addEventListener('click', function() {
+
+        // Pegar valores
+        var nome = document.getElementById('input-nome').value.trim();
+        var whatsapp = document.getElementById('input-whatsapp').value.trim();
+        var cpf = document.getElementById('input-cpf').value.trim();
+        var email = document.getElementById('input-email').value.trim();
+        var endereco = document.getElementById('input-endereco').value.trim();
+
+        // Validar
+        if (!nome) { mostrarErro('Digite seu nome!'); return; }
+        if (!whatsapp) { mostrarErro('Digite seu WhatsApp!'); return; }
+        if (!cpf) { mostrarErro('Digite seu CPF!'); return; }
+        if (!email) { mostrarErro('Digite seu e-mail!'); return; }
+        if (!endereco) { mostrarErro('Digite seu endereço!'); return; }
+
+        // Desabilitar botão
+        var btn = document.getElementById('btn-pagar');
+        btn.textContent = '⏳ Indo para pagamento...';
+        btn.disabled = true;
+        document.getElementById('msg-erro').style.display = 'none';
+
+        // Salvar dados no celular
+        try {
+            localStorage.setItem('assinatura_clube', JSON.stringify({
+                plano: planoAtual,
+                nome: nome,
+                whatsapp: whatsapp,
+                email: email,
+                cpf: cpf,
+                endereco: endereco,
+                data: new Date().toISOString()
+            }));
+        } catch(e) {}
+
+        // Tentar salvar no Supabase (em segundo plano)
+        try {
+            var supabaseUrl = 'https://yvwvxdykqtyukcrybkkr.supabase.co';
+            var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2d3Z4ZHlrcXR5dWtjcnlia2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMDMyNjcsImV4cCI6MjA4Nzg3OTI2N30.iNGafZjipSoKm0lZA9AMYEA69qWNUIQLn04Jas1IH5Q';
+
+            fetch(supabaseUrl + '/rest/v1/assinantes', {
+                method: 'POST',
+                headers: {
+                    'apikey': supabaseKey,
+                    'Authorization': 'Bearer ' + supabaseKey,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({
+                    nome: nome,
+                    whatsapp: whatsapp,
+                    cpf: cpf,
+                    email: email,
+                    endereco: endereco,
+                    plano: planoAtual,
+                    plano_nome: planoAtual,
+                    valor: 0,
+                    forma_pagamento: 'pendente',
+                    status: 'aguardando_pagamento',
+                    ativo: false,
+                    total_entregas_mes: 2,
+                    entregas_feitas: 0
+                })
+            });
+        } catch(e) {}
+
+        // IR PARA KIWIFY!
+        setTimeout(function() {
+            window.location.href = linkAtual;
+        }, 800);
+    });
+
+    // =============================================
+    //  MOSTRAR ERRO
+    // =============================================
+    function mostrarErro(texto) {
+        var el = document.getElementById('msg-erro');
+        el.textContent = '⚠️ ' + texto;
+        el.style.display = 'block';
+    }
+
+    // =============================================
+    //  MÁSCARAS
+    // =============================================
+    document.getElementById('input-whatsapp').addEventListener('input', function() {
+        var v = this.value.replace(/\D/g, '');
+        if (v.length > 0) v = '(' + v;
+        if (v.length > 3) v = v.substring(0,3) + ') ' + v.substring(3);
+        if (v.length > 10) v = v.substring(0,10) + '-' + v.substring(10);
+        if (v.length > 15) v = v.substring(0,15);
+        this.value = v;
+    });
+
+    document.getElementById('input-cpf').addEventListener('input', function() {
+        var v = this.value.replace(/\D/g, '');
+        if (v.length > 3) v = v.substring(0,3) + '.' + v.substring(3);
+        if (v.length > 7) v = v.substring(0,7) + '.' + v.substring(7);
+        if (v.length > 11) v = v.substring(0,11) + '-' + v.substring(11);
+        if (v.length > 14) v = v.substring(0,14);
+        this.value = v;
+    });
+
+    </script>
+</body>
+</html>
