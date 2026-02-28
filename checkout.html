@@ -5,103 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clube da Pizza - CasadasPizzaass</title>
     <meta name="theme-color" content="#e74c3c">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
     <style>
-        :root {
-            --cor-primaria: #e74c3c;
-            --cor-secundaria: #c0392b;
-            --cor-destaque: #27ae60;
-            --cor-premium-destaque: #ffd700;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             background: #0d0d0d;
             color: #fff;
             min-height: 100vh;
-            line-height: 1.6;
         }
-        .checkout-header {
+
+        /* HEADER */
+        .topo {
             display: flex;
             align-items: center;
             gap: 14px;
             padding: 14px 20px;
             background: #111;
-            border-bottom: 3px solid var(--cor-primaria);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            border-bottom: 3px solid #e74c3c;
         }
-        .btn-voltar {
+        .topo a {
             color: #fff;
             text-decoration: none;
-            font-size: 0.85rem;
             background: rgba(255,255,255,0.1);
             padding: 8px 14px;
             border-radius: 8px;
-            white-space: nowrap;
+            font-size: 0.85rem;
         }
-        .btn-voltar:hover { background: rgba(255,255,255,0.2); }
-        .checkout-header h1 { font-size: 1.2rem; color: var(--cor-primaria); }
-        .checkout-main {
+        .topo h1 { font-size: 1.2rem; color: #e74c3c; }
+
+        /* CONTEUDO */
+        .conteudo {
             padding: 24px 16px 40px;
             max-width: 900px;
             margin: 0 auto;
         }
-        .secao-titulo {
+        .titulo {
             text-align: center;
-            font-size: 1.6rem;
-            color: var(--cor-premium-destaque);
+            font-size: 1.5rem;
+            color: #ffd700;
             margin-bottom: 6px;
         }
-        .secao-subtitulo {
+        .subtitulo {
             text-align: center;
             color: #888;
             margin-bottom: 30px;
             font-size: 0.9rem;
         }
-        .planos-container {
+
+        /* PLANOS */
+        .planos {
             display: grid;
             grid-template-columns: 1fr;
             gap: 20px;
             margin-bottom: 30px;
         }
-        .plano-card {
+        .card {
             background: #1a1a1a;
             border-radius: 16px;
             overflow: hidden;
             border: 2px solid #333;
-            transition: transform 0.3s, border-color 0.3s;
         }
-        .plano-card:hover { transform: translateY(-3px); border-color: var(--cor-primaria); }
-        .plano-card.destaque {
-            border-color: var(--cor-primaria);
-            box-shadow: 0 0 25px rgba(231, 76, 60, 0.25);
+        .card.popular {
+            border-color: #e74c3c;
+            box-shadow: 0 0 20px rgba(231,76,60,0.2);
         }
-        .plano-tag-popular {
-            background: var(--cor-primaria);
+        .tag-popular {
+            background: #e74c3c;
             color: #fff;
             text-align: center;
             padding: 6px;
             font-size: 0.75rem;
             font-weight: 800;
         }
-        .plano-header { padding: 18px 20px; text-align: center; }
-        .plano-header.basico { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .plano-header.premium { background: linear-gradient(135deg, var(--cor-primaria), #ff6b35); }
-        .plano-header.familia { background: linear-gradient(135deg, #11998e, #38ef7d); }
-        .plano-header.vip { background: linear-gradient(135deg, #f7971e, #ffd200); }
-        .plano-icon { font-size: 1.8rem; }
-        .plano-header h3 { color: #fff; margin-top: 6px; font-size: 1.15rem; }
-        .plano-body { padding: 20px; }
-        .plano-preco { text-align: center; margin-bottom: 16px; }
-        .preco-valor { font-size: 2rem; font-weight: 900; color: var(--cor-primaria); }
-        .plano-card.destaque .preco-valor { color: var(--cor-premium-destaque); }
-        .preco-periodo { font-size: 0.9rem; color: #888; }
-        .plano-beneficios { list-style: none; margin-bottom: 20px; }
-        .plano-beneficios li { padding: 7px 0; font-size: 0.88rem; color: #ccc; border-bottom: 1px solid #222; }
-        .btn-assinar-plano {
+        .card-topo {
+            padding: 18px 20px;
+            text-align: center;
+            color: #fff;
+        }
+        .bg-basico { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .bg-premium { background: linear-gradient(135deg, #e74c3c, #ff6b35); }
+        .bg-familia { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .bg-vip { background: linear-gradient(135deg, #f7971e, #ffd200); }
+        .card-topo span { font-size: 1.8rem; }
+        .card-topo h3 { margin-top: 6px; font-size: 1.15rem; }
+        .card-corpo { padding: 20px; }
+        .preco { text-align: center; margin-bottom: 16px; }
+        .preco b { font-size: 2rem; color: #e74c3c; }
+        .card.popular .preco b { color: #ffd700; }
+        .preco small { font-size: 0.9rem; color: #888; }
+        .lista { list-style: none; margin-bottom: 20px; }
+        .lista li {
+            padding: 7px 0;
+            font-size: 0.88rem;
+            color: #ccc;
+            border-bottom: 1px solid #222;
+        }
+        .btn-plano {
             width: 100%;
             padding: 14px;
             border: none;
@@ -109,41 +108,39 @@
             font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
-            background: linear-gradient(135deg, var(--cor-primaria), #ff6b35);
+            background: linear-gradient(135deg, #e74c3c, #ff6b35);
             color: #fff;
-            transition: transform 0.2s;
         }
-        .btn-assinar-plano:hover { transform: scale(1.03); }
-        .btn-assinar-plano.vip-btn { background: linear-gradient(135deg, #f7971e, #ffd200); color: #111; }
-        .garantia-section {
-            text-align: center;
-            padding: 20px;
-            background: #111;
-            border-radius: 12px;
-            border: 1px solid #222;
+        .btn-vip {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #111;
         }
-        .garantia-section p { color: #888; font-size: 0.85rem; margin-top: 8px; }
-        .modal-overlay {
+
+        /* MODAL */
+        .modal-fundo {
+            display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.92);
+            background: rgba(0,0,0,0.92);
             z-index: 9999;
-            display: flex;
             justify-content: center;
             align-items: flex-start;
             overflow-y: auto;
             padding: 16px;
         }
-        .modal-content {
+        .modal-fundo.aberto {
+            display: flex;
+        }
+        .modal-caixa {
             background: #1a1a1a;
             border-radius: 20px;
             padding: 28px 20px;
             width: 100%;
             max-width: 480px;
-            position: relative;
             margin: 10px 0 30px;
-            border: 2px solid var(--cor-primaria);
+            border: 2px solid #e74c3c;
+            position: relative;
         }
         .modal-fechar {
             position: absolute;
@@ -154,14 +151,13 @@
             font-size: 1.6rem;
             cursor: pointer;
         }
-        .modal-fechar:hover { color: #fff; }
         .modal-titulo {
             text-align: center;
-            color: var(--cor-primaria);
+            color: #e74c3c;
             margin-bottom: 18px;
             font-size: 1.3rem;
         }
-        .resumo-plano {
+        .resumo {
             background: #222;
             padding: 16px;
             border-radius: 12px;
@@ -169,13 +165,18 @@
             text-align: center;
             border: 1px solid #333;
         }
-        .resumo-plano h3 { color: var(--cor-premium-destaque); margin-bottom: 6px; }
-        .resumo-plano .resumo-desc { color: #aaa; font-size: 0.85rem; }
-        .resumo-plano .resumo-preco { font-size: 1.5rem; font-weight: 900; color: #fff; margin-top: 8px; }
-        .resumo-plano .resumo-preco small { font-size: 0.8rem; color: #888; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 5px; font-weight: 600; }
-        .form-group input {
+        .resumo h3 { color: #ffd700; margin-bottom: 6px; }
+        .resumo .desc { color: #aaa; font-size: 0.85rem; }
+        .resumo .valor { font-size: 1.5rem; font-weight: 900; margin-top: 8px; }
+        .campo { margin-bottom: 14px; }
+        .campo label {
+            display: block;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .campo input {
             width: 100%;
             padding: 12px 14px;
             background: #222;
@@ -183,13 +184,14 @@
             border-radius: 10px;
             color: #fff;
             font-size: 0.95rem;
-            font-family: inherit;
         }
-        .form-group input:focus { outline: none; border-color: var(--cor-primaria); }
-        .form-group input::placeholder { color: #555; }
-        .erro-msg {
-            background: rgba(231, 76, 60, 0.15);
-            border: 1px solid var(--cor-primaria);
+        .campo input:focus {
+            outline: none;
+            border-color: #e74c3c;
+        }
+        .erro {
+            background: rgba(231,76,60,0.15);
+            border: 1px solid #e74c3c;
             color: #ff6b6b;
             padding: 12px;
             border-radius: 10px;
@@ -198,7 +200,7 @@
             font-size: 0.85rem;
             display: none;
         }
-        .btn-finalizar {
+        .btn-pagar {
             width: 100%;
             padding: 16px;
             border: none;
@@ -206,186 +208,31 @@
             font-size: 1.1rem;
             font-weight: 800;
             cursor: pointer;
-            background: linear-gradient(135deg, var(--cor-destaque), #00e676);
+            background: linear-gradient(135deg, #27ae60, #00e676);
             color: #fff;
             margin-top: 10px;
-            transition: transform 0.2s;
         }
-        .btn-finalizar:hover { transform: scale(1.03); }
-        .btn-finalizar:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
-        .seguranca-info { text-align: center; font-size: 0.7rem; color: #555; margin-top: 12px; }
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 8px;
+        .btn-pagar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .kiwify-badge {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 14px;
-            padding: 10px;
-            background: #111;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            color: #666;
-        }
-        .debug-info {
-            background: #111;
-            border: 1px solid #333;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
+        .rodape-seguro {
+            text-align: center;
             font-size: 0.7rem;
             color: #555;
-            display: none;
+            margin-top: 14px;
         }
-        @media (min-width: 600px) { .planos-container { grid-template-columns: 1fr 1fr; } }
-        @media (min-width: 900px) {
-            .planos-container { grid-template-columns: repeat(4, 1fr); }
-            .checkout-main { max-width: 1100px; }
-        }
+
+        @media (min-width: 600px) { .planos { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 900px) { .planos { grid-template-columns: repeat(4, 1fr); } .conteudo { max-width: 1100px; } }
     </style>
 </head>
 <body>
 
-    <header class="checkout-header">
-        <a href="index.html" class="btn-voltar">← Cardápio</a>
+    <!-- HEADER -->
+    <div class="topo">
+        <a href="index.html">← Cardápio</a>
         <h1>🍕 Clube da Pizza</h1>
-    </header>
+    </div>
 
-    <main class="checkout-main">
-        <h2 class="secao-titulo">👑 Escolha seu Plano</h2>
-        <p class="secao-subtitulo">Receba pizzas artesanais toda semana! Cancele quando quiser.</p>
-
-        <div class="planos-container">
-            <div class="plano-card">
-                <div class="plano-header basico">
-                    <span class="plano-icon">🔥</span>
-                    <h3>Plano Básico</h3>
-                </div>
-                <div class="plano-body">
-                    <div class="plano-preco">
-                        <span class="preco-valor">R$ 49,90</span>
-                        <span class="preco-periodo">/mês</span>
-                    </div>
-                    <ul class="plano-beneficios">
-                        <li>✅ 2 pizzas por mês (G)</li>
-                        <li>✅ Sabores tradicionais</li>
-                        <li>✅ Entrega grátis</li>
-                        <li>❌ Pizzas Premium</li>
-                        <li>❌ Bebidas inclusas</li>
-                    </ul>
-                    <button class="btn-assinar-plano" onclick="selecionarPlano('basico')">ASSINAR AGORA</button>
-                </div>
-            </div>
-
-            <div class="plano-card destaque">
-                <div class="plano-tag-popular">⭐ MAIS POPULAR</div>
-                <div class="plano-header premium">
-                    <span class="plano-icon">🔥</span>
-                    <h3>Plano Premium</h3>
-                </div>
-                <div class="plano-body">
-                    <div class="plano-preco">
-                        <span class="preco-valor">R$ 89,90</span>
-                        <span class="preco-periodo">/mês</span>
-                    </div>
-                    <ul class="plano-beneficios">
-                        <li>✅ 4 pizzas por mês (G)</li>
-                        <li>✅ Sabores tradicionais</li>
-                        <li>✅ Sabores especiais</li>
-                        <li>✅ Entrega grátis</li>
-                        <li>✅ 1 Refri 2L incluso</li>
-                    </ul>
-                    <button class="btn-assinar-plano" onclick="selecionarPlano('premium')">ASSINAR AGORA</button>
-                </div>
-            </div>
-
-            <div class="plano-card">
-                <div class="plano-header familia">
-                    <span class="plano-icon">🔥</span>
-                    <h3>Plano Família</h3>
-                </div>
-                <div class="plano-body">
-                    <div class="plano-preco">
-                        <span class="preco-valor">R$ 139,90</span>
-                        <span class="preco-periodo">/mês</span>
-                    </div>
-                    <ul class="plano-beneficios">
-                        <li>✅ 8 pizzas por mês (G)</li>
-                        <li>✅ Todos os sabores</li>
-                        <li>✅ Entrega grátis</li>
-                        <li>✅ 2 Refri 2L inclusos</li>
-                        <li>✅ Borda recheada grátis</li>
-                    </ul>
-                    <button class="btn-assinar-plano" onclick="selecionarPlano('familia')">ASSINAR AGORA</button>
-                </div>
-            </div>
-
-            <div class="plano-card">
-                <div class="plano-header vip">
-                    <span class="plano-icon">👑</span>
-                    <h3>Plano VIP</h3>
-                </div>
-                <div class="plano-body">
-                    <div class="plano-preco">
-                        <span class="preco-valor">R$ 199,90</span>
-                        <span class="preco-periodo">/mês</span>
-                    </div>
-                    <ul class="plano-beneficios">
-                        <li>✅ 12 pizzas por mês (G)</li>
-                        <li>✅ Todos os sabores</li>
-                        <li>✅ Linha Premium inclusa</li>
-                        <li>✅ Entrega grátis prioritária</li>
-                        <li>✅ 4 Refri 2L inclusos</li>
-                        <li>✅ Borda recheada grátis</li>
-                    </ul>
-                    <button class="btn-assinar-plano vip-btn" onclick="selecionarPlano('vip')">ASSINAR AGORA</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="garantia-section">
-            <span style="font-size: 2rem;">🛡️</span>
-            <p>Pagamento seguro via Kiwify • PIX ou Cartão até 12x • Cancele quando quiser</p>
-        </div>
-    </main>
-
-    <!-- MODAL -->
-    <div id="modal-checkout" class="modal-overlay" style="display:none;">
-        <div class="modal-content">
-            <button class="modal-fechar" onclick="fecharModal()">✕</button>
-            <h2 class="modal-titulo">🍕 Preencha seus Dados</h2>
-            <div id="resumo-plano" class="resumo-plano"></div>
-            <div id="erro-msg" class="erro-msg"></div>
-
-            <!-- IMPORTANTE: NÃO É UM FORM — É UMA DIV -->
-            <!-- Isso evita o problema de redirecionamento -->
-            <div id="formulario-dados">
-                <div class="form-group">
-                    <label>Nome Completo</label>
-                    <input type="text" id="cli-nome" placeholder="Seu nome completo">
-                </div>
-                <div class="form-group">
-                    <label>WhatsApp (para combinar entregas)</label>
-                    <input type="tel" id="cli-whatsapp" placeholder="(00) 00000-0000">
-                </div>
-                <div class="form-group">
-                    <label>CPF</label>
-                    <input type="text" id="cli-cpf" placeholder="000.000.000-00" maxlength="14">
-                </div>
-                <div class="form-group">
-                    <label>E-mail (mesmo que vai usar no pagamento)</label>
-                    <input type="email" id="cli-email" placeholder="seu@email.com">
-                </div>
-                <div class="form-group">
-                    <label>Endereço 
+    <!-- 
