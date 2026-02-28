@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube da Pizza - CasadasPizzaass</title>
+    <meta name="theme-color" content="#e74c3c">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+
+    <style>
+        :root {
+            --cor-primaria: #e74c3c;
+            --cor-secundaria: #c0392b;
+            --cor-destaque: #27ae60;
+            --cor-premium-destaque: #ffd700;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0d0d0d;
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ============ HEADER ============ */
+        .checkout-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 20px;
+            background: #111;
+            border-bottom: 3px solid var(--cor-primaria);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .btn-voltar {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+        .btn-voltar:hover { background: rgba(255,255,255,0.2); }
+        .checkout-header h1 {
+            font-size: 1.2rem;
+            color: var(--cor-primaria);
+        }
+
+        /* ============ MAIN ============ */
+        .checkout-main {
+            padding: 24px 16px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .secao-titulo {
+            text-align: center;
+            font-size: 1.6rem;
+            color: var(--cor-premium-destaque);
+            margin-bottom: 6px;
+        }
+        .secao-subtitulo {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        /* ============ CARDS DOS PLANOS ============ */
+        .planos-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .plano-card {
+            background: #1a1a1a;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #333;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+        }
+        .plano-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--cor-primaria);
+        }
+        .plano-card.destaque {
+            border-color: var(--cor-primaria);
+            box-shadow: 0 0 25px rgba(231, 76, 60, 0.25);
+        }
+        .plano-tag-popular {
+            background: var(--cor-primaria);
+            color: #fff;
+            text-align: center;
+            padding: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .plano-header {
+            padding: 18px 20px;
+            text-align: center;
+        }
+        .plano-header.basico { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .plano-header.premium { background: linear-gradient(135deg, var(--cor-primaria), #ff6b35); }
+        .plano-header.familia { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .plano-header.vip { background: linear-gradient(135deg, #f7971e, #ffd200); }
+        .plano-icon { font-size: 1.8rem; }
+        .plano-header h3 { color: #fff; margin-top: 6px; font-size: 1.15rem; }
+        .plano-body { padding: 20px; }
+        .plano-preco { text-align: center; margin-bottom: 16px; }
+        .preco-valor {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--cor-primaria);
+        }
+        .plano-card.destaque .preco-valor { color: var(--cor-premium-destaque); }
+        .preco-periodo { font-size: 0.9rem; color: #888; }
+        .plano-beneficios { list-style: none; margin-bottom: 20px; }
+        .plano-beneficios li {
+            padding: 7px 0;
+            font-size: 0.88rem;
+            color: #ccc;
+            border-bottom: 1px solid #222;
+        }
+        .btn-assinar-plano {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--cor-primaria), #ff6b35);
+            color: #fff;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-assinar-plano:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+        }
+        .btn-assinar-plano.vip-btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #111;
+        }
+
+        /* ============ GARANTIA ============ */
+        .garantia-section {
+            text-align: center;
+            padding: 20px;
+            margin: 10px 0 20px;
+            background: #111;
+            border-radius: 12px;
+            border: 1px solid #222;
+        }
+        .garantia-section p { color: #888; font-size: 0.85rem; margin-top: 8px; }
+
+        /* ============ MODAL CHECKOUT ============ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        .modal-content {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 28px 20px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            border: 2px solid var(--cor-primaria);
+        }
+        .modal-fechar {
+            position: absolute;
+            top: 10px; right: 14px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .modal-fechar:hover { color: #fff; }
+        .modal-titulo {
+            text-align: center;
+            color: var(--cor-primaria);
+            margin-bottom: 18px;
+            font-size: 1.3rem;
+        }
+        .resumo-plano {
+            background: #222;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        .resumo-plano h3 { color: var(--cor-premium-destaque); margin-bottom: 6px; }
+        .resumo-plano .resumo-desc { color: #aaa; font-size: 0.85rem; }
+        .resumo-plano .resumo-preco {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-top: 8px;
+        }
+        .resumo-plano .resumo-preco small { font-size: 0.8rem; color: #888; }
+
+        /* FORMULÁRIO */
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--cor-primaria);
+        }
+        .form-group input::placeholder { color: #555; }
+
+        /* PAGAMENTO */
+        .subtitulo-pagamento {
+            color: var(--cor-primaria);
+            font-size: 1rem;
+            margin: 20px 0 12px;
+            font-weight: 700;
+        }
+        .pagamento-opcoes {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .pagamento-opcao {
+            flex: 1;
+            cursor: pointer;
+        }
+        .pagamento-opcao input[type="radio"] { display: none; }
+        .opcao-box {
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
+            transition: border-color 0.3s, background 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .pagamento-opcao input:checked + .opcao-box {
+            border-color: var(--cor-primaria);
+            background: rgba(231, 76, 60, 0.1);
+        }
+        .opcao-icon { font-size: 1.5rem; }
+        .desconto-pix {
+            background: var(--cor-destaque);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 800;
+        }
+        .parcelas-info { color: #888; font-size: 0.7rem; }
+
+        .area-pagamento {
+            background: #222;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+        }
+        .pix-info { text-align: center; color: #ccc; font-size: 0.9rem; }
+        .pix-preco-final {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--cor-destaque);
+            margin-top: 8px;
+        }
+        .parcelas-valor {
+            text-align: center;
+            color: var(--cor-primaria);
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .btn-finalizar {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--cor-destaque), #00e676);
+            color: #fff;
+            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-finalizar:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4);
+        }
+        .seguranca-info {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #555;
+            margin-top: 12px;
+        }
+
+        /* ============ RESPONSIVO ============ */
+        @media (min-width: 600px) {
+            .planos-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (min-width: 900px) {
+            .planos-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .checkout-main {
+                max-width: 1100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="checkout-header">
+        <a href="index.html" class="btn-voltar">← Cardápio</a>
+        <h1>🍕 Clube da Pizza</h1>
+    </header>
+
+    <!-- ============ CONTEÚDO ============ -->
+    <main class="checkout-main">
+        <h2 class="secao-titulo">👑 Escolha seu Plano</h2>
+        <p class="secao-subtitulo">Receba pizzas artesanais toda semana na sua casa! Cancele quando quiser.</p>
+
+        <div class="planos-container">
+
+            <!-- ========= PLANO BÁSICO ========= -->
+            <div class="plano-card" data-plano="basico">
+                <div class="plano-header basico">
+                    <span class="plano-icon">🔥</span>
+                    <h3>Plano Básico</h3>
+                </div>
+                <div class="plano-body">
+                    <div class="plano-preco">
+                        <span class="preco-valor">R$ 49,90</span>
+                        <span class="preco-periodo">/mês</span>
+                    </div>
+                    <ul class="plano-beneficios">
+                        <li>✅ 2 pizzas por mês (G)</li>
+                        <li>✅ Sabores tradicionais</li>
+                        <li>✅ Entrega grátis</li>
+                        <li>❌ Pizzas Premium</li>
+                        <li>❌ Bebidas inclusas</li>
+                    </ul>
+                    <button class="btn-assinar-plano" onclick="selecionarPlano('basico')">ASSINAR AGORA</button>
+                </div>
+            </div>
+
+            <!-- ========= PLANO PREMIUM ========= -->
+            <div class="plano-card destaque" data-plano="premium">
+                <div class="plano-tag-popular">⭐ MAIS POPULAR</div>
+                <div class="plano-header premium">
+                    <span class="plano-icon">🔥</span>
+                    <h3>Plano Premium</h3>
+                </div>
+                <div class="plano-body">
+                    <div class="plano-preco">
+                        <span class="preco-valor">R$ 89,90</span>
+                        <span class="preco-periodo">/mês</span>
+                    </div>
+                    <ul class="plano-beneficios">
+                        <li>✅ 4 pizzas por mês (G)</li>
+                        <li>✅ Sabores tradicionais</li>
+                        <li>✅ Sabores especiais</li>
+                        <li>✅ Entrega grátis</li>
+                        <li>✅ 1 Refri 2L incluso</li>
+                    </ul>
+                    <button class="btn-assinar-plano" onclick="selecionarPlano('premium')">ASSINAR AGORA</button>
+                </div>
+            </div>
+
+            <!-- ========= PLANO FAMÍLIA ========= -->
+            <div class="plano-card" data-plano="familia">
+                <div class="plano-header familia">
+                    <span class="plano-icon">🔥</span>
+                    <h3>Plano Família</h3>
+                </div>
+                <div class="plano-body">
+                    <div class="plano-preco">
+                        <span class="preco-valor">R$ 139,90</span>
+                        <span class="preco-periodo">/mês</span>
+                    </div>
+                    <ul class="plano-beneficios">
+                        <li>✅ 8 pizzas por mês (G)</li>
+                        <li>✅ Todos os sabores</li>
+                        <li>✅ Entrega grátis</li>
+                        <li>✅ 2 Refri 2L inclusos</li>
+                        <li>✅ Borda recheada grátis</li>
+                    </ul>
+                    <button class="btn-assinar-plano" onclick="selecionarPlano('familia')">ASSINAR AGORA</button>
+                </div>
+            </div>
+
+            <!-- ========= PLANO VIP ========= -->
+            <div class="plano-card" data-plano="vip">
+                <div class="plano-header vip">
+                    <span class="plano-icon">👑</span>
+                    <h3>Plano VIP</h3>
+                </div>
+                <div class="plano-body">
+                    <div class="plano-preco">
+                        <span class="preco-valor">R$ 199,90</span>
+                        <span class="preco-periodo">/mês</span>
+                    </div>
+                    <ul class="plano-beneficios">
+                        <li>✅ 12 pizzas por mês (G)</li>
+                        <li>✅ Todos os sabores</li>
+                        <li>✅ Linha Premium inclusa</li>
+                        <li>✅ Entrega grátis prioritária</li>
+                        <li>✅ 4 Refri 2L inclusos</li>
+                        <li>✅ Borda recheada grátis</li>
+                    </ul>
+                    <button class="btn-assinar-plano vip-btn" onclick="selecionarPlano('vip')">ASSINAR AGORA</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GARANTIA -->
+        <div class="garantia-section">
+            <span style="font-size: 2rem;">🛡️</span>
+            <p>Satisfação garantida • Cancele quando quiser • Sem fidelidade</p>
+        </div>
+    </main>
+
+    <!-- ============ MODAL DE CHECKOUT ============ -->
+    <div id="modal-checkout" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-fechar" onclick="fecharModal()">✕</button>
+
+            <h2 class="modal-titulo">🍕 Finalizar Assinatura</h2>
+
+            <div id="resumo-plano" class="resumo-plano"></div>
+
+            <form id="form-checkout" onsubmit="processarPagamento(event)">
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="cli-nome" required placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp</label>
+                    <input type="tel" id="cli-whatsapp" required placeholder="(00) 00000-0000">
+                </div>
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" id="cli-cpf" required placeholder="000.000.000-00" maxlength="14">
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="cli-email" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Endereço de Entrega</label>
+                    <input type="text" id="cli-endereco" required placeholder="Rua, número, bairro e referência">
+                </div>
+
+                <!-- FORMA DE PAGAMENTO -->
+                <h3 class="subtitulo-pagamento">💳 Forma de Pagamento</h3>
+                <div class="pagamento-opcoes">
+                    <label class="pagamento-opcao">
+                        <input type="radio" name="forma-pgto" value="pix" checked onchange="trocarFormaPagamento('pix')">
+                        <div class="opcao-box">
+                            <span class="opcao-icon">📱</span>
+                            <span>PIX</span>
+                            <span class="desconto-pix">5% OFF</span>
+                        </div>
+                    </label>
+                    <label class="pagamento-opcao">
+                        <input type="radio" name="forma-pgto" value="cartao" onchange="trocarFormaPagamento('cartao')">
+                        <div class="opcao-box">
+                            <span class="opcao-icon">💳</span>
+                            <span>Cartão</span>
+                            <span class="parcelas-info">até 12x</span>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- ÁREA PIX -->
+                <div id="area-pix" class="area-pagamento">
+                    <div class="pix-info">
+                        <p>💰 Com PIX você ganha <strong>5% de desconto!</strong></p>
+                        <p class="pix-preco-final">Valor: <span id="pix-valor">R$ 0,00</span></p>
+                    </div>
+                </div>
+
+                <!-- ÁREA CARTÃO -->
+                <div id="area-cartao" class="area-pagamento" style="display:none;">
+                    <div class="form-group">
+                        <label>Parcelas</label>
+                        <select id="parcelas"></select>
+                    </div>
+                    <p class="parcelas-valor">Valor da parcela: <span id="valor-parcela">R$ 0,00</span></p>
+                </div>
+
+                <button type="submit" class="btn-finalizar">🔒 FINALIZAR ASSINATURA</button>
+                <p class="seguranca-info">🔒 Pagamento 100% seguro • Os dados são enviados direto para o WhatsApp da pizzaria</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ JAVASCRIPT ============ -->
+    <script>
+        // ========== DADOS DOS PLANOS ==========
+        const PLANOS = {
+            basico: {
+                nome: '🔥 Plano Básico',
+                descricao: '2 pizzas G/mês • Sabores tradicionais • Entrega grátis',
+                preco: 49.90
+            },
+            premium: {
+                nome: '🔥 Plano Premium',
+                descricao: '4 pizzas G/mês • Todos sabores • 1 Refri 2L • Entrega grátis',
+                preco: 89.90
+            },
+            familia: {
+                nome: '🔥 Plano Família',
+                descricao: '8 pizzas G/mês • Todos sabores • 2 Refri 2L • Borda grátis',
+                preco: 139.90
+            },
+            vip: {
+                nome: '👑 Plano VIP',
+                descricao: '12 pizzas G/mês • Premium inclusa • 4 Refri 2L • Borda grátis',
+                preco: 199.90
+            }
+        };
+
+        let planoEscolhido = null;
+        let precoEscolhido = 0;
+        const JUROS_MES = 0.0299;
+
+        // ========== SELECIONAR PLANO ==========
+        function selecionarPlano(plano) {
+            planoEscolhido = plano;
+            const info = PLANOS[plano];
+            precoEscolhido = info.preco;
+
+            // Preencher resumo
+            document.getElementById('resumo-plano').innerHTML = `
+                <h3>${info.nome}</h3>
+                <p class="resumo-desc">${info.descricao}</p>
+                <p class="resumo-preco">R$ ${info.preco.toFixed(2).replace('.', ',')} <small>/mês</small></p>
+            `;
+
+            // Atualizar PIX (5% off)
+            const pixValor = precoEscolhido * 0.95;
+            document.getElementById('pix-valor').textContent = 'R$ ' + pixValor.toFixed(2).replace('.', ',');
+
+            // Atualizar parcelas
+            atualizarParcelas();
+
+            // Abrir modal
+            document.getElementById('modal-checkout').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ========== FECHAR MODAL ==========
+        function fecharModal() {
+            document.getElementById('modal-checkout').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fechar ao clicar fora
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                fecharModal();
+            }
+        });
+
+        // ========== TROCAR PAGAMENTO ==========
+        function trocarFormaPagamento(forma) {
+            document.getElementById('area-pix').style.display = forma === 'pix' ? 'block' : 'none';
+            document.getElementById('area-cartao').style.display = forma === 'cartao' ? 'block' : 'none';
+        }
+
+        // ========== PARCELAS ==========
+        function atualizarParcelas() {
+            const select = document.getElementById('parcelas');
+            select.innerHTML = '';
+
+            for (let i = 1; i <= 12; i++) {
+                let valorParcela;
+                let textoJuros;
+
+                if (i <= 3) {
+                    valorParcela = precoEscolhido / i;
+                    textoJuros = 'sem juros';
+                } else {
+                    const totalComJuros = precoEscolhido * Math.pow(1 + JUROS_MES, i);
+                    valorParcela = totalComJuros / i;
+                    textoJuros = 'com juros';
+                }
+
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + 'x de R$ ' + valorParcela.toFixed(2).replace('.', ',') + ' ' + textoJuros;
+                select.appendChild(option);
+            }
+
+            // Evento de troca
+            select.onchange = function() {
+                const n = parseInt(this.value);
+                let vp;
+                if (n <= 3) {
+                    vp = precoEscolhido / n;
+                } else {
+                    vp = (precoEscolhido * Math.pow(1 + JUROS_MES, n)) / n;
+                }
+                document.getElementById('valor-parcela').textContent = 'R$ ' + vp.toFixed(2).replace('.', ',');
+            };
+
+            document.getElementById('valor-parcela').textContent = 'R$ ' + precoEscolhido.toFixed(2).replace('.', ',');
+        }
+
+        // ========== PROCESSAR PAGAMENTO (WHATSAPP) ==========
+        function processarPagamento(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('cli-nome').value.trim();
+            const whatsapp = document.getElementById('cli-whatsapp').value.trim();
+            const cpf = document.getElementById('cli-cpf').value.trim();
+            const email = document.getElementById('cli-email').value.trim();
+            const endereco = document.getElementById('cli-endereco').value.trim();
+            const formaPgto = document.querySelector('input[name="forma-pgto"]:checked').value;
+            const parcelas = formaPgto === 'cartao' ? document.getElementById('parcelas').value : '1';
+
+            const info = PLANOS[planoEscolhido];
+            let valorFinal = precoEscolhido;
+            if (formaPgto === 'pix') {
+                valorFinal = precoEscolhido * 0.95;
+            }
+
+            // Montar mensagem WhatsApp
+            let mensagem = `🍕 *NOVA ASSINATURA - CLUBE DA PIZZA* 🍕\n`;
+            mensagem += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            mensagem += `📋 *Plano:* ${info.nome}\n`;
+            mensagem += `💰 *Valor:* R$ ${valorFinal.toFixed(2).replace('.', ',')}/mês\n`;
+
+            if (formaPgto === 'pix') {
+                mensagem += `💳 *Pagamento:* PIX (com 5% de desconto)\n`;
+            } else {
+                mensagem += `💳 *Pagamento:* Cartão em ${parcelas}x\n`;
+            }
+
+            mensagem += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            mensagem += `👤 *Nome:* ${nome}\n`;
+            mensagem += `📱 *WhatsApp:* ${whatsapp}\n`;
+            mensagem += `📧 *E-mail:* ${email}\n`;
+            mensagem += `🆔 *CPF:* ${cpf}\n`;
+            mensagem += `📍 *Endereço:* ${endereco}\n\n`;
+            mensagem += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+
+            if (formaPgto === 'pix') {
+                mensagem += `\n*Dados para PIX:*\n`;
+                mensagem += `*Chave (Celular):* 98970100184\n`;
+                mensagem += `*Nome:* Francisco de Sousa\n\n`;
+                mensagem += `_Assinatura ativada após envio do comprovante._\n`;
+            } else {
+                mensagem += `\n_Aguardando confirmação para envio do link de pagamento por cartão._\n`;
+            }
+
+            mensagem += `\n_Assinatura solicitada via Clube da Pizza - Cardápio Digital._`;
+
+            // SEU NÚMERO DO WHATSAPP
+            const numeroWhatsApp = '5598970100184';
+            const linkWhats = 'https://wa.me/' + numeroWhatsApp + '?text=' + encodeURIComponent(mensagem);
+
+            // Salvar dados localmente
+            localStorage.setItem('ultimaAssinatura', JSON.stringify({
+                plano: planoEscolhido,
+                nome, whatsapp, cpf, email, endereco,
+                formaPagamento: formaPgto,
+                parcelas,
+                valorFinal,
+                data: new Date().toISOString()
+            }));
+
+            // Redirecionar para WhatsApp
+            window.open(linkWhats, '_blank');
+
+            // Ir para página de sucesso
+            setTimeout(function() {
+                window.location.href = 'sucesso.html';
+            }, 1000);
+        }
+
+        // ========== MÁSCARAS ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // Máscara WhatsApp
+            var whatsInput = document.getElementById('cli-whatsapp');
+            if (whatsInput) {
+                whatsInput.addEventListener('input', function(e) {
+                    var v = e.target.value.replace(/\D/g, '');
+                    v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+                    v = v.replace(/(\d{5})(\d)/, '$1-$2');
+                    e.target.value = v.slice(0, 15);
+                });
+            }
+
+            // Máscara CPF
+            var cpfInput = document.getElementById('cli-cpf');
+            if (cpfInput) {
+                cpfInput.addEventListener('input', function(e) {
+                    var v = e.target.value.replace(/\D/g, '');
+                    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                    e.target.value = v;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
