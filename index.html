@@ -29,7 +29,49 @@
         .header { background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria)); color: white; text-align: center; padding: 30px 20px; }
         .header h1 { font-size: 2.2em; font-weight: 700; }
         .header p { font-size: 1.1em; opacity: 0.9; }
-        .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
+        
+        /* NOVO BANNER DE IDENTIDADE */
+        .identity-banner-wrapper {
+            padding: 20px 20px 0 20px; /* Espaçamento para o banner */
+            background-color: #f0f2f5; /* Cor de fundo do corpo para integrar */
+        }
+        .vip-club-banner {
+            background: var(--cor-premium-fundo);
+            color: var(--cor-premium-texto);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid var(--cor-premium-destaque);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .vip-club-banner h2 {
+            color: var(--cor-premium-destaque);
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+        .vip-club-banner p {
+            font-size: 1.05em;
+            margin-bottom: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .vip-club-banner .vip-button {
+            background-color: var(--cor-premium-destaque);
+            color: var(--cor-premium-fundo);
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+        }
+        .vip-club-banner .vip-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
@@ -41,6 +83,7 @@
         .countdown-timer { margin-top: 15px; background-color: rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 8px; }
         .countdown-timer .timer-label { font-size: 0.9em; font-weight: 600; display: block; margin-bottom: 5px; }
         .countdown-timer #timer { font-size: 1.4em; font-weight: 700; color: var(--cor-secundaria); letter-spacing: 2px; }
+        .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
         .category { padding: 30px 20px; border-bottom: 8px solid #f0f2f5; }
         .category h2 { font-size: 1.7em; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
         .category .category-subtitle { font-size: 1em; color: var(--cor-texto-claro); margin-bottom: 25px; font-style: italic; }
@@ -98,6 +141,15 @@
             <p>As melhores pizzas da cidade</p>
         </header>
 
+        <!-- NOVO BANNER DE IDENTIDADE -->
+        <div class="identity-banner-wrapper">
+            <section id="clube-vip" class="vip-club-banner">
+                <h2>👑 CLUBE DA PIZZA VIP 👑</h2>
+                <p>Garanta <strong>1 pizza grande por semana</strong> (4 por mês) e pague muito mais barato! Assine nosso plano mensal e entre para o clube mais saboroso da cidade.</p>
+                <a href="https://pay.kiwify.com.br/Q8nIm48" target="_blank" class="vip-button">QUERO SER VIP E ECONOMIZAR!</a>
+            </section>
+        </div>
+
         <div class="delivery-info">
             🚚 ENTREGA GRÁTIS PARA TODA CIDADE
         </div>
@@ -121,7 +173,7 @@
                     <article class="item-card">
                         <h3>Calabresa Ralada</h3>
                         <p class="description">Mussarela, calabresa Ralada, cebola, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
+                        <p class="price"><span>M (6 fatias ) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
                     </article>
                     <article class="item-card">
                         <h3>Calabresa</h3>
@@ -263,6 +315,9 @@
     </div>
 
     <script>
+        // ==================================================================
+        //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
+        // ==================================================================
         const products = {
             'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
             'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
@@ -338,6 +393,9 @@
         }
         document.addEventListener('DOMContentLoaded', displayDailyOffer);
 
+        // ==================================================================
+        //  FUNÇÕES DO FORMULÁRIO E WHATSAPP (COMPLETAS E CORRIGIDAS)
+        // ==================================================================
         function selectPayment(paymentType) {
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
@@ -375,41 +433,4 @@
                            `*Pedido Detalhado:*\n${pedido}\n\n` +
                            `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
             
-            if (pagamento.value === 'pix') {
-                const chavePix = '98970100184';
-                const nomeRecebedorPix = 'Francisco de Sousa';
-                mensagem += `*Dados para PIX:*\n` +
-                            `*Chave (Celular):* ${chavePix}\n` +
-                            `*Nome:* ${nomeRecebedorPix}\n\n` +
-                            `_O pedido só é liberado após o envio do comprovante._\n\n`;
-            }
-
-            mensagem += `_Pedido enviado via cardápio digital._`;
-            
-            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
-            window.open(linkWhatsApp, '_blank');
-        }
-
-        document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = value.slice(0, 15);
-        });
-
-        function handleResize() {
-            const floatingBtn = document.querySelector('.whatsapp-btn-container');
-            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
-            if (window.innerWidth < 768) {
-                floatingBtn.style.display = 'block';
-                if(formBtn) formBtn.style.display = 'none';
-            } else {
-                floatingBtn.style.display = 'none';
-                if(formBtn) formBtn.style.display = 'block';
-            }
-        }
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('load', handleResize);
-    </script>
-</body>
-</html>
+            if (pagamento.
