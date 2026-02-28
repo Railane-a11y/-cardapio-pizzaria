@@ -26,9 +26,60 @@
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; line-height: 1.6; padding-bottom: 80px; }
         .container { max-width: 900px; margin: 0 auto; background: var(--fundo-claro); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .header { background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria)); color: white; text-align: center; padding: 30px 20px; }
-        .header h1 { font-size: 2.2em; font-weight: 700; }
-        .header p { font-size: 1.1em; opacity: 0.9; }
+        
+        /* NOVO CABEÇALHO SLIM */
+        .slim-header {
+            background-color: var(--fundo-claro);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .slim-header .logo {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--cor-texto-escuro);
+            text-decoration: none;
+        }
+
+        /* BANNER DO CLUBE VIP AJUSTADO */
+        .vip-club-banner {
+            background: var(--cor-premium-fundo);
+            color: var(--cor-premium-texto);
+            padding: 30px 20px; /* Mais padding vertical */
+            text-align: center;
+        }
+        .vip-club-banner h2 {
+            color: var(--cor-premium-destaque);
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .vip-club-banner p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+        .vip-club-banner .vip-button {
+            background-color: var(--cor-premium-destaque);
+            color: var(--cor-premium-fundo);
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .vip-club-banner .vip-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
@@ -85,7 +136,6 @@
         @media (min-width: 768px) { 
             body { padding-bottom: 0; } 
             .container { margin: 20px auto; border-radius: 12px; overflow: hidden; } 
-            .header h1 { font-size: 2.8em; } 
             .category { padding: 40px; } 
             .items-grid { grid-template-columns: 1fr 1fr; } 
             .nav-menu { justify-content: center; } 
@@ -96,10 +146,18 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>🍕 CasadasPizzaass</h1>
-            <p>As melhores pizzas da cidade</p>
-        </header>
+        
+        <!-- NOVO CABEÇALHO COM LOGO -->
+        <div class="slim-header">
+            <a href="#" class="logo">🍕 CasadasPizzaass</a>
+        </div>
+
+        <!-- BANNER DO CLUBE VIP COMO ELEMENTO PRINCIPAL -->
+        <section id="clube-vip" class="vip-club-banner">
+            <h2>👑 CLUBE DA PIZZA VIP 👑</h2>
+            <p>Garanta <strong>1 pizza grande por semana</strong> (4 por mês) e pague muito mais barato! Assine nosso plano mensal e entre para o clube mais saboroso da cidade.</p>
+            <a href="https://pay.kiwify.com.br/Q8nIm48" target="_blank" class="vip-button">QUERO SER VIP E ECONOMIZAR!</a>
+        </section>
 
         <div class="delivery-info">
             🚚 ENTREGA GRÁTIS PARA TODA CIDADE
@@ -114,9 +172,10 @@
             <a href="#pedido">Pedido</a>
         </nav>
 
-        <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;"></section>
+        <section id="oferta" class="offer-section" style="display: none;"></section>
 
         <main class="menu">
+            <!-- O RESTO DO SEU CARDÁPIO CONTINUA AQUI... -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
@@ -124,7 +183,7 @@
                     <article class="item-card">
                         <h3>Calabresa Ralada</h3>
                         <p class="description">Mussarela, calabresa Ralada, cebola, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
+                        <p class="price"><span>M (6 fatias ) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
                     </article>
                     <article class="item-card">
                         <h3>Calabresa</h3>
@@ -282,13 +341,13 @@
             'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
         };
         const dailyOffers = [
-            { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
+            { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.05 },
             { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-            { day: 2, title: 'Terça do Clássico', items: ['frango', 'guarana1l'], discount: 0.05 },
-            { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l'], discount: 0.05 },
+            { day: 2, title: 'Terça do Clássico', items: ['frango', 'coca1l'], discount: 0.05 },
+            { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'coca2l'], discount: 0.05 },
             { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
-            { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-            { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'guarana2l'], discount: 0.05 },
+            { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'coca2l'], discount: 0.05 },
+            { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.05 },
         ];
         let countdownInterval;
         function displayDailyOffer() {
@@ -387,41 +446,4 @@
                            `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
             
             if (pagamento.value === 'pix') {
-                const chavePix = '98970100184';
-                const nomeRecebedorPix = 'Francisco de Sousa';
-                mensagem += `*Dados para PIX:*\n` +
-                            `*Chave (Celular):* ${chavePix}\n` +
-                            `*Nome:* ${nomeRecebedorPix}\n\n` +
-                            `_O pedido só é liberado após o envio do comprovante._\n\n`;
-            }
-
-            mensagem += `_Pedido enviado via cardápio digital._`;
-            
-            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
-            window.open(linkWhatsApp, '_blank');
-        }
-
-        document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = value.slice(0, 15);
-        });
-
-        function handleResize() {
-            const floatingBtn = document.querySelector('.whatsapp-btn-container');
-            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
-            if (window.innerWidth < 768) {
-                floatingBtn.style.display = 'block';
-                if(formBtn) formBtn.style.display = 'none';
-            } else {
-                floatingBtn.style.display = 'none';
-                if(formBtn) formBtn.style.display = 'block';
-            }
-        }
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('load', handleResize);
-    </script>
-</body>
-</html>
-
+                const chavePix = '989
