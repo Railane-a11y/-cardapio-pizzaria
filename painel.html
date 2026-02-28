@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - CasadasPizzaass</title>
+    <meta name="theme-color" content="#1a1a2e">
+    <style>
+        :root {
+            --vermelho: #e74c3c;
+            --verde: #27ae60;
+            --amarelo: #f1c40f;
+            --azul: #3498db;
+            --fundo: #0d0d0d;
+            --card: #1a1a1a;
+            --borda: #333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--fundo);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        .login-container {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; min-height: 100vh; padding: 24px;
+        }
+        .login-box {
+            background: var(--card); padding: 40px 30px; border-radius: 20px;
+            border: 2px solid var(--borda); width: 100%; max-width: 380px; text-align: center;
+        }
+        .login-box h1 { color: var(--vermelho); font-size: 1.5rem; margin: 16px 0 8px; }
+        .login-box p { color: #888; font-size: 0.85rem; margin-bottom: 24px; }
+        .login-input {
+            width: 100%; padding: 14px; background: #222; border: 1px solid #444;
+            border-radius: 10px; color: #fff; font-size: 1rem; text-align: center;
+            letter-spacing: 4px; margin-bottom: 16px;
+        }
+        .login-input:focus { outline: none; border-color: var(--vermelho); }
+        .login-btn {
+            width: 100%; padding: 14px; background: var(--vermelho); color: #fff;
+            border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer;
+        }
+        .login-erro { color: var(--vermelho); font-size: 0.85rem; margin-top: 12px; display: none; }
+        .painel { display: none; }
+        .painel-header {
+            background: #111; padding: 14px 20px; display: flex;
+            justify-content: space-between; align-items: center;
+            border-bottom: 3px solid var(--vermelho); position: sticky; top: 0; z-index: 100;
+        }
+        .painel-header h1 { font-size: 1.1rem; color: var(--vermelho); }
+        .btn-logout {
+            background: rgba(255,255,255,0.1); border: none; color: #aaa;
+            padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.8rem;
+        }
+        .painel-body { padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 12px; margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--card); padding: 16px; border-radius: 12px;
+            border: 1px solid var(--borda); text-align: center;
+        }
+        .stat-numero { font-size: 1.8rem; font-weight: 900; }
+        .stat-label { font-size: 0.75rem; color: #888; margin-top: 4px; }
+        .stat-ativos .stat-numero { color: var(--verde); }
+        .stat-receita .stat-numero { color: var(--amarelo); }
+        .stat-pendentes .stat-numero { color: #ff9800; }
+        .stat-total .stat-numero { color: var(--azul); }
+        .filtros {
+            display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center;
+        }
+        .filtro-busca {
+            flex: 1; min-width: 200px; padding: 10px 14px; background: #222;
+            border: 1px solid #444; border-radius: 10px; color: #fff; font-size: 0.9rem;
+        }
+        .filtro-busca:focus { outline: none; border-color: var(--vermelho); }
+        .filtro-btn {
+            padding: 10px 16px; border: 1px solid var(--borda); border-radius: 10px;
+            background: var(--card); color: #aaa; cursor: pointer;
+            font-size: 0.8rem; font-weight: 600; white-space: nowrap;
+        }
+        .filtro-btn.ativo { border-color: var(--vermelho); color: var(--vermelho); background: rgba(231,76,60,0.1); }
+        .btn-atualizar {
+            padding: 10px 16px; border: none; border-radius: 10px; background: var(--azul);
+            color: #fff; cursor: pointer; font-size: 0.8rem; font-weight: 600;
+        }
+        .assinantes-lista { display: flex; flex-direction: column; gap: 12px; }
+        .assinante-card {
+            background: var(--card); border-radius: 14px; border: 1px solid var(--borda); overflow: hidden;
+        }
+        .assinante-top {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 16px; gap: 12px;
+        }
+        .assinante-info { flex-grow: 1; }
+        .assinante-nome { font-weight: 700; font-size: 1rem; }
+        .assinante-plano {
+            display: inline-block; padding: 2px 10px; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700; margin-top: 4px;
+        }
+        .plano-basico { background: rgba(102,126,234,0.2); color: #667eea; }
+        .plano-premium { background: rgba(231,76,60,0.2); color: #e74c3c; }
+        .plano-familia { background: rgba(17,153,142,0.2); color: #11998e; }
+        .plano-vip { background: rgba(247,151,30,0.2); color: #f7971e; }
+        .assinante-status {
+            padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;
+            font-weight: 700; white-space: nowrap;
+        }
+        .status-ativo { background: rgba(39,174,96,0.2); color: var(--verde); }
+        .status-aguardando { background: rgba(241,196,15,0.2); color: var(--amarelo); }
+        .status-cancelado { background: rgba(231,76,60,0.2); color: var(--vermelho); }
+        .assinante-detalhes {
+            padding: 0 16px 14px; display: grid; grid-template-columns: 1fr 1fr;
+            gap: 8px; font-size: 0.8rem; color: #999;
+        }
+        .assinante-detalhes span { display: block; }
+        .detalhe-label { color: #666; font-size: 0.7rem; }
+        .assinante-entregas {
+            padding: 12px 16px; background: #111; display: flex;
+            align-items: center; justify-content: space-between; gap: 10px;
+        }
+        .entregas-progresso {
+            flex-grow: 1; background: #222; border-radius: 10px; height: 8px; overflow: hidden;
+        }
+        .entregas-barra {
+            height: 100%; background: var(--verde); border-radius: 10px; transition: width 0.5s;
+        }
+        .entregas-texto { font-size: 0.8rem; color: #aaa; white-space: nowrap; }
+        .assinante-acoes {
+            padding: 10px 16px; display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid #222;
+        }
+        .acao-btn {
+            padding: 8px 14px; border: none; border-radius: 8px; font-size: 0.75rem;
+            font-weight: 700; cursor: pointer; white-space: nowrap;
+        }
+        .acao-entrega { background: var(--verde); color: #fff; }
+        .acao-whatsapp { background: #25d366; color: #fff; }
+        .acao-editar { background: var(--azul); color: #fff; }
+        .acao-cancelar { background: rgba(231,76,60,0.2); color: var(--vermelho); }
+        .acao-reativar { background: rgba(39,174,96,0.2); color: var(--verde); }
+        .lista-vazia { text-align: center; padding: 60px 20px; color: #555; }
+        .lista-vazia span { font-size: 3rem; display: block; margin-bottom: 16px; }
+        .modal-notas-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 9999; display: flex;
+            justify-content: center; align-items: center; padding: 16px;
+        }
+        .modal-notas {
+            background: var(--card); border-radius: 16px; padding: 24px;
+            width: 100%; max-width: 420px; border: 2px solid var(--borda);
+        }
+        .modal-notas h3 { color: var(--vermelho); margin-bottom: 14px; }
+        .modal-notas textarea {
+            width: 100%; min-height: 100px; padding: 12px; background: #222;
+            border: 1px solid #444; border-radius: 10px; color: #fff;
+            font-family: inherit; font-size: 0.9rem; resize: vertical; margin-bottom: 14px;
+        }
+        .modal-notas-btns { display: flex; gap: 10px; }
+        .modal-notas-btns button {
+            flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;
+        }
+        .loading { text-align: center; padding: 60px; color: #555; }
+        .loading-spinner {
+            width: 40px; height: 40px; border: 4px solid #333; border-top-color: var(--vermelho);
+            border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (min-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(4, 1fr); }
+            .assinante-detalhes { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <div class="login-container" id="tela-login">
+        <div class="login-box">
+            <div style="font-size: 3rem;">🍕</div>
+            <h1>Painel Admin</h1>
+            <p>CasadasPizzaass — Clube da Pizza</p>
+            <form onsubmit="fazerLogin(event)">
+                <input type="password" class="login-input" id="senha-input" placeholder="••••••" required>
+                <button type="submit" class="login-btn">ENTRAR</button>
+            </form>
+            <p class="login-erro" id="login-erro">Senha incorreta!</p>
+        </div>
+    </div>
+
+    <!-- PAINEL -->
+    <div class="painel" id="painel">
+        <header class="painel-header">
+            <h1>🍕 Painel — Clube da Pizza</h1>
+            <button class="btn-logout" onclick="logout()">Sair</button>
+        </header>
+        <div class="painel-body">
+            <div class="stats-grid">
+                <div class="stat-card stat-ativos">
+                    <div class="stat-numero" id="stat-ativos">0</div>
+                    <div class="stat-label">Assinantes Ativos</div>
+                </div>
+                <div class="stat-card stat-receita">
+                    <div class="stat-numero" id="stat-receita">R$ 0</div>
+                    <div class="stat-label">Receita Mensal</div>
+                </div>
+                <div class="stat-card stat-pendentes">
+                    <div class="stat-numero" id="stat-pendentes">0</div>
+                    <div class="stat-label">Aguardando Pgto</div>
+                </div>
+                <div class="stat-card stat-total">
+                    <div class="stat-numero" id="stat-total">0</div>
+                    <div class="stat-label">Total Geral</div>
+                </div>
+            </div>
+            <div class="filtros">
+                <input type="text" class="filtro-busca" id="busca" placeholder="🔍 Buscar por nome, plano..." oninput="filtrarLista()">
+                <button class="filtro-btn ativo" onclick="setFiltro('todos', this)">Todos</button>
+                <button class="filtro-btn" onclick="setFiltro('ativo', this)">✅ Ativos</button>
+                <button class="filtro-btn" onclick="setFiltro('aguardando_pagamento', this)">⏳ Pendentes</button>
+                <button class="filtro-btn" onclick="setFiltro('cancelado', this)">❌ Cancelados</button>
+                <button class="btn-atualizar" onclick="carregarAssinantes()">🔄 Atualizar</button>
+            </div>
+            <div class="assinantes-lista" id="assinantes-lista">
+                <div class="loading"><div class="loading-spinner"></div>Carregando...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NOTAS -->
+    <div class="modal-notas-overlay" id="modal-notas" style="display:none;">
+        <div class="modal-notas">
+            <h3>📝 Notas do Assinante</h3>
+            <textarea id="notas-texto" placeholder="Anotações sobre o assinante..."></textarea>
+            <div class="modal-notas-btns">
+                <button style="background:#333; color:#aaa;" onclick="fecharNotas()">Cancelar</button>
+                <button style="background:#3498db; color:#fff;" onclick="salvarNotas()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    var SUPABASE_URL = 'https://yvwvxdykqtyukcrybkkr.supabase.co';
+    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2d3Z4ZHlrcXR5dWtjcnlia2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMDMyNjcsImV4cCI6MjA4Nzg3OTI2N30.iNGafZjipSoKm0lZA9AMYEA69qWNUIQLn04Jas1IH5Q';
+    var SENHA_PAINEL = 'pizza2024';
+
+    var todosAssinantes = [];
+    var filtroAtual = 'todos';
+    var assinanteEditandoNotas = null;
+
+    function fazerLogin(e) {
+        e.preventDefault();
+        if (document.getElementById('senha-input').value === SENHA_PAINEL) {
+            document.getElementById('tela-login').style.display = 'none';
+            document.getElementById('painel').style.display = 'block';
+            localStorage.setItem('painel_logado', 'sim');
+            carregarAssinantes();
+        } else {
+            document.getElementById('login-erro').style.display = 'block';
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('painel_logado');
+        document.getElementById('painel').style.display = 'none';
+        document.getElementById('tela-login').style.display = 'flex';
+        document.getElementById('senha-input').value = '';
+    }
+
+    if (localStorage.getItem('painel_logado') === 'sim') {
+        document.getElementById('tela-login').style.display = 'none';
+        document.getElementById('painel').style.display = 'block';
+        carregarAssinantes();
+    }
+
+    async function carregarAssinantes() {
+        var listaEl = document.getElementById('assinantes-lista');
+        listaEl.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Carregando...</div>';
+        try {
+            var response = await fetch(SUPABASE_URL + '/rest/v1/assinantes?order=created_at.desc', {
+                headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+            });
+            if (!response.ok) throw new Error('Erro ao carregar');
+            todosAssinantes = await response.json();
+            atualizarStats();
+            filtrarLista();
+        } catch (error) {
+            listaEl.innerHTML = '<div class="lista-vazia"><span>⚠️</span>Erro: ' + error.message + '</div>';
+        }
+    }
+
+    function atualizarStats() {
+        var ativos = todosAssinantes.filter(function(a) { return a.status === 'ativo'; });
+        var pendentes = todosAssinantes.filter(function(a) { return a.status === 'aguardando_pagamento'; });
+        var receita = ativos.reduce(function(sum, a) { return sum + (parseFloat(a.valor) || 0); }, 0);
+        document.getElementById('stat-ativos').textContent = ativos.length;
+        document.getElementById('stat-receita').textContent = 'R$ ' + receita.toFixed(0);
+        document.getElementById('stat-pendentes').textContent = pendentes.length;
+        document.getElementById('stat-total').textContent = todosAssinantes.length;
+    }
+
+    function setFiltro(filtro, btn) {
+        filtroAtual = filtro;
+        document.querySelectorAll('.filtro-btn').forEach(function(b) { b.classList.remove('ativo'); });
+        if (btn) btn.classList.add('ativo');
+        filtrarLista();
+    }
+
+    function filtrarLista() {
+        var busca = (document.getElementById('busca').value || '').toLowerCase();
+        var filtrados = todosAssinantes.filter(function(a) {
+            var matchFiltro = filtroAtual === 'todos' || a.status === filtroAtual;
+            var matchBusca = !busca ||
+                (a.nome || '').toLowerCase().includes(busca) ||
+                (a.plano || '').toLowerCase().includes(busca) ||
+                (a.whatsapp || '').includes(busca) ||
+                (a.email || '').toLowerCase().includes(busca);
+            return matchFiltro && matchBusca;
+        });
+        renderizarLista(filtrados);
+    }
+
+    function renderizarLista(lista) {
+        var el = document.getElementById('assinantes-lista');
+        if (lista.length === 0) {
+            el.innerHTML = '<div class="lista-vazia"><span>📭</span>Nenhum assinante encontrado</div>';
+            return;
+        }
+        var html = '';
+        lista.forEach(function(a) {
+            var statusClass = a.status === 'ativo' ? 'status-ativo' : a.status === 'aguardando_pagamento' ? 'status-aguardando' : 'status-cancelado';
+            var statusTexto = a.status === 'ativo' ? '✅ Ativo' : a.status === 'aguardando_pagamento' ? '⏳ Pendente' : '❌ Cancelado';
+            var planoClass = 'plano-' + (a.plano || 'basico');
+            var entregasFeitas = a.entregas_feitas || 0;
+            var totalEntregas = a.total_entregas_mes || 2;
+            var progresso = Math.min((entregasFeitas / totalEntregas) * 100, 100);
+            var dataFormatada = '';
+            if (a.created_at) {
+                var d = new Date(a.created_at);
+                dataFormatada = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+            }
+            var whatsLimpo = (a.whatsapp || '').replace(/\D/g, '');
+            if (whatsLimpo && !whatsLimpo.startsWith('55')) whatsLimpo = '55' + whatsLimpo;
+
+            html += '<div class="assinante-card">';
+            html += '<div class="assinante-top">';
+            html += '<div class="assinante-info">';
+            html += '<div class="assinante-nome">' + (a.nome || 'Sem nome') + '</div>';
+            html += '<span class="assinante-plano ' + planoClass + '">' + (a.plano_nome || a.plano || '').toUpperCase() + '</span>';
+            html += '</div>';
+            html += '<span class="assinante-status ' + statusClass + '">' + statusTexto + '</span>';
+            html += '</div>';
+            html += '<div class="assinante-detalhes">';
+            html += '<div><span class="detalhe-label">📱 WhatsApp</span><span>' + (a.whatsapp || '-') + '</span></div>';
+            html += '<div><span class="detalhe-label">💰 Valor</span><span>R$ ' + (parseFloat(a.valor) || 0).toFixed(2).replace('.',',') + '/mês</span></div>';
+            html += '<div><span class="detalhe-label">📍 Endereço</span><span>' + (a.endereco || '-') + '</span></div>';
+            html += '<div><span class="detalhe-label">📅 Desde</span><span>' + dataFormatada + '</span></div>';
+            html += '</div>';
+
+            if (a.status === 'ativo') {
+                html += '<div class="assinante-entregas">';
+                html += '<span class="entregas-texto">🍕 ' + entregasFeitas + '/' + totalEntregas + '</span>';
+                html += '<div class="entregas-progresso"><div class="entregas-barra" style="width:' + progresso + '%"></div></div>';
+                html += '<span class="entregas-texto">' + (totalEntregas - entregasFeitas) + ' restantes</span>';
+                html += '</div>';
+            }
+            if (a.notas) {
+                html += '<div style="padding:8px 16px; font-size:0.75rem; color:#888; border-top:1px solid #222;">📝 ' + a.notas + '</div>';
+            }
+
+            html += '<div class="assinante-acoes">';
+            if (a.status === 'ativo') {
+                html += '<button class="acao-btn acao-entrega" onclick="marcarEntrega(\'' + a.id + '\',' + entregasFeitas + ',' + totalEntregas + ')">✅ Marcar Entrega</button>';
+            }
+            if (whatsLimpo) {
+                html += '<button class="acao-btn acao-whatsapp" onclick="abrirWhatsApp(\'' + whatsLimpo + '\',\'' + (a.nome || '').replace(/'/g, '') + '\')">📱 WhatsApp</button>';
+            }
+            html += '<button class="acao-btn acao-editar" onclick="editarNotas(\'' + a.id + '\',\'' + (a.notas || '').replace(/'/g, '').replace(/\n/g, ' ') + '\')">📝 Notas</button>';
+            if (a.status === 'ativo') {
+                html += '<button class="acao-btn acao-cancelar" onclick="mudarStatus(\'' + a.id + '\',\'cancelado\')">Cancelar</button>';
+            } else if (a.status === 'aguardando_pagamento') {
+                html += '<button class="acao-btn acao-reativar" onclick="mudarStatus(\'' + a.id + '\',\'ativo\')">✅ Ativar Manual</button>';
+            } else {
+                html += '<button class="acao-btn acao-reativar" onclick="mudarStatus(\'' + a.id + '\',\'ativo\')">🔄 Reativar</button>';
+            }
+            html += '</div></div>';
+        });
+        el.innerHTML = html;
+    }
+
+    async function marcarEntrega(id, atual, total) {
+        var novo = atual + 1;
+        if (novo > total && !confirm('Todas entregas feitas! Marcar extra?')) return;
+        await atualizarSupabase(id, { entregas_feitas: novo, updated_at: new Date().toISOString() });
+        carregarAssinantes();
+    }
+
+    async function mudarStatus(id, novoStatus) {
+        var textos = { ativo: 'ATIVAR', cancelado: 'CANCELAR' };
+        if (!confirm('Deseja ' + (textos[novoStatus] || novoStatus) + ' este assinante?')) return;
+        var dados = { status: novoStatus, ativo: novoStatus === 'ativo', updated_at: new Date().toISOString() };
+        if (novoStatus === 'ativo') { dados.data_ativacao = new Date().toISOString(); dados.entregas_feitas = 0; }
+        await atualizarSupabase(id, dados);
+        carregarAssinantes();
+    }
+
+    function abrirWhatsApp(numero, nome) {
+        window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent('Olá ' + nome + '! 🍕 Aqui é da CasadasPizzaass — Clube da Pizza!'), '_blank');
+    }
+
+    function editarNotas(id, notas) {
+        assinanteEditandoNotas = id;
+        document.getElementById('notas-texto').value = notas;
+        document.getElementById('modal-notas').style.display = 'flex';
+    }
+    function fecharNotas() {
+        document.getElementById('modal-notas').style.display = 'none';
+    }
+    async function salvarNotas() {
+        if (!assinanteEditandoNotas) return;
+        await atualizarSupabase(assinanteEditandoNotas, { notas: document.getElementById('notas-texto').value.trim() });
+        fecharNotas();
+        carregarAssinantes();
+    }
+
+    async function atualizarSupabase(id, dados) {
+        await fetch(SUPABASE_URL + '/rest/v1/assinantes?id=eq.' + id, {
+            method: 'PATCH',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': 'Bearer ' + SUPABASE_KEY,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(dados)
+        });
+    }
+    </script>
+</body>
+</html>
