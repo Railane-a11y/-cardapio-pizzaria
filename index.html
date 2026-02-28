@@ -26,9 +26,152 @@
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; line-height: 1.6; padding-bottom: 80px; }
         .container { max-width: 900px; margin: 0 auto; background: var(--fundo-claro); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .header { background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria)); color: white; text-align: center; padding: 30px 20px; }
-        .header h1 { font-size: 2.2em; font-weight: 700; }
-        .header p { font-size: 1.1em; opacity: 0.9; }
+
+        /* ============================================== */
+        /*  NOVO HEADER COM LOGO PEQUENA + BANNER CLUBE  */
+        /* ============================================== */
+        .header-topo {
+            background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria));
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            gap: 12px;
+        }
+        .logo-mini {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.6);
+            flex-shrink: 0;
+        }
+        /* Caso não tenha imagem de logo, usa emoji como fallback */
+        .logo-mini-emoji {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            border: 2px solid rgba(255,255,255,0.4);
+        }
+        .header-info {
+            flex-grow: 1;
+        }
+        .header-info h1 {
+            color: #fff;
+            font-size: 1.3em;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .header-info p {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.8em;
+        }
+
+        /* BANNER CLICÁVEL DO CLUBE */
+        .banner-clube-link {
+            text-decoration: none;
+            display: block;
+        }
+        .banner-clube {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--cor-premium-destaque);
+        }
+        .banner-clube::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 60%);
+            animation: brilho 4s ease-in-out infinite;
+        }
+        @keyframes brilho {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 10px); }
+        }
+        .banner-esquerda {
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+        }
+        .banner-badge {
+            background: var(--cor-primaria);
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 5px;
+            animation: pulseBadge 2s ease infinite;
+            letter-spacing: 1px;
+        }
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+        .banner-titulo {
+            color: var(--cor-premium-destaque);
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .banner-subtitulo {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.7rem;
+            margin: 3px 0 0;
+        }
+        .banner-subtitulo strong {
+            color: #00e676;
+        }
+        .banner-cta {
+            margin-top: 8px;
+        }
+        .btn-assinar-banner {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--cor-primaria), #ff6b35);
+            color: #fff;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s;
+        }
+        .banner-direita {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.65rem;
+            min-width: 75px;
+            position: relative;
+            z-index: 1;
+        }
+        .preco-clube {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--cor-premium-destaque);
+            display: block;
+            line-height: 1.1;
+        }
+
+        /* ============================================== */
+        /*  ESTILOS ORIGINAIS (MANTIDOS)                  */
+        /* ============================================== */
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
@@ -81,26 +224,63 @@
         .whatsapp-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--fundo-claro); padding: 10px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 200; }
         .whatsapp-btn { background: #25d366; color: white; border: none; padding: 15px; font-size: 1.1em; font-weight: 700; border-radius: 50px; cursor: pointer; width: 100%; transition: background-color 0.3s ease, transform 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .whatsapp-btn:hover { background: #128c7e; transform: scale(1.02); }
-        
-        @media (min-width: 768px) { 
-            body { padding-bottom: 0; } 
-            .container { margin: 20px auto; border-radius: 12px; overflow: hidden; } 
-            .header h1 { font-size: 2.8em; } 
-            .category { padding: 40px; } 
-            .items-grid { grid-template-columns: 1fr 1fr; } 
-            .nav-menu { justify-content: center; } 
-            .whatsapp-btn-container { display: none; } 
+
+        @media (min-width: 768px) {
+            body { padding-bottom: 0; }
+            .container { margin: 20px auto; border-radius: 12px; overflow: hidden; }
+            .header-info h1 { font-size: 1.6em; }
+            .banner-titulo { font-size: 1.3rem; }
+            .category { padding: 40px; }
+            .items-grid { grid-template-columns: 1fr 1fr; }
+            .nav-menu { justify-content: center; }
+            .whatsapp-btn-container { display: none; }
             .order-form .whatsapp-btn-placeholder { display: block; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>🍕 CasadasPizzaass</h1>
-            <p>As melhores pizzas da cidade</p>
+
+        <!-- ============================================== -->
+        <!--  NOVO HEADER: LOGO PEQUENA + NOME             -->
+        <!-- ============================================== -->
+        <header class="header-topo">
+            <!-- OPÇÃO 1: Se você tiver uma imagem de logo -->
+            <!-- <img src="logo-mini.png" alt="Logo" class="logo-mini"> -->
+
+            <!-- OPÇÃO 2: Logo com emoji (use enquanto não tiver imagem) -->
+            <div class="logo-mini-emoji">🍕</div>
+
+            <div class="header-info">
+                <h1>CasadasPizzaass</h1>
+                <p>As melhores pizzas da cidade</p>
+            </div>
         </header>
 
+        <!-- ============================================== -->
+        <!--  BANNER CLICÁVEL DO CLUBE DE ASSINATURA        -->
+        <!-- ============================================== -->
+        <a href="checkout.html" class="banner-clube-link">
+            <div class="banner-clube">
+                <div class="banner-esquerda">
+                    <div class="banner-badge">🔥 NOVO — EXCLUSIVO</div>
+                    <h2 class="banner-titulo">CLUBE DA PIZZA</h2>
+                    <p class="banner-subtitulo">Assine e receba pizzas toda semana com até <strong>40% OFF</strong></p>
+                    <div class="banner-cta">
+                        <span class="btn-assinar-banner">QUERO ASSINAR →</span>
+                    </div>
+                </div>
+                <div class="banner-direita">
+                    A partir de
+                    <span class="preco-clube">R$ 49,90</span>
+                    /mês
+                </div>
+            </div>
+        </a>
+
+        <!-- ============================================== -->
+        <!--  CONTEÚDO ORIGINAL (MANTIDO 100%)              -->
+        <!-- ============================================== -->
         <div class="delivery-info">
             🚚 ENTREGA GRÁTIS PARA TODA CIDADE
         </div>
@@ -284,7 +464,7 @@
         const dailyOffers = [
             { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
             { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-            { day: 2, title: 'Terça do Clássico', items: ['frango', 'guarana1l'], discount: 0.05 },
+            { day: 2, title: 'Terça do Clássico', items: ['frango', 'guarana2l'], discount: 0.05 },
             { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l'], discount: 0.05 },
             { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
             { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
@@ -322,10 +502,8 @@
             startCountdown();
         }
         function startCountdown() {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-            }
-            let durationInSeconds = (3 * 60) + 59; 
+            if (countdownInterval) { clearInterval(countdownInterval); }
+            let durationInSeconds = (3 * 60) + 59;
             const timerElement = document.getElementById('timer');
             countdownInterval = setInterval(() => {
                 if (durationInSeconds < 0) {
@@ -335,9 +513,7 @@
                 }
                 const minutes = Math.floor(durationInSeconds / 60);
                 const seconds = durationInSeconds % 60;
-                const formattedMinutes = String(minutes).padStart(2, '0');
-                const formattedSeconds = String(seconds).padStart(2, '0');
-                timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+                timerElement.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
                 durationInSeconds--;
             }, 1000);
         }
@@ -347,12 +523,10 @@
         document.addEventListener('DOMContentLoaded', displayDailyOffer);
 
         // ==================================================================
-        //  FUNÇÕES DO FORMULÁRIO E WHATSAPP (COMPLETAS E CORRIGIDAS)
+        //  FUNÇÕES DO FORMULÁRIO E WHATSAPP
         // ==================================================================
         function selectPayment(paymentType) {
-            document.querySelectorAll('.payment-option').forEach(option => {
-                option.classList.remove('selected');
-            });
+            document.querySelectorAll('.payment-option').forEach(option => { option.classList.remove('selected'); });
             const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
             selectedOption.classList.add('selected');
             document.getElementById(paymentType).checked = true;
@@ -364,7 +538,6 @@
             const endereco = document.getElementById('endereco').value;
             const pedido = document.getElementById('pedido-texto').value;
             const pagamento = document.querySelector('input[name="pagamento"]:checked');
-            
             if (!nome || !telefone || !endereco || !pedido) {
                 alert('Por favor, preencha todos os campos do pedido!');
                 document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
@@ -375,30 +548,19 @@
                 document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
-
             const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
             const numeroWhatsApp = '5598970100184';
-            
             let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
                            `*Cliente:* ${nome}\n` +
                            `*Contato:* ${telefone}\n` +
                            `*Endereço:* ${endereco}\n\n` +
                            `*Pedido Detalhado:*\n${pedido}\n\n` +
                            `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
-            
             if (pagamento.value === 'pix') {
-                const chavePix = '98970100184';
-                const nomeRecebedorPix = 'Francisco de Sousa';
-                mensagem += `*Dados para PIX:*\n` +
-                            `*Chave (Celular):* ${chavePix}\n` +
-                            `*Nome:* ${nomeRecebedorPix}\n\n` +
-                            `_O pedido só é liberado após o envio do comprovante._\n\n`;
+                mensagem += `*Dados para PIX:*\n*Chave (Celular):* 98970100184\n*Nome:* Francisco de Sousa\n\n_O pedido só é liberado após o envio do comprovante._\n\n`;
             }
-
             mensagem += `_Pedido enviado via cardápio digital._`;
-            
-            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem )}`;
-            window.open(linkWhatsApp, '_blank');
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`, '_blank');
         }
 
         document.getElementById('telefone').addEventListener('input', function(e) {
@@ -424,5 +586,3 @@
     </script>
 </body>
 </html>
-
-
