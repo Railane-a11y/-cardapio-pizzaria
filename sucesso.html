@@ -5,123 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assinatura Confirmada! - CasadasPizzaass</title>
     <meta name="theme-color" content="#e74c3c">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #0d0d0d;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 24px;
-        }
-        .sucesso-icon {
-            font-size: 4.5rem;
-            animation: bounce 1.2s ease infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-18px); }
-        }
-        .sucesso-titulo {
-            font-size: 1.8rem;
-            color: #27ae60;
-            margin: 20px 0 12px;
-        }
-        .sucesso-msg {
-            color: #aaa;
-            max-width: 420px;
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-        .info-plano {
-            background: #1a1a1a;
-            padding: 22px;
-            border-radius: 16px;
-            margin-top: 24px;
-            border: 1px solid #333;
-            max-width: 420px;
-            width: 100%;
-            text-align: left;
-        }
-        .info-plano p {
-            padding: 6px 0;
-            border-bottom: 1px solid #222;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-        .info-plano p strong {
-            color: #fff;
-        }
-        .info-plano p:last-child { border-bottom: none; }
-        .btn-voltar-home {
-            display: inline-block;
-            margin-top: 28px;
-            padding: 14px 36px;
-            background: linear-gradient(135deg, #e74c3c, #ff6b35);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 1rem;
-            transition: transform 0.2s;
-        }
-        .btn-voltar-home:hover { transform: scale(1.04); }
-        .nota { color: #555; font-size: 0.75rem; margin-top: 16px; max-width: 400px; }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,sans-serif;background:#0d0d0d;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center}
+        .icon{font-size:4.5rem;animation:bounce 1.2s ease infinite}
+        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+        h1{color:#27ae60;font-size:1.7rem;margin:20px 0 12px}
+        p{color:#aaa;max-width:420px;line-height:1.7;font-size:0.95rem}
+        .info-box{background:#1a1a1a;padding:22px;border-radius:16px;margin-top:24px;border:1px solid #333;max-width:420px;width:100%;text-align:left}
+        .info-box p{padding:8px 0;border-bottom:1px solid #222;font-size:0.9rem;color:#ccc}
+        .info-box p strong{color:#fff}
+        .info-box p:last-child{border-bottom:none}
+        .btn{display:inline-block;margin-top:24px;padding:14px 36px;color:#fff;text-decoration:none;border-radius:50px;font-weight:800;font-size:1rem}
+        .btn-cardapio{background:linear-gradient(135deg,#e74c3c,#ff6b35)}
+        .btn-whats{background:#25d366;margin-top:12px}
+        .nota{color:#555;font-size:0.75rem;margin-top:20px}
     </style>
 </head>
 <body>
-    <div class="sucesso-icon">🎉</div>
-    <h1 class="sucesso-titulo">Assinatura Solicitada!</h1>
-    <p class="sucesso-msg">
-        Sua solicitação do <strong>Clube da Pizza</strong> foi enviada com sucesso!
-        Em breve entraremos em contato pelo WhatsApp para confirmar sua assinatura
-        e agendar a primeira entrega. 🍕
-    </p>
-
-    <div class="info-plano" id="info-plano-sucesso">
-        <p style="text-align:center; color:#555;">Carregando dados...</p>
-    </div>
-
-    <a href="index.html" class="btn-voltar-home">← Voltar ao Cardápio</a>
-
-    <p class="nota">Se o WhatsApp não abriu, entre em contato: (98) 97010-0184</p>
-
+    <div class="icon">🎉</div>
+    <h1>Assinatura Confirmada!</h1>
+    <p>Parabéns! Seu pagamento foi processado. Em breve entraremos em contato pelo WhatsApp para combinar sua primeira entrega! 🍕</p>
+    <div class="info-box" id="info-box"><p style="text-align:center;color:#555;">Carregando...</p></div>
+    <a href="index.html" class="btn btn-cardapio">← Voltar ao Cardápio</a><br>
+    <a href="#" class="btn btn-whats" id="btn-confirmar" style="display:none;">📲 Confirmar com a Pizzaria</a>
+    <p class="nota">Dúvidas? (98) 97010-0184</p>
     <script>
-        try {
-            var dados = JSON.parse(localStorage.getItem('ultimaAssinatura'));
-            if (dados) {
-                var nomes = {
-                    basico: '🔥 Plano Básico',
-                    premium: '🔥 Plano Premium',
-                    familia: '🔥 Plano Família',
-                    vip: '👑 Plano VIP'
-                };
-                var pgto = dados.formaPagamento === 'pix'
-                    ? 'PIX (5% desconto)'
-                    : 'Cartão em ' + dados.parcelas + 'x';
-
-                document.getElementById('info-plano-sucesso').innerHTML =
-                    '<p>📋 <strong>Plano:</strong> ' + (nomes[dados.plano] || dados.plano) + '</p>' +
-                    '<p>👤 <strong>Nome:</strong> ' + dados.nome + '</p>' +
-                    '<p>📱 <strong>WhatsApp:</strong> ' + dados.whatsapp + '</p>' +
-                    '<p>💰 <strong>Valor:</strong> R$ ' + dados.valorFinal.toFixed(2).replace('.', ',') + '/mês</p>' +
-                    '<p>💳 <strong>Pagamento:</strong> ' + pgto + '</p>' +
-                    '<p>📍 <strong>Endereço:</strong> ' + dados.endereco + '</p>';
-            } else {
-                document.getElementById('info-plano-sucesso').innerHTML =
-                    '<p style="text-align:center;">Nenhum dado encontrado. Volte ao cardápio.</p>';
-            }
-        } catch(e) {
-            document.getElementById('info-plano-sucesso').innerHTML =
-                '<p style="text-align:center;">Erro ao carregar dados.</p>';
+    try {
+        var dados = JSON.parse(localStorage.getItem('assinatura_clube'));
+        if (dados) {
+            document.getElementById('info-box').innerHTML =
+                '<p>📋 <strong>Plano:</strong> ' + (dados.planoNome || dados.plano) + '</p>' +
+                '<p>👤 <strong>Nome:</strong> ' + dados.nome + '</p>' +
+                '<p>📱 <strong>WhatsApp:</strong> ' + dados.whatsapp + '</p>' +
+                '<p>💰 <strong>Valor:</strong> R$ ' + (dados.valor||0).toFixed(2).replace('.',',') + '/mês</p>' +
+                '<p>📍 <strong>Endereço:</strong> ' + dados.endereco + '</p>';
+            var msg = '🍕 *CONFIRMAÇÃO - CLUBE DA PIZZA*\n\nOlá! Acabei de assinar o *' + (dados.planoNome||dados.plano) + '*!\n\n*Nome:* ' + dados.nome + '\n*Endereço:* ' + dados.endereco + '\n\nQuando será minha primeira entrega? 😊';
+            var btnConf = document.getElementById('btn-confirmar');
+            btnConf.href = 'https://wa.me/5598970100184?text=' + encodeURIComponent(msg);
+            btnConf.style.display = 'inline-block';
         }
+    } catch(e) {}
     </script>
 </body>
 </html>
