@@ -11,6 +11,7 @@
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
     <style>
+        /* SEU CSS CONTINUA EXATAMENTE O MESMO */
         :root {
             --cor-primaria: #e74c3c;
             --cor-secundaria: #c0392b;
@@ -121,33 +122,32 @@
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
                 <div class="items-grid">
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="calabresa-ralada">
                         <h3>Calabresa Ralada</h3>
                         <p class="description">Mussarela, calabresa Ralada, cebola, azeitona e orégano.</p>
                         <p class="price"><span>M (6 fatias) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
                     </article>
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="calabresa">
                         <h3>Calabresa</h3>
                         <p class="description">Mussarela, calabresa, cebola, azeitona e orégano.</p>
-                        <div class="upsell-suggestion">Fica perfeita com borda de Catupiry!</div>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                        <!-- O espaço da sugestão será preenchido pelo JavaScript -->
                     </article>
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="classica">
                         <h3>Clássica da Casa</h3>
                         <p class="description">Mussarela, Presunto, cebola, azeitona e orégano.</p>
                         <p class="price"><span>M (6 fatias) - R$ 28,90</span><span>G (8 fatias) - R$ 38,50</span></p>
                     </article>
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="calabresa-paulista">
                         <h3>Calabresa Paulista</h3>
                         <p class="description">Calabresa, cebola, azeitonas e orégano.</p>
                         <p class="price"><span>M (6 fatias) - R$ 27,00</span><span>G (8 fatias) - R$ 35,00</span></p>
                     </article>
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="frango">
                         <h3>Frango</h3>
                         <p class="description">Frango, mussarela, milho, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                        <!-- O espaço da sugestão será preenchido pelo JavaScript -->
                     </article>
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="portuguesa">
                         <h3>Portuguesa</h3>
                         <p class="description">Presunto, cebola, ervilhas, ovos e mussarela.</p>
                         <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 47,00</span></p>
@@ -158,29 +158,29 @@
                 <h2>✨ Variedades Especiais</h2>
                 <p class="category-subtitle">Experimente Novos Sabores</p>
                 <div class="items-grid">
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="calabresa-catupiry">
                         <h3>Calabresa com Catupiry</h3>
                         <p class="description">Calabresa, catupiry, cebola, azeitonas e orégano.</p>
                         <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 44,00</span></p>
                     </article>
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="frango-requeijao">
                         <h3>Frango com Requeijão</h3>
                         <p class="description">Frango, Requeijão Cremoso, azeitona e orégano.</p>
                         <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
                     </article>
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="4-queijos">
                         <h3>4 Queijos</h3>
                         <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p>
-                        <div class="upsell-suggestion">Que tal uma Coca-Cola 2L para acompanhar?</div>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                        <!-- O espaço da sugestão será preenchido pelo JavaScript -->
                     </article>
-                    <article class="item-card">
+                    <article class="item-card" data-pizza-id="moda-da-casa">
                         <h3>Moda da Casa</h3>
                         <p class="description">Mussarela, frango desfiado, bacon, milho e orégano.</p>
                         <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 47,00</span></p>
                     </article>
                 </div>
             </section>
+            <!-- O resto do seu cardápio continua igual -->
             <section id="premium" class="category category-premium">
                 <h2>👑 Linha Premium</h2>
                 <p class="category-subtitle">Exclusivas e Sofisticadas</p>
@@ -269,7 +269,7 @@
 
     <script>
         // ==================================================================
-        //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
+        //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS E SUGESTÕES
         // ==================================================================
         const products = {
             'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
@@ -281,16 +281,30 @@
             'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
             'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
         };
+
         const dailyOffers = [
-            { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
+            { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'coca2l'], discount: 0.05 },
             { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-            { day: 2, title: 'Terça do Clássico', items: ['frango', 'guarana1l'], discount: 0.05 },
-            { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l'], discount: 0.05 },
+            { day: 2, title: 'Terça do Clássico', items: ['frango', 'coca1l'], discount: 0.05 },
+            { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'coca2l'], discount: 0.05 },
             { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
-            { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-            { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'guarana2l'], discount: 0.05 },
+            { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'coca2l'], discount: 0.05 },
+            { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'coca2l'], discount: 0.05 },
         ];
+
+        // BANCO DE SUGESTÕES DE UPGRADE
+        const dailyUpsells = [
+            { day: 0, pizzaId: 'calabresa', text: 'Turbine com borda de Cheddar!' }, // Domingo
+            { day: 1, pizzaId: 'frango', text: 'Que tal adicionar Bacon por +R$5?' }, // Segunda
+            { day: 2, pizzaId: '4-queijos', text: 'Leve uma Coca-Cola 2L junto!' }, // Terça
+            { day: 3, pizzaId: 'calabresa', text: 'Fica perfeita com borda de Catupiry!' }, // Quarta
+            { day: 4, pizzaId: 'frango', text: 'Dose extra de frango por +R$6!' }, // Quinta
+            { day: 5, pizzaId: '4-queijos', text: 'Acompanha bem um Guaraná 2L!' }, // Sexta
+            { day: 6, pizzaId: 'calabresa', text: 'Adicione mais queijo por +R$4!' }  // Sábado
+        ];
+
         let countdownInterval;
+
         function displayDailyOffer() {
             const today = new Date().getDay();
             const offer = dailyOffers.find(o => o.day === today);
@@ -321,10 +335,32 @@
             offerSection.style.display = 'block';
             startCountdown();
         }
-        function startCountdown() {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
+
+        function displayDailyUpsell() {
+            const today = new Date().getDay();
+            const upsell = dailyUpsells.find(u => u.day === today);
+            if (!upsell) return;
+
+            // Encontra o card da pizza alvo
+            const pizzaCard = document.querySelector(`.item-card[data-pizza-id="${upsell.pizzaId}"]`);
+            if (pizzaCard) {
+                // Cria o elemento da sugestão
+                const suggestionElement = document.createElement('div');
+                suggestionElement.className = 'upsell-suggestion';
+                suggestionElement.textContent = upsell.text;
+                
+                // Adiciona a sugestão dentro do card, antes do preço
+                const priceElement = pizzaCard.querySelector('.price');
+                if (priceElement) {
+                    pizzaCard.insertBefore(suggestionElement, priceElement);
+                } else {
+                    pizzaCard.appendChild(suggestionElement);
+                }
             }
+        }
+
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
             let durationInSeconds = (3 * 60) + 59; 
             const timerElement = document.getElementById('timer');
             countdownInterval = setInterval(() => {
@@ -335,16 +371,19 @@
                 }
                 const minutes = Math.floor(durationInSeconds / 60);
                 const seconds = durationInSeconds % 60;
-                const formattedMinutes = String(minutes).padStart(2, '0');
-                const formattedSeconds = String(seconds).padStart(2, '0');
-                timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+                timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 durationInSeconds--;
             }, 1000);
         }
+
         function formatCurrency(value) {
             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
-        document.addEventListener('DOMContentLoaded', displayDailyOffer);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayDailyOffer();
+            displayDailyUpsell();
+        });
 
         // ==================================================================
         //  FUNÇÕES DO FORMULÁRIO E WHATSAPP (COMPLETAS E CORRIGIDAS)
@@ -415,13 +454,4 @@
                 floatingBtn.style.display = 'block';
                 if(formBtn) formBtn.style.display = 'none';
             } else {
-                floatingBtn.style.display = 'none';
-                if(formBtn) formBtn.style.display = 'block';
-            }
-        }
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('load', handleResize);
-    </script>
-</body>
-</html>
-
+                floatingBtn.style.display
