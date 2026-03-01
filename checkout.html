@@ -228,6 +228,7 @@
         }
         .campo input:focus { outline: none; border-color: #e74c3c; }
         .campo input::placeholder { color: #555; }
+        .campo input.invalido { border-color: #e74c3c; background: rgba(231,76,60,0.08); }
         .erro {
             background: rgba(231,76,60,0.15); border: 1px solid #e74c3c;
             color: #ff6b6b; padding: 12px; border-radius: 10px;
@@ -493,17 +494,20 @@
     </div>
 
     <script>
-    // LINKS CORRETOS DA KIWIFY
-    var linkBasico  = 'https://pay.kiwify.com.br/ktfgGDD';
-    var linkPremium = 'https://pay.kiwify.com.br/pKmN69o';
-    var linkFamilia = 'https://pay.kiwify.com.br/Ea0adye';
+    // ================================================================
+    //  CONFIGURAÇÃO DOS PLANOS
+    //  ✅ CORRIGIDO: valor e total_entregas_mes corretos por plano
+    // ================================================================
+    var planos = {
+        basico:  { link: 'https://pay.kiwify.com.br/ktfgGDD', valor: 119.90, entregas: 2 },
+        premium: { link: 'https://pay.kiwify.com.br/pKmN69o', valor: 294.90, entregas: 4 },
+        familia: { link: 'https://pay.kiwify.com.br/Ea0adye', valor: 474.90, entregas: 6 }
+    };
 
     var planoAtual = '';
-    var linkAtual = '';
 
     document.getElementById('btn-basico').addEventListener('click', function() {
         planoAtual = 'basico';
-        linkAtual = linkBasico;
         document.getElementById('resumo-plano').innerHTML =
             '<h3>🔥 Plano Básico</h3>' +
             '<p class="desc">2 Pizzas G/mês • Entrega grátis • Você escolhe os sabores</p>' +
@@ -513,7 +517,6 @@
 
     document.getElementById('btn-premium').addEventListener('click', function() {
         planoAtual = 'premium';
-        linkAtual = linkPremium;
         document.getElementById('resumo-plano').innerHTML =
             '<h3>🔥 Plano Premium</h3>' +
             '<p class="desc">4 Pizzas G/mês • 1 Refri 2L • Entrega grátis • Todos sabores</p>' +
@@ -523,7 +526,6 @@
 
     document.getElementById('btn-familia').addEventListener('click', function() {
         planoAtual = 'familia';
-        linkAtual = linkFamilia;
         document.getElementById('resumo-plano').innerHTML =
             '<h3>👨‍👩‍👧‍👦 Plano Família</h3>' +
             '<p class="desc">6 Pizzas G/mês • 2 Refri 2L • 2 Bordas grátis • Todos sabores</p>' +
@@ -535,6 +537,8 @@
         document.getElementById('msg-erro').style.display = 'none';
         document.getElementById('btn-pagar').textContent = '🔒 ASSINAR E PAGAR COM SEGURANÇA';
         document.getElementById('btn-pagar').disabled = false;
+        // Limpa marcações de erro anteriores
+        document.querySelectorAll('.campo input').forEach(function(i) { i.classList.remove('invalido'); });
         document.getElementById('meu-modal').classList.add('aberto');
         document.body.style.overflow = 'hidden';
     }
@@ -549,31 +553,60 @@
         if (e.target === document.getElementById('meu-modal')) fecharModalFn();
     });
 
+    // ================================================================
+    //  VALIDAÇÃO DE CPF
+    //  ✅ CORRIGIDO: valida dígitos verificadores, rejeita sequências
+    // ================================================================
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, '');
+        if (cpf.length !== 11) return false;
+        // Rejeita sequências como 000.000.000-00, 111.111.111-11, etc.
+        if (/^(\d)\1{10}$/.test(cpf)) return false;
+        var soma = 0, resto;
+        for (var i = 1; i <= 9; i++) soma += parseInt(cpf[i - 1]) * (11 - i);
+        resto = (soma * 10) % 11;
+        if (resto === 10 || resto === 11) resto = 0;
+        if (resto !== parseInt(cpf[9])) return false;
+        soma = 0;
+        for (var j = 1; j <= 10; j++) soma += parseInt(cpf[j - 1]) * (12 - j);
+        resto = (soma * 10) % 11;
+        if (resto === 10 || resto === 11) resto = 0;
+        return resto === parseInt(cpf[10]);
+    }
+
     document.getElementById('btn-pagar').addEventListener('click', function() {
-        var nome = document.getElementById('input-nome').value.trim();
+        var nome     = document.getElementById('input-nome').value.trim();
         var whatsapp = document.getElementById('input-whatsapp').value.trim();
-        var cpf = document.getElementById('input-cpf').value.trim();
-        var email = document.getElementById('input-email').value.trim();
+        var cpf      = document.getElementById('input-cpf').value.trim();
+        var email    = document.getElementById('input-email').value.trim();
         var endereco = document.getElementById('input-endereco').value.trim();
 
-        if (!nome) { mostrarErro('Digite seu nome!'); return; }
-        if (!whatsapp) { mostrarErro('Digite seu WhatsApp!'); return; }
-        if (!cpf) { mostrarErro('Digite seu CPF!'); return; }
-        if (!email) { mostrarErro('Digite seu e-mail!'); return; }
-        if (!endereco) { mostrarErro('Digite seu endereço!'); return; }
+        // Limpa marcações anteriores
+        document.querySelectorAll('.campo input').forEach(function(i) { i.classList.remove('invalido'); });
+
+        if (!nome) {
+            marcarInvalido('input-nome', 'Digite seu nome!'); return;
+        }
+        if (!whatsapp || whatsapp.replace(/\D/g,'').length < 10) {
+            marcarInvalido('input-whatsapp', 'Digite um WhatsApp válido!'); return;
+        }
+        if (!cpf || !validarCPF(cpf)) {
+            marcarInvalido('input-cpf', 'CPF inválido! Verifique os números.'); return;
+        }
+        if (!email || !email.includes('@')) {
+            marcarInvalido('input-email', 'Digite um e-mail válido!'); return;
+        }
+        if (!endereco) {
+            marcarInvalido('input-endereco', 'Digite seu endereço!'); return;
+        }
 
         var btn = document.getElementById('btn-pagar');
         btn.textContent = '⏳ Preparando pagamento...';
         btn.disabled = true;
         document.getElementById('msg-erro').style.display = 'none';
 
-        try {
-            localStorage.setItem('assinatura_clube', JSON.stringify({
-                plano: planoAtual, nome: nome, whatsapp: whatsapp,
-                email: email, cpf: cpf, endereco: endereco,
-                data: new Date().toISOString()
-            }));
-        } catch(e) {}
+        // ✅ CORRIGIDO: usa valor e total_entregas_mes corretos do plano selecionado
+        var dadosPlano = planos[planoAtual];
 
         try {
             var supabaseUrl = 'https://yvwvxdykqtyukcrybkkr.supabase.co';
@@ -587,20 +620,37 @@
                     'Prefer': 'return=minimal'
                 },
                 body: JSON.stringify({
-                    nome: nome, whatsapp: whatsapp, cpf: cpf,
-                    email: email, endereco: endereco, plano: planoAtual,
-                    plano_nome: planoAtual, valor: 0,
+                    nome: nome,
+                    whatsapp: whatsapp,
+                    cpf: cpf,
+                    email: email,
+                    endereco: endereco,
+                    plano: planoAtual,
+                    plano_nome: planoAtual,
+                    valor: dadosPlano.valor,                  // ✅ CORRIGIDO: valor real
                     forma_pagamento: 'pendente',
-                    status: 'aguardando_pagamento', ativo: false,
-                    total_entregas_mes: 2, entregas_feitas: 0
+                    status: 'aguardando_pagamento',
+                    ativo: false,
+                    total_entregas_mes: dadosPlano.entregas,  // ✅ CORRIGIDO: 2, 4 ou 6
+                    entregas_feitas: 0
                 })
+            }).catch(function(err) {
+                console.error('Erro ao salvar lead no Supabase:', err); // ✅ CORRIGIDO: log de erro
             });
-        } catch(e) {}
+        } catch(e) {
+            console.error('Erro inesperado no Supabase:', e);
+        }
 
         setTimeout(function() {
-            window.location.href = linkAtual;
+            window.location.href = dadosPlano.link;
         }, 800);
     });
+
+    function marcarInvalido(id, mensagem) {
+        document.getElementById(id).classList.add('invalido');
+        mostrarErro(mensagem);
+        document.getElementById(id).focus();
+    }
 
     function mostrarErro(texto) {
         var el = document.getElementById('msg-erro');
@@ -608,6 +658,7 @@
         el.style.display = 'block';
     }
 
+    // Máscaras de input
     document.getElementById('input-whatsapp').addEventListener('input', function() {
         var v = this.value.replace(/\D/g, '');
         if (v.length > 0) v = '(' + v;
