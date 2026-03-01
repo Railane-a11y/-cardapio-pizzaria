@@ -324,7 +324,7 @@
         <!-- FORMULÁRIO DE PEDIDO -->
         <section id="pedido" class="order-section">
             <h2>📝 Faça seu Pedido</h2>
-            <form class="order-form">
+            <form class="order-form" onsubmit="return false;">
                 <div class="form-group">
                     <label for="nome">Seu Nome:</label>
                     <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
@@ -504,6 +504,15 @@
         }
         window.addEventListener('resize', handleResize);
         window.addEventListener('load', handleResize);
+
+        // ==================================================================
+        //  REGISTRO DO SERVICE WORKER (PWA)
+        // ==================================================================
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('✅ Service Worker registrado com sucesso:', reg.scope))
+                .catch(err => console.error('❌ Falha ao registrar Service Worker:', err));
+        }
     </script>
 </body>
 </html>
