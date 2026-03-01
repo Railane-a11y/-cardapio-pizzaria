@@ -3,586 +3,665 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio Digital - CasadasPizzaass</title>
-
-    <!-- PWA STUFF -->
+    <title>Clube da Pizza - CasadasPizzaass</title>
     <meta name="theme-color" content="#e74c3c">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192x192.png">
-
     <style>
-        :root {
-            --cor-primaria: #e74c3c;
-            --cor-secundaria: #c0392b;
-            --cor-destaque: #27ae60;
-            --cor-premium-fundo: #2c3e50;
-            --cor-premium-texto: #ecf0f1;
-            --cor-premium-destaque: #ffd700;
-            --cor-texto-escuro: #2c3e50;
-            --cor-texto-claro: #666;
-            --fundo-claro: #ffffff;
-            --fundo-neutro: #f8f9fa;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; line-height: 1.6; padding-bottom: 80px; }
-        .container { max-width: 900px; margin: 0 auto; background: var(--fundo-claro); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-
-        /* ============================================== */
-        /*  NOVO HEADER COM LOGO PEQUENA + BANNER CLUBE  */
-        /* ============================================== */
-        .header-topo {
-            background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria));
-            display: flex;
-            align-items: center;
-            padding: 10px 16px;
-            gap: 12px;
+        .topo {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 20px; background: #111;
+            border-bottom: 3px solid #e74c3c;
+            position: sticky; top: 0; z-index: 100;
         }
-        .logo-mini {
-            width: 42px;
-            height: 42px;
+        .topo a {
+            color: #fff; text-decoration: none;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 14px; border-radius: 8px; font-size: 0.85rem;
+        }
+        .topo h1 { font-size: 1.1rem; color: #e74c3c; }
+        .hero {
+            background: linear-gradient(135deg, #1a0a00, #2d0a00, #0d0d0d);
+            padding: 40px 20px 30px; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; right: -20%;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(231,76,60,0.12) 0%, transparent 70%);
             border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.6);
-            flex-shrink: 0;
         }
-        /* Caso não tenha imagem de logo, usa emoji como fallback */
-        .logo-mini-emoji {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-            border: 2px solid rgba(255,255,255,0.4);
+        .hero-emoji {
+            font-size: 4rem; display: block; margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+            position: relative; z-index: 1;
         }
-        .header-info {
-            flex-grow: 1;
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        .hero h2 {
+            font-size: 1.8rem; color: #ffd700; font-weight: 900;
+            position: relative; z-index: 1;
         }
-        .header-info h1 {
-            color: #fff;
-            font-size: 1.3em;
-            font-weight: 700;
-            line-height: 1.2;
+        .hero p { color: #ccc; font-size: 0.95rem; margin-top: 8px; position: relative; z-index: 1; }
+        .hero .verde { color: #00e676; font-weight: 700; }
+        .hero-badges {
+            display: flex; justify-content: center; gap: 8px;
+            margin-top: 16px; flex-wrap: wrap; position: relative; z-index: 1;
         }
-        .header-info p {
-            color: rgba(255,255,255,0.85);
-            font-size: 0.8em;
+        .hero-badge {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+            padding: 5px 12px; border-radius: 20px; font-size: 0.72rem; color: #ddd;
         }
-
-        /* BANNER CLICÁVEL DO CLUBE */
-        .banner-clube-link {
-            text-decoration: none;
-            display: block;
+        .como-funciona {
+            background: #111; padding: 30px 20px; text-align: center;
+            border-bottom: 1px solid #1a1a1a;
         }
-        .banner-clube {
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            padding: 14px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 3px solid var(--cor-premium-destaque);
+        .como-funciona h3 { color: #ffd700; font-size: 1.1rem; margin-bottom: 20px; }
+        .passos {
+            display: flex; justify-content: center; gap: 16px;
+            flex-wrap: wrap; max-width: 700px; margin: 0 auto;
         }
-        .banner-clube::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 60%);
-            animation: brilho 4s ease-in-out infinite;
+        .passo {
+            background: #1a1a1a; border: 1px solid #222; border-radius: 12px;
+            padding: 16px; flex: 1; min-width: 140px; max-width: 200px;
         }
-        @keyframes brilho {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, 10px); }
+        .passo-num {
+            background: #e74c3c; color: #fff; width: 28px; height: 28px;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 8px; font-weight: 800; font-size: 0.8rem;
         }
-        .banner-esquerda {
-            position: relative;
-            z-index: 1;
-            flex-grow: 1;
+        .passo span { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+        .passo p { font-size: 0.75rem; color: #aaa; }
+        .secao {
+            padding: 30px 16px; max-width: 1000px; margin: 0 auto;
         }
-        .banner-badge {
-            background: var(--cor-primaria);
-            color: #fff;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 2px 10px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 5px;
-            animation: pulseBadge 2s ease infinite;
-            letter-spacing: 1px;
+        .secao-titulo { text-align: center; font-size: 1.3rem; color: #fff; margin-bottom: 6px; }
+        .secao-sub { text-align: center; color: #888; margin-bottom: 24px; font-size: 0.85rem; }
+        .planos {
+            display: grid; grid-template-columns: 1fr;
+            gap: 20px; margin-bottom: 30px;
         }
-        @keyframes pulseBadge {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.06); }
+        .card {
+            background: #141414; border-radius: 16px; overflow: hidden;
+            border: 2px solid #222; transition: transform 0.3s, border-color 0.3s;
         }
-        .banner-titulo {
-            color: var(--cor-premium-destaque);
-            font-size: 1.1rem;
-            font-weight: 900;
-            margin: 0;
-            line-height: 1.2;
+        .card:hover { transform: translateY(-4px); border-color: #e74c3c; }
+        .card.popular {
+            border-color: #e74c3c;
+            box-shadow: 0 0 30px rgba(231,76,60,0.2);
         }
-        .banner-subtitulo {
-            color: rgba(255,255,255,0.8);
-            font-size: 0.7rem;
-            margin: 3px 0 0;
+        .tag-popular {
+            background: linear-gradient(135deg, #e74c3c, #ff6b35);
+            color: #fff; text-align: center; padding: 7px;
+            font-size: 0.75rem; font-weight: 800; letter-spacing: 1px;
         }
-        .banner-subtitulo strong {
-            color: #00e676;
+        .card-visual {
+            padding: 24px 20px; text-align: center; color: #fff;
+            position: relative; overflow: hidden;
         }
-        .banner-cta {
-            margin-top: 8px;
+        .card-visual::before {
+            content: ''; position: absolute; top: -50%; right: -30%;
+            width: 150px; height: 150px;
+            background: rgba(255,255,255,0.05); border-radius: 50%;
         }
-        .btn-assinar-banner {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--cor-primaria), #ff6b35);
-            color: #fff;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            transition: transform 0.2s;
+        .bg-basico { background: linear-gradient(135deg, #4a00e0, #8e2de2); }
+        .bg-premium { background: linear-gradient(135deg, #c0392b, #e74c3c, #ff6b35); }
+        .bg-familia { background: linear-gradient(135deg, #0d7377, #14a3a8); }
+        .card-visual .emoji-grande {
+            font-size: 2.5rem; display: block; margin-bottom: 8px;
+            position: relative; z-index: 1;
         }
-        .banner-direita {
-            text-align: center;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.65rem;
-            min-width: 75px;
-            position: relative;
-            z-index: 1;
+        .card-visual h3 { font-size: 1.2rem; font-weight: 800; position: relative; z-index: 1; }
+        .card-visual .subtitulo-card {
+            font-size: 0.75rem; opacity: 0.85; margin-top: 4px;
+            position: relative; z-index: 1;
         }
-        .preco-clube {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: var(--cor-premium-destaque);
-            display: block;
-            line-height: 1.1;
+        .card-corpo { padding: 20px; }
+        .preco-area {
+            text-align: center; margin-bottom: 16px;
+            padding-bottom: 16px; border-bottom: 1px solid #222;
         }
-
-        /* ============================================== */
-        /*  ESTILOS ORIGINAIS (MANTIDOS)                  */
-        /* ============================================== */
-        .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
-        .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
-        .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
-        .offer-section { padding: 20px; margin: 20px; border-radius: 12px; text-align: center; background: linear-gradient(45deg, #ffc107, #ff9800); color: #333; border: 2px dashed #ffffff; }
-        .offer-section h2 { font-size: 1.5em; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .offer-section p { font-size: 1.05em; line-height: 1.5; }
-        .offer-section .original-price { text-decoration: line-through; opacity: 0.8; font-size: 0.9em; }
-        .offer-section .price-highlight { font-weight: 700; font-size: 1.3em; display: block; margin-top: 8px; }
-        .countdown-timer { margin-top: 15px; background-color: rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 8px; }
-        .countdown-timer .timer-label { font-size: 0.9em; font-weight: 600; display: block; margin-bottom: 5px; }
-        .countdown-timer #timer { font-size: 1.4em; font-weight: 700; color: var(--cor-secundaria); letter-spacing: 2px; }
-        .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
-        .category { padding: 30px 20px; border-bottom: 8px solid #f0f2f5; }
-        .category h2 { font-size: 1.7em; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .category .category-subtitle { font-size: 1em; color: var(--cor-texto-claro); margin-bottom: 25px; font-style: italic; }
-        .items-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
-        .item-card { display: flex; flex-direction: column; }
-        .item-card h3 { font-size: 1.25em; color: var(--cor-texto-escuro); margin-bottom: 8px; }
-        .item-card .description { color: var(--cor-texto-claro); margin-bottom: 12px; flex-grow: 1; }
-        .item-card .price { font-weight: 600; font-size: 1.1em; }
-        .item-card .price span { display: block; margin-top: 4px; }
-        .upsell-suggestion { background-color: #e8f5e9; border-left: 4px solid var(--cor-destaque); padding: 10px; margin-top: 15px; border-radius: 0 4px 4px 0; font-size: 0.9em; color: #1b5e20; }
-        .upsell-suggestion::before { content: '💡'; margin-right: 8px; font-size: 1.1em; }
-        .category-destaques { background-color: var(--fundo-claro); }
-        .category-destaques h2 { color: var(--cor-primaria); }
-        .category-destaques .price { color: var(--cor-primaria); }
-        .category-especiais { background-color: var(--fundo-neutro); }
-        .category-especiais h2 { color: var(--cor-primaria); }
-        .category-especiais .price { color: var(--cor-primaria); }
-        .category-premium { background-color: var(--cor-premium-fundo); color: var(--cor-premium-texto); }
-        .category-premium h2 { color: var(--cor-premium-destaque); }
-        .category-premium .category-subtitle { color: #bdc3c7; }
-        .category-premium .item-card h3 { color: var(--fundo-claro); }
-        .category-premium .item-card .description { color: #bdc3c7; }
-        .category-premium .item-card .price { color: var(--cor-premium-destaque); }
-        .order-section { background: linear-gradient(135deg, #3498db, #2980b9); padding: 40px 20px; color: white; }
-        .order-section h2 { text-align: center; font-size: 1.8em; }
-        .order-form { max-width: 500px; margin: 30px auto 0; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
-        .form-group input, .form-group textarea { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 1em; font-family: inherit; }
-        .form-group textarea { resize: vertical; min-height: 120px; }
-        .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .payment-option { background: rgba(255,255,255,0.15); border: 2px solid transparent; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
-        .payment-option:hover { background: rgba(255,255,255,0.25); }
-        .payment-option.selected { background: var(--fundo-claro); color: #2980b9; border-color: #2980b9; }
-        .payment-option input { display: none; }
-        .payment-option .payment-icon { font-size: 1.8em; }
-        .payment-option .payment-text { font-weight: 600; font-size: 0.9em; display: block; margin-top: 5px; }
-        .whatsapp-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--fundo-claro); padding: 10px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 200; }
-        .whatsapp-btn { background: #25d366; color: white; border: none; padding: 15px; font-size: 1.1em; font-weight: 700; border-radius: 50px; cursor: pointer; width: 100%; transition: background-color 0.3s ease, transform 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .whatsapp-btn:hover { background: #128c7e; transform: scale(1.02); }
-
-        @media (min-width: 768px) {
-            body { padding-bottom: 0; }
-            .container { margin: 20px auto; border-radius: 12px; overflow: hidden; }
-            .header-info h1 { font-size: 1.6em; }
-            .banner-titulo { font-size: 1.3rem; }
-            .category { padding: 40px; }
-            .items-grid { grid-template-columns: 1fr 1fr; }
-            .nav-menu { justify-content: center; }
-            .whatsapp-btn-container { display: none; }
-            .order-form .whatsapp-btn-placeholder { display: block; }
+        .preco-valor {
+            font-size: 2.2rem; font-weight: 900; color: #e74c3c;
+            display: block; line-height: 1.1;
+        }
+        .card.popular .preco-valor { color: #ffd700; }
+        .preco-periodo { font-size: 0.85rem; color: #888; }
+        .preco-detalhe {
+            display: inline-block; background: rgba(255,255,255,0.06);
+            color: #aaa; padding: 3px 10px; border-radius: 20px;
+            font-size: 0.68rem; margin-top: 6px;
+        }
+        .incluso-titulo {
+            font-size: 0.75rem; color: #e74c3c; font-weight: 700;
+            margin-bottom: 8px; letter-spacing: 1px;
+        }
+        .lista { list-style: none; margin-bottom: 20px; }
+        .lista li {
+            padding: 8px 0; font-size: 0.88rem; color: #bbb;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .lista li span { font-size: 0.9rem; }
+        .btn-plano {
+            width: 100%; padding: 15px; border: none; border-radius: 12px;
+            font-size: 1rem; font-weight: 800; cursor: pointer;
+            color: #fff; transition: transform 0.2s; letter-spacing: 0.5px;
+        }
+        .btn-plano:hover { transform: scale(1.03); }
+        .btn-basico { background: linear-gradient(135deg, #4a00e0, #8e2de2); }
+        .btn-premium { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+        .btn-familia { background: linear-gradient(135deg, #0d7377, #14a3a8); }
+        .garantias {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 12px; margin-bottom: 30px;
+        }
+        .garantia-item {
+            background: #141414; border: 1px solid #222;
+            border-radius: 12px; padding: 16px; text-align: center;
+        }
+        .garantia-item span { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+        .garantia-item p { font-size: 0.75rem; color: #888; }
+        .depoimento-card {
+            background: #141414; border: 1px solid #222;
+            border-radius: 12px; padding: 18px; margin-bottom: 12px;
+        }
+        .depoimento-card .estrelas { color: #ffd700; font-size: 0.9rem; margin-bottom: 8px; }
+        .depoimento-card .texto { color: #ccc; font-size: 0.85rem; font-style: italic; margin-bottom: 8px; }
+        .depoimento-card .autor { color: #888; font-size: 0.75rem; }
+        .faq-item {
+            background: #141414; border: 1px solid #222;
+            border-radius: 12px; padding: 16px; margin-bottom: 10px;
+        }
+        .faq-item h4 { color: #e74c3c; font-size: 0.9rem; margin-bottom: 6px; }
+        .faq-item p { color: #aaa; font-size: 0.8rem; line-height: 1.5; }
+        .cta-final {
+            background: linear-gradient(135deg, #1a0a00, #2d0a00);
+            padding: 30px 20px; text-align: center;
+            border-top: 3px solid #e74c3c;
+        }
+        .cta-final h3 { color: #ffd700; font-size: 1.3rem; margin-bottom: 8px; }
+        .cta-final p { color: #aaa; font-size: 0.85rem; margin-bottom: 16px; }
+        .cta-final a {
+            display: inline-block; background: #e74c3c; color: #fff;
+            padding: 14px 30px; border-radius: 50px; text-decoration: none;
+            font-weight: 800; font-size: 1rem;
+        }
+        .modal-fundo {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.92);
+            z-index: 9999; justify-content: center; align-items: flex-start;
+            overflow-y: auto; padding: 16px;
+        }
+        .modal-fundo.aberto { display: flex; }
+        .modal-caixa {
+            background: #141414; border-radius: 20px; padding: 28px 20px;
+            width: 100%; max-width: 480px; margin: 10px 0 30px;
+            border: 2px solid #e74c3c; position: relative;
+        }
+        .modal-fechar {
+            position: absolute; top: 10px; right: 14px;
+            background: none; border: none; color: #888;
+            font-size: 1.6rem; cursor: pointer;
+        }
+        .modal-titulo { text-align: center; color: #e74c3c; margin-bottom: 18px; font-size: 1.3rem; }
+        .resumo {
+            background: #1a1a1a; padding: 16px; border-radius: 12px;
+            margin-bottom: 20px; text-align: center; border: 1px solid #222;
+        }
+        .resumo h3 { color: #ffd700; margin-bottom: 6px; }
+        .resumo .desc { color: #aaa; font-size: 0.85rem; }
+        .resumo .valor { font-size: 1.5rem; font-weight: 900; margin-top: 8px; }
+        .campo { margin-bottom: 14px; }
+        .campo label {
+            display: block; font-size: 0.8rem; color: #aaa;
+            margin-bottom: 5px; font-weight: 600;
+        }
+        .campo input {
+            width: 100%; padding: 12px 14px; background: #1a1a1a;
+            border: 1px solid #333; border-radius: 10px;
+            color: #fff; font-size: 0.95rem;
+        }
+        .campo input:focus { outline: none; border-color: #e74c3c; }
+        .campo input::placeholder { color: #555; }
+        .erro {
+            background: rgba(231,76,60,0.15); border: 1px solid #e74c3c;
+            color: #ff6b6b; padding: 12px; border-radius: 10px;
+            text-align: center; margin-bottom: 14px; font-size: 0.85rem; display: none;
+        }
+        .btn-pagar {
+            width: 100%; padding: 16px; border: none; border-radius: 14px;
+            font-size: 1.1rem; font-weight: 800; cursor: pointer;
+            background: linear-gradient(135deg, #27ae60, #00e676);
+            color: #fff; margin-top: 10px; transition: transform 0.2s;
+        }
+        .btn-pagar:hover { transform: scale(1.03); }
+        .btn-pagar:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .rodape-seguro { text-align: center; font-size: 0.7rem; color: #555; margin-top: 14px; }
+        .badges-seg {
+            display: flex; justify-content: center; gap: 10px;
+            margin-top: 12px; flex-wrap: wrap;
+        }
+        .badge-s {
+            background: #111; border: 1px solid #222; padding: 5px 10px;
+            border-radius: 8px; font-size: 0.65rem; color: #666;
+        }
+        @media (min-width: 600px) {
+            .planos { grid-template-columns: 1fr 1fr 1fr; }
+            .garantias { grid-template-columns: repeat(4, 1fr); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
 
-        <!-- ============================================== -->
-        <!--  NOVO HEADER: LOGO PEQUENA + NOME             -->
-        <!-- ============================================== -->
-        <header class="header-topo">
-            <!-- OPÇÃO 1: Se você tiver uma imagem de logo -->
-            <!-- <img src="logo-mini.png" alt="Logo" class="logo-mini"> -->
+    <div class="topo">
+        <a href="index.html">← Cardápio</a>
+        <h1>🍕 Clube da Pizza</h1>
+    </div>
 
-            <!-- OPÇÃO 2: Logo com emoji (use enquanto não tiver imagem) -->
-            <div class="logo-mini-emoji">🍕</div>
+    <div class="hero">
+        <span class="hero-emoji">🍕</span>
+        <h2>CLUBE DA PIZZA</h2>
+        <p>Assine, pague <span class="verde">uma única vez no mês</span> e receba suas pizzas sem pedir de novo!</p>
+        <div class="hero-badges">
+            <span class="hero-badge">🚚 Entrega Grátis</span>
+            <span class="hero-badge">💳 Até 12x no Cartão</span>
+            <span class="hero-badge">📱 Aceita PIX</span>
+            <span class="hero-badge">❌ Sem Fidelidade</span>
+        </div>
+    </div>
 
-            <div class="header-info">
-                <h1>CasadasPizzaass</h1>
-                <p>As melhores pizzas da cidade</p>
+    <div class="como-funciona">
+        <h3>Como funciona?</h3>
+        <div class="passos">
+            <div class="passo">
+                <div class="passo-num">1</div>
+                <span>📋</span>
+                <p>Escolha seu plano e assine</p>
             </div>
-        </header>
+            <div class="passo">
+                <div class="passo-num">2</div>
+                <span>📱</span>
+                <p>Combinamos as entregas pelo WhatsApp</p>
+            </div>
+            <div class="passo">
+                <div class="passo-num">3</div>
+                <span>🍕</span>
+                <p>Receba suas pizzas sem pedir de novo</p>
+            </div>
+            <div class="passo">
+                <div class="passo-num">4</div>
+                <span>😍</span>
+                <p>Aproveite sem se preocupar!</p>
+            </div>
+        </div>
+    </div>
 
-        <!-- ============================================== -->
-        <!--  BANNER CLICÁVEL DO CLUBE DE ASSINATURA        -->
-        <!-- ============================================== -->
-        <a href="checkout.html" class="banner-clube-link">
-            <div class="banner-clube">
-                <div class="banner-esquerda">
-                    <div class="banner-badge">🔥 NOVO — EXCLUSIVO</div>
-                    <h2 class="banner-titulo">CLUBE DA PIZZA</h2>
-                    <p class="banner-subtitulo">Assine e receba pizzas toda semana com até <strong>40% OFF</strong></p>
-                    <div class="banner-cta">
-                        <span class="btn-assinar-banner">QUERO ASSINAR →</span>
+    <div class="secao">
+        <h2 class="secao-titulo">Escolha o plano perfeito para você</h2>
+        <p class="secao-sub">Pague uma vez, receba o mês todo. Você escolhe os sabores!</p>
+
+        <div class="planos">
+
+            <!-- BÁSICO -->
+            <div class="card">
+                <div class="card-visual bg-basico">
+                    <span class="emoji-grande">🔥</span>
+                    <h3>Plano Básico</h3>
+                    <p class="subtitulo-card">Para quem quer praticidade</p>
+                </div>
+                <div class="card-corpo">
+                    <div class="preco-area">
+                        <span class="preco-valor">R$ 119,90</span>
+                        <span class="preco-periodo">/mês</span>
+                        <br>
+                        <span class="preco-detalhe">Equivale a R$ 59,95 por pizza com entrega inclusa</span>
                     </div>
-                </div>
-                <div class="banner-direita">
-                    A partir de
-                    <span class="preco-clube">R$ 49,90</span>
-                    /mês
+                    <p class="incluso-titulo">✦ INCLUSO NO PLANO:</p>
+                    <ul class="lista">
+                        <li><span>🍕</span> 2 Pizzas G por mês</li>
+                        <li><span>📅</span> 1 entrega a cada 15 dias</li>
+                        <li><span>🧾</span> Sabores tradicionais à sua escolha</li>
+                        <li><span>🚚</span> Entrega grátis inclusa</li>
+                        <li><span>📱</span> Agendamento pelo WhatsApp</li>
+                        <li><span>🔄</span> Cancele quando quiser</li>
+                    </ul>
+                    <button class="btn-plano btn-basico" id="btn-basico">ASSINAR BÁSICO</button>
                 </div>
             </div>
-        </a>
 
-        <!-- ============================================== -->
-        <!--  CONTEÚDO ORIGINAL (MANTIDO 100%)              -->
-        <!-- ============================================== -->
-        <div class="delivery-info">
-            🚚 ENTREGA GRÁTIS PARA TODA CIDADE
+            <!-- PREMIUM -->
+            <div class="card popular">
+                <div class="tag-popular">⭐ MAIS ESCOLHIDO PELOS CLIENTES</div>
+                <div class="card-visual bg-premium">
+                    <span class="emoji-grande">🔥</span>
+                    <h3>Plano Premium</h3>
+                    <p class="subtitulo-card">Pizza toda semana + refrigerante</p>
+                </div>
+                <div class="card-corpo">
+                    <div class="preco-area">
+                        <span class="preco-valor">R$ 294,90</span>
+                        <span class="preco-periodo">/mês</span>
+                        <br>
+                        <span class="preco-detalhe">Equivale a R$ 73,72 por pizza com refri e entrega</span>
+                    </div>
+                    <p class="incluso-titulo">✦ INCLUSO NO PLANO:</p>
+                    <ul class="lista">
+                        <li><span>🍕</span> 4 Pizzas G por mês</li>
+                        <li><span>📅</span> 1 pizza por semana garantida</li>
+                        <li><span>🧾</span> Sabores tradicionais e especiais</li>
+                        <li><span>🥤</span> 1 Refrigerante 2L incluso</li>
+                        <li><span>🚚</span> Entrega grátis toda semana</li>
+                        <li><span>📱</span> Agendamento pelo WhatsApp</li>
+                        <li><span>🔄</span> Cancele quando quiser</li>
+                    </ul>
+                    <button class="btn-plano btn-premium" id="btn-premium">ASSINAR PREMIUM</button>
+                </div>
+            </div>
+
+            <!-- FAMÍLIA -->
+            <div class="card">
+                <div class="card-visual bg-familia">
+                    <span class="emoji-grande">👨‍👩‍👧‍👦</span>
+                    <h3>Plano Família</h3>
+                    <p class="subtitulo-card">Toda família come pizza toda semana</p>
+                </div>
+                <div class="card-corpo">
+                    <div class="preco-area">
+                        <span class="preco-valor">R$ 474,90</span>
+                        <span class="preco-periodo">/mês</span>
+                        <br>
+                        <span class="preco-detalhe">Equivale a R$ 79,15 por pizza com tudo incluso</span>
+                    </div>
+                    <p class="incluso-titulo">✦ INCLUSO NO PLANO:</p>
+                    <ul class="lista">
+                        <li><span>🍕</span> 6 Pizzas G por mês</li>
+                        <li><span>📅</span> Entregas semanais garantidas</li>
+                        <li><span>🧾</span> TODOS os sabores do cardápio</li>
+                        <li><span>🥤</span> 2 Refrigerantes 2L inclusos</li>
+                        <li><span>🧀</span> 2 Bordas recheadas inclusas</li>
+                        <li><span>🚚</span> Entrega grátis</li>
+                        <li><span>📱</span> Agendamento pelo WhatsApp</li>
+                        <li><span>🔄</span> Cancele quando quiser</li>
+                    </ul>
+                    <button class="btn-plano btn-familia" id="btn-familia">ASSINAR FAMÍLIA</button>
+                </div>
+            </div>
         </div>
 
-        <nav class="nav-menu">
-            <a href="#oferta">Oferta do Dia</a>
-            <a href="#destaques">Destaques</a>
-            <a href="#especiais">Especiais</a>
-            <a href="#premium">Premium</a>
-            <a href="#bebidas">Bebidas</a>
-            <a href="#pedido">Pedido</a>
-        </nav>
+        <!-- GARANTIAS -->
+        <div class="garantias">
+            <div class="garantia-item">
+                <span>💳</span>
+                <p>Pague uma vez<br>receba o mês todo</p>
+            </div>
+            <div class="garantia-item">
+                <span>🍕</span>
+                <p>Você escolhe<br>os sabores</p>
+            </div>
+            <div class="garantia-item">
+                <span>🚚</span>
+                <p>Entrega<br>100% grátis</p>
+            </div>
+            <div class="garantia-item">
+                <span>❌</span>
+                <p>Sem fidelidade<br>cancele quando quiser</p>
+            </div>
+        </div>
 
-        <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;"></section>
+        <!-- DEPOIMENTOS -->
+        <h2 class="secao-titulo">Quem assinou, aprovou!</h2>
+        <p class="secao-sub">Veja o que nossos membros falam</p>
+        <div style="margin-bottom:30px;">
+            <div class="depoimento-card">
+                <div class="estrelas">⭐⭐⭐⭐⭐</div>
+                <p class="texto">"A melhor coisa é não precisar pedir toda vez. Paguei uma vez e toda semana tem pizza fresquinha em casa!"</p>
+                <p class="autor">— Maria S., membro do Plano Premium</p>
+            </div>
+            <div class="depoimento-card">
+                <div class="estrelas">⭐⭐⭐⭐⭐</div>
+                <p class="texto">"Minha família ama! Toda sexta-feira já sabemos que a pizza vai chegar. Praticidade total."</p>
+                <p class="autor">— Carlos R., membro do Plano Família</p>
+            </div>
+            <div class="depoimento-card">
+                <div class="estrelas">⭐⭐⭐⭐⭐</div>
+                <p class="texto">"Eu escolho o sabor pelo WhatsApp e pronto. Chega quentinha na minha porta. Recomendo demais!"</p>
+                <p class="autor">— Ana P., membro do Plano Básico</p>
+            </div>
+        </div>
 
-        <main class="menu">
-            <section id="destaques" class="category category-destaques">
-                <h2>⭐ Destaques da Casa</h2>
-                <p class="category-subtitle">As Mais Pedidas</p>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Calabresa Ralada</h3>
-                        <p class="description">Mussarela, calabresa Ralada, cebola, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 35,50</span><span>G (8 fatias) - R$ 44,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Calabresa</h3>
-                        <p class="description">Mussarela, calabresa, cebola, azeitona e orégano.</p>
-                        <div class="upsell-suggestion">Fica perfeita com borda de Catupiry!</div>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Clássica da Casa</h3>
-                        <p class="description">Mussarela, Presunto, cebola, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 28,90</span><span>G (8 fatias) - R$ 38,50</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Calabresa Paulista</h3>
-                        <p class="description">Calabresa, cebola, azeitonas e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 27,00</span><span>G (8 fatias) - R$ 35,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Frango</h3>
-                        <p class="description">Frango, mussarela, milho, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Portuguesa</h3>
-                        <p class="description">Presunto, cebola, ervilhas, ovos e mussarela.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 47,00</span></p>
-                    </article>
-                </div>
-            </section>
-            <section id="especiais" class="category category-especiais">
-                <h2>✨ Variedades Especiais</h2>
-                <p class="category-subtitle">Experimente Novos Sabores</p>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Calabresa com Catupiry</h3>
-                        <p class="description">Calabresa, catupiry, cebola, azeitonas e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 44,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Frango com Requeijão</h3>
-                        <p class="description">Frango, Requeijão Cremoso, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>4 Queijos</h3>
-                        <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p>
-                        <div class="upsell-suggestion">Que tal uma Coca-Cola 2L para acompanhar?</div>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Moda da Casa</h3>
-                        <p class="description">Mussarela, frango desfiado, bacon, milho e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 47,00</span></p>
-                    </article>
-                </div>
-            </section>
-            <section id="premium" class="category category-premium">
-                <h2>👑 Linha Premium</h2>
-                <p class="category-subtitle">Exclusivas e Sofisticadas</p>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Frango com Catupiry</h3>
-                        <p class="description">Frango, mussarela, catupiry, bacon e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 35,00</span><span>G (8 fatias) - R$ 47,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Carne Seca</h3>
-                        <p class="description">Mussarela, carne seca, bacon e cebola.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 36,00</span><span>G (8 fatias) - R$ 49,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Carne Seca Maluca</h3>
-                        <p class="description">Carne seca, mussarela, bacon, cebola e batata palha.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 40,00</span><span>G (8 fatias) - R$ 55,00</span></p>
-                    </article>
-                </div>
-            </section>
-            <section id="bordas" class="category category-destaques">
-                <h2>🧀 BORDAS RECHEADAS</h2>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Bordas Especiais</h3>
-                        <p class="description">Catupiry e Cheddar</p>
-                        <p class="price"><span>M - R$ 10,00</span><span>G - R$ 12,00</span></p>
-                    </article>
-                </div>
-            </section>
-            <section id="bebidas" class="category category-especiais">
-                <h2>🥤 BEBIDAS</h2>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Refrigerantes</h3>
-                        <p class="description">Coca-Cola e Guaraná</p>
-                        <p class="price"><span>1 Litro - R$ 10,00</span><span>2 Litros - R$ 14,00</span></p>
-                    </article>
-                </div>
-            </section>
-        </main>
-        <section id="pedido" class="order-section">
-            <h2>📝 Faça seu Pedido</h2>
-            <form class="order-form">
-                <div class="form-group">
-                    <label for="nome">Seu Nome:</label>
-                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefone">Telefone/WhatsApp:</label>
-                    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
-                </div>
-                <div class="form-group">
-                    <label for="endereco">Endereço para Entrega:</label>
-                    <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro e referência" required>
-                </div>
-                <div class="form-group">
-                    <label for="pedido-texto">Seu Pedido:</label>
-                    <textarea id="pedido-texto" name="pedido" placeholder="Ex: 1 Pizza Calabresa G, 1 Refri 2L, Borda de Catupiry..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>💳 Forma de Pagamento:</label>
-                    <div class="payment-methods">
-                        <label class="payment-option" onclick="selectPayment('dinheiro')">
-                            <input type="radio" name="pagamento" value="dinheiro" id="dinheiro">
-                            <span class="payment-icon">💵</span>
-                            <span class="payment-text">Dinheiro</span>
-                        </label>
-                        <label class="payment-option" onclick="selectPayment('pix')">
-                            <input type="radio" name="pagamento" value="pix" id="pix">
-                            <span class="payment-icon">📱</span>
-                            <span class="payment-text">PIX</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="whatsapp-btn-placeholder" style="display: none; margin-top: 20px;">
-                    <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Enviar pelo WhatsApp</button>
-                </div>
-            </form>
-        </section>
+        <!-- FAQ -->
+        <h2 class="secao-titulo">Perguntas Frequentes</h2>
+        <p class="secao-sub">Tire suas dúvidas</p>
+        <div style="margin-bottom:30px;">
+            <div class="faq-item">
+                <h4>💳 Como funciona o pagamento?</h4>
+                <p>Você paga UMA VEZ no mês (PIX ou cartão até 12x) e recebe todas as suas pizzas durante o mês sem pagar mais nada. Simples assim!</p>
+            </div>
+            <div class="faq-item">
+                <h4>🍕 Posso escolher os sabores?</h4>
+                <p>Sim! A cada entrega você escolhe o sabor que quiser pelo WhatsApp. Os sabores disponíveis dependem do seu plano.</p>
+            </div>
+            <div class="faq-item">
+                <h4>📅 Como são feitas as entregas?</h4>
+                <p>Após assinar, combinamos pelo WhatsApp os melhores dias para você. As pizzas chegam fresquinhas no horário combinado.</p>
+            </div>
+            <div class="faq-item">
+                <h4>❌ Posso cancelar?</h4>
+                <p>Sim! Sem fidelidade, sem multa. Cancele quando quiser, sem burocracia.</p>
+            </div>
+            <div class="faq-item">
+                <h4>📍 Entregam na minha região?</h4>
+                <p>Entregamos em toda a cidade! A entrega é grátis para todos os membros do Clube.</p>
+            </div>
+        </div>
     </div>
-    <div class="whatsapp-btn-container">
-        <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Finalizar Pedido</button>
+
+    <!-- CTA FINAL -->
+    <div class="cta-final">
+        <h3>🍕 Não perca mais tempo pedindo toda vez!</h3>
+        <p>Assine o Clube da Pizza e receba em casa sem se preocupar</p>
+        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">VER PLANOS ↑</a>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-fundo" id="meu-modal">
+        <div class="modal-caixa">
+            <button class="modal-fechar" id="btn-fechar-modal">✕</button>
+            <h2 class="modal-titulo">🍕 Quase lá! Preencha seus dados</h2>
+            <div class="resumo" id="resumo-plano"></div>
+            <div class="erro" id="msg-erro"></div>
+
+            <div class="campo">
+                <label>Nome Completo</label>
+                <input type="text" id="input-nome" placeholder="Seu nome completo">
+            </div>
+            <div class="campo">
+                <label>WhatsApp (para combinar as entregas)</label>
+                <input type="tel" id="input-whatsapp" placeholder="(00) 00000-0000">
+            </div>
+            <div class="campo">
+                <label>CPF</label>
+                <input type="text" id="input-cpf" placeholder="000.000.000-00" maxlength="14">
+            </div>
+            <div class="campo">
+                <label>E-mail</label>
+                <input type="email" id="input-email" placeholder="seu@email.com">
+            </div>
+            <div class="campo">
+                <label>Endereço de Entrega</label>
+                <input type="text" id="input-endereco" placeholder="Rua, número, bairro e referência">
+            </div>
+
+            <button class="btn-pagar" id="btn-pagar">🔒 ASSINAR E PAGAR COM SEGURANÇA</button>
+
+            <p class="rodape-seguro">
+                Pagamento único mensal processado com segurança pela Kiwify.<br>
+                Após o pagamento, entraremos em contato pelo WhatsApp.
+            </p>
+            <div class="badges-seg">
+                <span class="badge-s">🔐 SSL Seguro</span>
+                <span class="badge-s">🛡️ Kiwify</span>
+                <span class="badge-s">💳 Até 12x</span>
+                <span class="badge-s">📱 PIX</span>
+            </div>
+        </div>
     </div>
 
     <script>
-        // ==================================================================
-        //  "CÉREBRO" DO CARDÁPIO - LÓGICA DE OFERTAS AUTOMÁTICAS
-        // ==================================================================
-        const products = {
-            'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
-            'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
-            'portuguesa': { name: 'Pizza Portuguesa (G)', price: 47.00 },
-            '4queijos': { name: 'Pizza 4 Queijos (G)', price: 42.00 },
-            'modadacasa': { name: 'Pizza Moda da Casa (G)', price: 47.00 },
-            'coca2l': { name: 'Coca-Cola 2L', price: 14.00 },
-            'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
-            'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
-        };
-        const dailyOffers = [
-            { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-            { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-            { day: 2, title: 'Terça do Clássico', items: ['frango', 'guarana2l'], discount: 0.05 },
-            { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l'], discount: 0.05 },
-            { day: 4, title: 'Quinta Especial', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
-            { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-            { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-        ];
-        let countdownInterval;
-        function displayDailyOffer() {
-            const today = new Date().getDay();
-            const offer = dailyOffers.find(o => o.day === today);
-            const offerSection = document.getElementById('oferta');
-            if (!offer) return;
-            let originalPrice = 0;
-            let offerDescription = [];
-            offer.items.forEach(itemId => {
-                if (products[itemId]) {
-                    originalPrice += products[itemId].price;
-                    offerDescription.push(products[itemId].name);
-                }
+    // =============================================
+    //  LINKS CORRETOS DA KIWIFY
+    // =============================================
+    var linkBasico  = 'https://pay.kiwify.com.br/ktfgGDD';
+    var linkPremium = 'https://pay.kiwify.com.br/pKmN69o';
+    var linkFamilia = 'https://pay.kiwify.com.br/Ea0adye';
+
+    var planoAtual = '';
+    var linkAtual = '';
+
+    // =============================================
+    //  BOTÕES
+    // =============================================
+    document.getElementById('btn-basico').addEventListener('click', function() {
+        planoAtual = 'basico';
+        linkAtual = linkBasico;
+        document.getElementById('resumo-plano').innerHTML =
+            '<h3>🔥 Plano Básico</h3>' +
+            '<p class="desc">2 Pizzas G/mês • Entrega grátis • Você escolhe os sabores</p>' +
+            '<p class="valor" style="color:#8e2de2;">R$ 119,90/mês</p>';
+        abrirModal();
+    });
+
+    document.getElementById('btn-premium').addEventListener('click', function() {
+        planoAtual = 'premium';
+        linkAtual = linkPremium;
+        document.getElementById('resumo-plano').innerHTML =
+            '<h3>🔥 Plano Premium</h3>' +
+            '<p class="desc">4 Pizzas G/mês • 1 Refri 2L • Entrega grátis • Todos sabores</p>' +
+            '<p class="valor" style="color:#ffd700;">R$ 294,90/mês</p>';
+        abrirModal();
+    });
+
+    document.getElementById('btn-familia').addEventListener('click', function() {
+        planoAtual = 'familia';
+        linkAtual = linkFamilia;
+        document.getElementById('resumo-plano').innerHTML =
+            '<h3>👨‍👩‍👧‍👦 Plano Família</h3>' +
+            '<p class="desc">6 Pizzas G/mês • 2 Refri 2L • 2 Bordas grátis • Todos sabores</p>' +
+            '<p class="valor" style="color:#14a3a8;">R$ 474,90/mês</p>';
+        abrirModal();
+    });
+
+    // =============================================
+    //  MODAL
+    // =============================================
+    function abrirModal() {
+        document.getElementById('msg-erro').style.display = 'none';
+        document.getElementById('btn-pagar').textContent = '🔒 ASSINAR E PAGAR COM SEGURANÇA';
+        document.getElementById('btn-pagar').disabled = false;
+        document.getElementById('meu-modal').classList.add('aberto');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModalFn() {
+        document.getElementById('meu-modal').classList.remove('aberto');
+        document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('btn-fechar-modal').addEventListener('click', fecharModalFn);
+    document.getElementById('meu-modal').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('meu-modal')) fecharModalFn();
+    });
+
+    // =============================================
+    //  PAGAR → SALVAR → KIWIFY
+    // =============================================
+    document.getElementById('btn-pagar').addEventListener('click', function() {
+        var nome = document.getElementById('input-nome').value.trim();
+        var whatsapp = document.getElementById('input-whatsapp').value.trim();
+        var cpf = document.getElementById('input-cpf').value.trim();
+        var email = document.getElementById('input-email').value.trim();
+        var endereco = document.getElementById('input-endereco').value.trim();
+
+        if (!nome) { mostrarErro('Digite seu nome!'); return; }
+        if (!whatsapp) { mostrarErro('Digite seu WhatsApp!'); return; }
+        if (!cpf) { mostrarErro('Digite seu CPF!'); return; }
+        if (!email) { mostrarErro('Digite seu e-mail!'); return; }
+        if (!endereco) { mostrarErro('Digite seu endereço!'); return; }
+
+        var btn = document.getElementById('btn-pagar');
+        btn.textContent = '⏳ Preparando pagamento...';
+        btn.disabled = true;
+        document.getElementById('msg-erro').style.display = 'none';
+
+        // Salvar no celular
+        try {
+            localStorage.setItem('assinatura_clube', JSON.stringify({
+                plano: planoAtual, nome: nome, whatsapp: whatsapp,
+                email: email, cpf: cpf, endereco: endereco,
+                data: new Date().toISOString()
+            }));
+        } catch(e) {}
+
+        // Salvar no Supabase (segundo plano)
+        try {
+            var supabaseUrl = 'https://yvwvxdykqtyukcrybkkr.supabase.co';
+            var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2d3Z4ZHlrcXR5dWtjcnlia2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMDMyNjcsImV4cCI6MjA4Nzg3OTI2N30.iNGafZjipSoKm0lZA9AMYEA69qWNUIQLn04Jas1IH5Q';
+            fetch(supabaseUrl + '/rest/v1/assinantes', {
+                method: 'POST',
+                headers: {
+                    'apikey': supabaseKey,
+                    'Authorization': 'Bearer ' + supabaseKey,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({
+                    nome: nome, whatsapp: whatsapp, cpf: cpf,
+                    email: email, endereco: endereco, plano: planoAtual,
+                    plano_nome: planoAtual, valor: 0,
+                    forma_pagamento: 'pendente',
+                    status: 'aguardando_pagamento', ativo: false,
+                    total_entregas_mes: 2, entregas_feitas: 0
+                })
             });
-            if (originalPrice === 0) return;
-            const finalPrice = originalPrice * (1 - offer.discount);
-            offerSection.innerHTML = `
-                <h2>🔥 ${offer.title}</h2>
-                <p>${offerDescription.join(' + ')}</p>
-                <div>
-                    <span class="original-price">De ${formatCurrency(originalPrice)}</span>
-                    <span class="price-highlight">Por apenas ${formatCurrency(finalPrice)}</span>
-                </div>
-                <div class="countdown-timer">
-                    <span class="timer-label">Esta oferta relâmpago termina em:</span>
-                    <div id="timer">00:00</div>
-                </div>
-            `;
-            offerSection.style.display = 'block';
-            startCountdown();
-        }
-        function startCountdown() {
-            if (countdownInterval) { clearInterval(countdownInterval); }
-            let durationInSeconds = (3 * 60) + 59;
-            const timerElement = document.getElementById('timer');
-            countdownInterval = setInterval(() => {
-                if (durationInSeconds < 0) {
-                    clearInterval(countdownInterval);
-                    timerElement.textContent = "OFERTA ENCERRADA";
-                    return;
-                }
-                const minutes = Math.floor(durationInSeconds / 60);
-                const seconds = durationInSeconds % 60;
-                timerElement.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
-                durationInSeconds--;
-            }, 1000);
-        }
-        function formatCurrency(value) {
-            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-        document.addEventListener('DOMContentLoaded', displayDailyOffer);
+        } catch(e) {}
 
-        // ==================================================================
-        //  FUNÇÕES DO FORMULÁRIO E WHATSAPP
-        // ==================================================================
-        function selectPayment(paymentType) {
-            document.querySelectorAll('.payment-option').forEach(option => { option.classList.remove('selected'); });
-            const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
-            selectedOption.classList.add('selected');
-            document.getElementById(paymentType).checked = true;
-        }
+        // IR PARA KIWIFY
+        setTimeout(function() {
+            window.location.href = linkAtual;
+        }, 800);
+    });
 
-        function enviarPedido() {
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const endereco = document.getElementById('endereco').value;
-            const pedido = document.getElementById('pedido-texto').value;
-            const pagamento = document.querySelector('input[name="pagamento"]:checked');
-            if (!nome || !telefone || !endereco || !pedido) {
-                alert('Por favor, preencha todos os campos do pedido!');
-                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-            if (!pagamento) {
-                alert('Por favor, selecione uma forma de pagamento!');
-                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-            const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
-            const numeroWhatsApp = '5598970100184';
-            let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
-                           `*Cliente:* ${nome}\n` +
-                           `*Contato:* ${telefone}\n` +
-                           `*Endereço:* ${endereco}\n\n` +
-                           `*Pedido Detalhado:*\n${pedido}\n\n` +
-                           `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
-            if (pagamento.value === 'pix') {
-                mensagem += `*Dados para PIX:*\n*Chave (Celular):* 98970100184\n*Nome:* Francisco de Sousa\n\n_O pedido só é liberado após o envio do comprovante._\n\n`;
-            }
-            mensagem += `_Pedido enviado via cardápio digital._`;
-            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`, '_blank');
-        }
+    function mostrarErro(texto) {
+        var el = document.getElementById('msg-erro');
+        el.textContent = '⚠️ ' + texto;
+        el.style.display = 'block';
+    }
 
-        document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = value.slice(0, 15);
-        });
+    // MÁSCARAS
+    document.getElementById('input-whatsapp').addEventListener('input', function() {
+        var v = this.value.replace(/\D/g, '');
+        if (v.length > 0) v = '(' + v;
+        if (v.length > 3) v = v.substring(0,3) + ') ' + v.substring(3);
+        if (v.length > 10) v = v.substring(0,10) + '-' + v.substring(10);
+        if (v.length > 15) v = v.substring(0,15);
+        this.value = v;
+    });
 
-        function handleResize() {
-            const floatingBtn = document.querySelector('.whatsapp-btn-container');
-            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
-            if (window.innerWidth < 768) {
-                floatingBtn.style.display = 'block';
-                if(formBtn) formBtn.style.display = 'none';
-            } else {
-                floatingBtn.style.display = 'none';
-                if(formBtn) formBtn.style.display = 'block';
-            }
-        }
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('load', handleResize);
+    document.getElementById('input-cpf').addEventListener('input', function() {
+        var v = this.value.replace(/\D/g, '');
+        if (v.length > 3) v = v.substring(0,3) + '.' + v.substring(3);
+        if (v.length > 7) v = v.substring(0,7) + '.' + v.substring(7);
+        if (v.length > 11) v = v.substring(0,11) + '-' + v.substring(11);
+        if (v.length > 14) v = v.substring(0,14);
+        this.value = v;
+    });
     </script>
 </body>
 </html>
