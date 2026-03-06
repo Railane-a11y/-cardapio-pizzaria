@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CasadasPizzaass</title>
+    <meta name="description" content="Faça login no painel administrativo da CasadasPizzaass">
+    <meta name="theme-color" content="#e74c3c">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cor-primaria: #e74c3c;
+            --cor-secundaria: #c0392b;
+            --cor-destaque: #27ae60;
+            --cor-premium-fundo: #2c3e50;
+            --cor-premium-destaque: #ffd700;
+            --cor-texto-escuro: #1a1a2e;
+            --cor-texto-claro: #8892a4;
+            --fundo-claro: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --sombra-forte: 0 25px 60px rgba(0, 0, 0, 0.35);
+            --sombra-glow: 0 0 40px rgba(231, 76, 60, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f0c29 0%, #1a1a2e 30%, #302b63 60%, #24243e 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ========== FUNDO ANIMADO ========== */
+        .bg-decoration {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: floatCircle 8s ease-in-out infinite;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(231, 76, 60, 0.5), transparent);
+            top: -10%;
+            left: -5%;
+            animation-duration: 10s;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
+            bottom: -15%;
+            right: -8%;
+            animation-duration: 12s;
+            animation-delay: -3s;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(39, 174, 96, 0.3), transparent);
+            top: 50%;
+            left: 60%;
+            animation-duration: 9s;
+            animation-delay: -5s;
+        }
+
+        @keyframes floatCircle {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -20px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-15px, 15px) scale(0.95);
+            }
+        }
+
+        /* ========== PARTÍCULAS PIZZA ========== */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 1.4rem;
+            opacity: 0;
+            animation: riseParticle linear infinite;
+        }
+
+        @keyframes riseParticle {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+
+            10% {
+                opacity: 0.5;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) rotate(360deg);
+            }
+        }
+
+        /* ========== CONTAINER LOGIN ========== */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: var(--sombra-forte);
+            position: relative;
+            overflow: hidden;
+            animation: cardEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+        }
+
+        @keyframes cardEntry {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cor-primaria), var(--cor-premium-destaque), var(--cor-destaque), var(--cor-primaria));
+            background-size: 300% 100%;
+            animation: gradientSlide 4s linear infinite;
+        }
+
+        @keyframes gradientSlide {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 300% 50%;
+            }
+        }
+
+        /* ========== LOGO AREA ========== */
+        .logo-area {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 2.4rem;
+            box-shadow: 0 8px 30px rgba(231, 76, 60, 0.35);
+            animation: logoPulse 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            animation: ringExpand 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 8px 30px rgba(231, 76, 60, 0.35);
+            }
+
+            50% {
+                transform: scale(1.04);
+                box-shadow: 0 12px 40px rgba(231, 76, 60, 0.5);
+            }
+        }
+
+        @keyframes ringExpand {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: 0;
+            }
+        }
+
+        .logo-area h1 {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .logo-area p {
+            color: var(--cor-texto-claro);
+            font-size: 0.88rem;
+            font-weight: 400;
+        }
+
+        /* ========== FORMULÁRIO ========== */
+        .form-group {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-input:focus {
+            border-color: var(--cor-primaria);
+            background: rgba(231, 76, 60, 0.06);
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.12);
+        }
+
+        .form-input:focus~.input-focus-line {
+            width: 100%;
+        }
+
+        .form-group:focus-within .input-icon {
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .input-focus-line {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 2px;
+            width: 0;
+            background: linear-gradient(90deg, var(--cor-primaria), var(--cor-premium-destaque));
+            border-radius: 0 0 14px 14px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Toggle senha */
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px;
+            transition: color 0.3s, transform 0.3s;
+            z-index: 2;
+        }
+
+        .toggle-password:hover {
+            color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* ========== OPÇÕES EXTRAS ========== */
+        .form-extras {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .checkmark::after {
+            content: '✓';
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.25s ease;
+        }
+
+        .remember-me input:checked+.checkmark {
+            background: var(--cor-primaria);
+            border-color: var(--cor-primaria);
+        }
+
+        .remember-me input:checked+.checkmark::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .remember-me span {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .forgot-password {
+            color: var(--cor-primaria);
+            font-size: 0.82rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .forgot-password:hover {
+            color: var(--cor-premium-destaque);
+        }
+
+        /* ========== BOTÃO LOGIN ========== */
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 35px rgba(231, 76, 60, 0.45);
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login .btn-text {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Estado de loading */
+        .btn-login.loading .btn-text {
+            opacity: 0;
+        }
+
+        .btn-login.loading::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========== DIVISOR ========== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 28px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider span {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* ========== BOTÃO ACESSAR CARDÁPIO ========== */
+        .btn-cardapio {
+            width: 100%;
+            padding: 14px;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+            transition: all 0.35s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-cardapio:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* ========== FOOTER ========== */
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .login-footer p {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .login-footer a {
+            color: var(--cor-primaria);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .login-footer a:hover {
+            color: var(--cor-premium-destaque);
+        }
+
+        /* ========== MENSAGENS DE ERRO / SUCESSO ========== */
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: messageSlide 0.4s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.error {
+            background: rgba(231, 76, 60, 0.15);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            color: #ff6b6b;
+            display: flex;
+        }
+
+        .message.success {
+            background: rgba(39, 174, 96, 0.15);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            color: #6bffb0;
+            display: flex;
+        }
+
+        /* ========== SHAKE ANIMATION ========== */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-8px);
+            }
+
+            40% {
+                transform: translateX(8px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        /* ========== RESPONSIVO ========== */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 36px 24px;
+                border-radius: 20px;
+            }
+
+            .logo-icon {
+                width: 68px;
+                height: 68px;
+                font-size: 2rem;
+            }
+
+            .logo-area h1 {
+                font-size: 1.4rem;
+            }
+
+            .form-extras {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .bg-circle:nth-child(1) {
+                width: 250px;
+                height: 250px;
+            }
+
+            .bg-circle:nth-child(2) {
+                width: 200px;
+                height: 200px;
+            }
+
+            .bg-circle:nth-child(3) {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .login-card {
+                padding: 52px 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- FUNDO DECORATIVO -->
+    <div class="bg-decoration">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- PARTÍCULAS DE PIZZA -->
+    <div class="particles" id="particles"></div>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="login-container">
+        <div class="login-card" id="loginCard">
+
+            <!-- LOGO -->
+            <div class="logo-area">
+                <div class="logo-icon">🍕</div>
+                <h1>CasadasPizzaass</h1>
+                <p>Painel Administrativo</p>
+            </div>
+
+            <!-- MENSAGEM -->
+            <div class="message" id="loginMessage">
+                <span class="message-icon"></span>
+                <span class="message-text"></span>
+            </div>
+
+            <!-- FORMULÁRIO -->
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input type="email" id="email" class="form-input" placeholder="seu@email.com"
+                            autocomplete="email" required>
+                        <div class="input-focus-line"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="senha" class="form-input" placeholder="Digite sua senha"
+                            autocomplete="current-password" required>
+                        <button type="button" class="toggle-password" id="togglePassword"
+                            aria-label="Mostrar senha">👁️</button>
+                        <div class="input-focus-line"></div>
+                    </div>
+                </div>
+
+                <div class="form-extras">
+                    <label class="remember-me">
+                        <input type="checkbox" id="lembrar">
+                        <span class="checkmark"></span>
+                        <span>Lembrar de mim</span>
+                    </label>
+                    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                </div>
+
+                <button type="submit" class="btn-login" id="btnLogin">
+                    <span class="btn-text">
+                        <span>🔐</span>
+                        Entrar no Painel
+                    </span>
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>ou</span>
+            </div>
+
+            <a href="index.html" class="btn-cardapio">
+                📋 Acessar o Cardápio Digital
+            </a>
+
+            <div class="login-footer">
+                <p>© 2026 CasadasPizzaass — Todos os direitos reservados.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ==================================================================
+        //  PARTÍCULAS FLUTUANTES
+        // ==================================================================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const emojis = ['🍕', '🧀', '🍅', '🌿', '🫒', '🌶️'];
+            const count = 12;
+
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('span');
+                p.className = 'particle';
+                p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                p.style.left = Math.random() * 100 + '%';
+                p.style.fontSize = (0.8 + Math.random() * 1) + 'rem';
+                p.style.animationDuration = (12 + Math.random() * 18) + 's';
+                p.style.animationDelay = -(Math.random() * 20) + 's';
+                container.appendChild(p);
+            }
+        }
+        createParticles();
+
+        // ==================================================================
+        //  TOGGLE SENHA
+        // ==================================================================
+        const toggleBtn = document.getElementById('togglePassword');
+        const senhaInput = document.getElementById('senha');
+        let senhaVisivel = false;
+
+        toggleBtn.addEventListener('click', () => {
+            senhaVisivel = !senhaVisivel;
+            senhaInput.type = senhaVisivel ? 'text' : 'password';
+            toggleBtn.textContent = senhaVisivel ? '🙈' : '👁️';
+        });
+
+        // ==================================================================
+        //  LOGIN - VALIDAÇÃO
+        // ==================================================================
+        function showMessage(type, text) {
+            const msg = document.getElementById('loginMessage');
+            msg.className = `message ${type}`;
+            msg.querySelector('.message-icon').textContent = type === 'error' ? '⚠️' : '✅';
+            msg.querySelector('.message-text').textContent = text;
+        }
+
+        function hideMessage() {
+            const msg = document.getElementById('loginMessage');
+            msg.className = 'message';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            hideMessage();
+
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value;
+            const btn = document.getElementById('btnLogin');
+            const card = document.getElementById('loginCard');
+
+            // Validação simples
+            if (!email || !senha) {
+                showMessage('error', 'Preencha todos os campos para continuar.');
+                card.classList.add('shake');
+                setTimeout(() => card.classList.remove('shake'), 500);
+                return false;
+            }
+
+            if (senha.length < 4) {
+                showMessage('error', 'A senha deve ter pelo menos 4 caracteres.');
+                card.classList.add('shake');
+                setTimeout(() => card.classList.remove('shake'), 500);
+                return false;
+            }
+
+            // Simula carregamento
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Credenciais de demonstração
+                // Em produção, conectar com backend real
+                const credenciais = {
+                    email: 'admin@casadaspizzaass.com',
+                    senha: 'admin123'
+                };
+
+                if (email === credenciais.email && senha === credenciais.senha) {
+                    showMessage('success', 'Login realizado com sucesso! Redirecionando...');
+
+                    // Salvar sessão se "Lembrar de mim" estiver marcado
+                    if (document.getElementById('lembrar').checked) {
+                        localStorage.setItem('casapizza_session', JSON.stringify({
+                            email: email,
+                            loggedIn: true,
+                            timestamp: Date.now()
+                        }));
+                    } else {
+                        sessionStorage.setItem('casapizza_session', JSON.stringify({
+                            email: email,
+                            loggedIn: true,
+                            timestamp: Date.now()
+                        }));
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    showMessage('error', 'E-mail ou senha incorretos. Tente novamente.');
+                    card.classList.add('shake');
+                    setTimeout(() => card.classList.remove('shake'), 500);
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                }
+            }, 1800);
+
+            return false;
+        }
+
+        // ==================================================================
+        //  VERIFICAR SESSÃO EXISTENTE
+        // ==================================================================
+        function checkSession() {
+            const session = localStorage.getItem('casapizza_session') || sessionStorage.getItem('casapizza_session');
+            if (session) {
+                try {
+                    const data = JSON.parse(session);
+                    if (data.loggedIn) {
+                        window.location.href = 'index.html';
+                    }
+                } catch (e) {
+                    // Sessão inválida, limpar
+                    localStorage.removeItem('casapizza_session');
+                    sessionStorage.removeItem('casapizza_session');
+                }
+            }
+        }
+
+        // Verificar sessão ao carregar
+        document.addEventListener('DOMContentLoaded', checkSession);
+
+        // ==================================================================
+        //  EFEITO PARALLAX SUTIL NO CARD
+        // ==================================================================
+        document.addEventListener('mousemove', (e) => {
+            const card = document.querySelector('.login-card');
+            if (window.innerWidth < 768) return; // Desligar em mobile
+
+            const rect = card.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const deltaX = (e.clientX - centerX) / 60;
+            const deltaY = (e.clientY - centerY) / 60;
+
+            card.style.transform = `perspective(1000px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            const card = document.querySelector('.login-card');
+            card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+        });
+    </script>
+</body>
+
+</html>
