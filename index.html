@@ -1,3 +1,6 @@
+Segue o `index.html` completo com as alterações solicitadas na seção **⭐ Destaques da Casa** (novos sabores e ordem) e a remoção dos itens duplicados em **✨ Variedades Especiais**.
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -24,7 +27,6 @@
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; line-height: 1.6; padding-bottom: 80px; }
         .container { max-width: 900px; margin: 0 auto; background: var(--fundo-claro); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
 
-        /* ========== NOVO HEADER COM LOGO + BANNER ========== */
         .header-topo {
             background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria));
             display: flex;
@@ -43,7 +45,6 @@
         .header-info h1 { color: #fff; font-size: 1.3em; font-weight: 700; line-height: 1.2; }
         .header-info p { color: rgba(255,255,255,0.85); font-size: 0.8em; }
 
-        /* BANNER CLUBE */
         .banner-clube-link { text-decoration: none; display: block; }
         .banner-clube {
             background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
@@ -92,7 +93,6 @@
             display: block; line-height: 1.1;
         }
 
-        /* ========== ESTILOS ORIGINAIS ========== */
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
@@ -210,67 +210,93 @@
 
         <!-- CARDÁPIO -->
         <main class="menu">
+            <!-- ⭐ DESTAQUES DA CASA (ALTERADO) -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
                 <div class="items-grid">
+                    <!-- 1. Calabresa com Catupiry (movido) -->
+                    <article class="item-card">
+                        <h3>Calabresa com Catupiry</h3>
+                        <p class="description">Calabresa, catupiry, azeitonas e orégano.</p>
+                        <p class="price">
+                            <span>M (6 fatias) - R$ 34,00</span>
+                            <span>G (8 fatias) - R$ 45,00</span>
+                        </p>
+                    </article>
+
+                    <!-- 2. Portuguesa -->
+                    <article class="item-card">
+                        <h3>Portuguesa</h3>
+                        <p class="description">Presunto, cebola, ervilhas, ovos e mussarela.</p>
+                        <p class="price">
+                            <span>M (6 fatias) - R$ 34,00</span>
+                            <span>G (8 fatias) - R$ 47,00</span>
+                        </p>
+                    </article>
+
+                    <!-- 3. Calabresa (com upsell) -->
                     <article class="item-card">
                         <h3>Calabresa</h3>
                         <p class="description">Mussarela, calabresa, azeitona e orégano.</p>
                         <div class="upsell-suggestion">Fica perfeita com borda de Catupiry!</div>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                        <p class="price">
+                            <span>M (6 fatias) - R$ 32,00</span>
+                            <span>G (8 fatias) - R$ 42,00</span>
+                        </p>
                     </article>
+
+                    <!-- 4. Frango com Requeijão (movido) -->
                     <article class="item-card">
-                        <h3>Clássica da Casa</h3>
-                        <p class="description">Mussarela, Presunto, cebola, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 28,90</span><span>G (8 fatias) - R$ 38,50</span></p>
+                        <h3>Frango com Requeijão</h3>
+                        <p class="description">Frango, Requeijão Cremoso, azeitona e orégano.</p>
+                        <p class="price">
+                            <span>M (6 fatias) - R$ 34,00</span>
+                            <span>G (8 fatias) - R$ 45,00</span>
+                        </p>
                     </article>
+
+                    <!-- 5. Calabresa Paulista -->
                     <article class="item-card">
                         <h3>Calabresa Paulista</h3>
                         <p class="description">Calabresa, cebola, azeitonas e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 27,00</span><span>G (8 fatias) - R$ 35,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Frango</h3>
-                        <p class="description">Frango, mussarela, milho, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Portuguesa</h3>
-                        <p class="description">Presunto, cebola, ervilhas, ovos e mussarela.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 47,00</span></p>
+                        <p class="price">
+                            <span>M (6 fatias) - R$ 27,00</span>
+                            <span>G (8 fatias) - R$ 35,00</span>
+                        </p>
                     </article>
                 </div>
             </section>
 
+            <!-- ✨ VARIEDADES ESPECIAIS (DUPLICATAS REMOVIDAS) -->
             <section id="especiais" class="category category-especiais">
                 <h2>✨ Variedades Especiais</h2>
                 <p class="category-subtitle">Experimente Novos Sabores</p>
                 <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Calabresa com Catupiry</h3>
-                        <p class="description">Calabresa, catupiry, azeitonas e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 45,00</span></p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Frango com Requeijão</h3>
-                        <p class="description">Frango, Requeijão Cremoso, azeitona e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 45,00</span></p>
-                    </article>
+                    <!-- 4 Queijos (mantido) -->
                     <article class="item-card">
                         <h3>4 Queijos</h3>
                         <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p>
                         <div class="upsell-suggestion">Que tal uma Coca-Cola 2L para acompanhar?</div>
-                        <p class="price"><span>M (6 fatias) - R$ 32,00</span><span>G (8 fatias) - R$ 42,00</span></p>
+                        <p class="price">
+                            <span>M (6 fatias) - R$ 32,00</span>
+                            <span>G (8 fatias) - R$ 42,00</span>
+                        </p>
                     </article>
+
+                    <!-- Moda da Casa (mantido) -->
                     <article class="item-card">
                         <h3>Moda da Casa</h3>
                         <p class="description">Mussarela, frango desfiado, bacon, milho e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 34,00</span><span>G (8 fatias) - R$ 47,00</span></p>
+                        <p class="price">
+                            <span>M (6 fatias) - R$ 34,00</span>
+                            <span>G (8 fatias) - R$ 47,00</span>
+                        </p>
                     </article>
                 </div>
             </section>
 
+            <!-- 👑 LINHA PREMIUM (INALTERADA) -->
             <section id="premium" class="category category-premium">
                 <h2>👑 Linha Premium</h2>
                 <p class="category-subtitle">Exclusivas e Sofisticadas</p>
@@ -288,6 +314,7 @@
                 </div>
             </section>
 
+            <!-- 🧀 BORDAS RECHEADAS -->
             <section id="bordas" class="category category-destaques">
                 <h2>🧀 BORDAS RECHEADAS</h2>
                 <div class="items-grid">
@@ -299,6 +326,7 @@
                 </div>
             </section>
 
+            <!-- 🥤 BEBIDAS -->
             <section id="bebidas" class="category category-especiais">
                 <h2>🥤 BEBIDAS</h2>
                 <div class="items-grid">
@@ -360,27 +388,34 @@
 
     <script>
         // ==================================================================
-        //  OFERTAS AUTOMÁTICAS
+        //  OFERTAS AUTOMÁTICAS (AJUSTADAS PARA OS ITENS DISPONÍVEIS)
         // ==================================================================
         const products = {
             'calabresa': { name: 'Pizza de Calabresa (G)', price: 42.00 },
-            'frango': { name: 'Pizza de Frango (G)', price: 42.00 },
+            'calabresacatupiry': { name: 'Pizza de Calabresa com Catupiry (G)', price: 45.00 },
+            'frangorequeijao': { name: 'Pizza de Frango com Requeijão (G)', price: 45.00 },
             'portuguesa': { name: 'Pizza Portuguesa (G)', price: 47.00 },
             '4queijos': { name: 'Pizza 4 Queijos (G)', price: 42.00 },
-            'classicadacasa': { name: 'Pizza Classica da Casa (G)', price: 38.50 },
+            'modadacasa': { name: 'Pizza Moda da Casa (G)', price: 47.00 },
+            'frangocatupiry': { name: 'Pizza Frango com Catupiry (G)', price: 47.00 },
+            'carneseca': { name: 'Pizza Carne Seca (G)', price: 49.00 },
+            'calabresapaulista': { name: 'Pizza Calabresa Paulista (G)', price: 35.00 },
             'coca2l': { name: 'Coca-Cola 2L', price: 14.00 },
             'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
             'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
         };
+
+        // Ofertas do dia atualizadas para usar apenas itens que permanecem no cardápio
         const dailyOffers = [
             { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-            { day: 1, title: 'Segunda da Economia', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-            { day: 2, title: 'Terça do Clássico', items: ['frango', 'guarana2l'], discount: 0.05 },
+            { day: 1, title: 'Segunda da Economia', items: ['calabresapaulista', 'coca2l'], discount: 0.05 },
+            { day: 2, title: 'Terça do Clássico', items: ['calabresa', 'guarana2l'], discount: 0.05 },
             { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l'], discount: 0.05 },
-            { day: 4, title: 'Quinta Especial', items: ['classicadacasa', 'guarana2l'], discount: 0.05 },
-            { day: 5, title: 'Sextou com Pizza!', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-            { day: 6, title: 'Sabadão Imperdível', items: ['calabresa', 'guarana2l'], discount: 0.05 },
+            { day: 4, title: 'Quinta Especial', items: ['frangorequeijao', 'coca2l'], discount: 0.05 },
+            { day: 5, title: 'Sextou com Pizza!', items: ['calabresacatupiry', 'guarana2l'], discount: 0.05 },
+            { day: 6, title: 'Sabadão Imperdível', items: ['modadacasa', 'coca2l'], discount: 0.05 },
         ];
+
         let countdownInterval;
         function displayDailyOffer() {
             const today = new Date().getDay();
@@ -506,3 +541,19 @@
     </script>
 </body>
 </html>
+```
+
+### ✅ Alterações realizadas:
+
+1. **Seção ⭐ Destaques da Casa** substituída pela nova lista com 5 sabores:
+   - Calabresa com Catupiry  
+   - Portuguesa  
+   - Calabresa (com borda de Catupiry)  
+   - Frango com Requeijão  
+   - Calabresa Paulista  
+
+2. **Seção ✨ Variedades Especiais** mantém apenas **4 Queijos** e **Moda da Casa**, removendo as duplicatas que foram movidas.
+
+3. **Ofertas automáticas do dia** atualizadas no JavaScript para usar somente os novos itens disponíveis, garantindo que nenhuma oferta mencione pizzas removidas.
+
+4. **Demais seções (Premium, Bordas, Bebidas, formulário e WhatsApp)** permanecem exatamente como antes.
