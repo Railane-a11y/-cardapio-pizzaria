@@ -357,6 +357,10 @@
                     <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
                 </div>
                 <div class="form-group">
+                    <label for="aniversario">Data de Nascimento (Opcional - Ganhe mimo no seu dia! 🎉):</label>
+                    <input type="date" id="aniversario" name="aniversario">
+                </div>
+                <div class="form-group">
                     <label for="endereco">Endereço para Entrega:</label>
                     <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro e referência" required>
                 </div>
@@ -486,19 +490,38 @@
         function enviarPedido() {
             const nome = document.getElementById('nome').value;
             const telefone = document.getElementById('telefone').value;
+            const aniversario = document.getElementById('aniversario').value;
             const endereco = document.getElementById('endereco').value;
             const pedido = document.getElementById('pedido-texto').value;
             const pagamento = document.querySelector('input[name="pagamento"]:checked');
+            
             if (!nome || !telefone || !endereco || !pedido) {
                 alert('Por favor, preencha todos os campos do pedido!');
                 document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
+            
             if (!pagamento) {
                 alert('Por favor, selecione uma forma de pagamento!');
                 document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
+
+            // ======== INTEGRAÇÃO COM O CLUBE DE FIDELIDADE ========
+            // Dispara a requisição para o seu backend na Netlify em segundo plano
+            fetch('/.netlify/functions/fidelidade', {
+                method: 'POST',
+                body: JSON.stringify({ 
+                    telefone: telefone,
+                    nome: nome,
+                    aniversario: aniversario
+                })
+            })
+            .then(res => res.json())
+            .then(data => console.log("✅ Fidelidade atualizada no banco!", data))
+            .catch(err => console.error("❌ Erro ao registrar fidelidade:", err));
+            // ======================================================
+
             const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
             const numeroWhatsApp = '5598970100184';
             let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
@@ -507,9 +530,11 @@
                            `*Endereço:* ${endereco}\n\n` +
                            `*Pedido Detalhado:*\n${pedido}\n\n` +
                            `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
+            
             if (pagamento.value === 'pix') {
                 mensagem += `*Dados para PIX:*\n*Chave (Celular):* 98970100184\n*Nome:* Francisco de Sousa\n\n_O pedido só é liberado após o envio do comprovante._\n\n`;
             }
+            
             mensagem += `_Pedido enviado via cardápio digital._`;
             window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`, '_blank');
         }
