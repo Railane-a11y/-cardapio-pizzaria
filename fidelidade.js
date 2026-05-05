@@ -21,6 +21,7 @@ exports.handler = async function(event, context) {
         const telefone = dados.telefone.replace(/\D/g, ''); 
         const nome = dados.nome;
         const aniversario = dados.aniversario || null;
+        const comando_whatsapp = dados.comando_whatsapp || null; // 🔥 AGORA O BACKEND LÊ O COMANDO!
 
         if (!telefone) throw new Error("Telefone é obrigatório");
 
@@ -39,15 +40,18 @@ exports.handler = async function(event, context) {
         }
 
         // --- NOVA LÓGICA DE AVISOS PARA O ROBÔ LER ---
-        let acaoWhatsApp = null;
+        // Ele primeiro puxa o comando que veio do site (o de aniversário)
+        let acaoWhatsApp = comando_whatsapp; 
 
-        if (pizzasCompradas === 9) {
-            acaoWhatsApp = "avisar_falta_uma";
-        } else if (pizzasCompradas === 10) {
-            acaoWhatsApp = "avisar_ganhou";
-            // Atenção: Apenas se você quiser zerar a contagem depois de ganhar, 
-            // você deve incluir a linha abaixo:
-            // pizzasCompradas = 0; 
+        // Se o site não mandou aviso de aniversário, ele checa as pizzas normais
+        if (!acaoWhatsApp) {
+            if (pizzasCompradas === 9) {
+                acaoWhatsApp = "avisar_falta_uma";
+            } else if (pizzasCompradas === 10) {
+                acaoWhatsApp = "avisar_ganhou";
+                // Atenção: Apenas se você quiser zerar a contagem depois de ganhar:
+                // pizzasCompradas = 0; 
+            }
         }
 
         const dadosParaAtualizar = {
