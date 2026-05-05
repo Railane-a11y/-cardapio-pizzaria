@@ -507,14 +507,26 @@
                 return;
             }
 
+            // ======== O RADAR DE ANIVERSÁRIO ========
+            const dataAtual = new Date();
+            const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, '0');
+            const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
+            const hojeDiaMes = `-${mesAtual}-${diaAtual}`;
+
+            let comandoParaRobo = null;
+            if (aniversario && aniversario.endsWith(hojeDiaMes)) {
+                comandoParaRobo = 'avisar_aniversario';
+            }
+            // =========================================
+
             // ======== INTEGRAÇÃO COM O CLUBE DE FIDELIDADE ========
-            // Dispara a requisição para o seu backend na Netlify em segundo plano
             fetch('/.netlify/functions/fidelidade', {
                 method: 'POST',
                 body: JSON.stringify({ 
                     telefone: telefone,
                     nome: nome,
-                    aniversario: aniversario
+                    aniversario: aniversario,
+                    comando_whatsapp: comandoParaRobo
                 })
             })
             .then(res => res.json())
