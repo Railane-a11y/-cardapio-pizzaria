@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 
-// Inicializa a conexão com o banco de dados usando as credenciais fornecidas
+// Inicializa a conexão com o banco de dados
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -21,55 +21,59 @@ exports.handler = async function(event, context) {
         const telefone = dados.telefone.replace(/\D/g, ''); 
         const nome = dados.nome;
         const aniversario = dados.aniversario || null;
-        const comando_whatsapp = dados.comando_whatsapp || null; // 🔥 AGORA O BACKEND LÊ O COMANDO!
+        const comando_whatsapp = dados.comando_whatsapp || null;
+        const pagamento = dados.pagamento || ""; // 🔥 Trazendo a forma de pagamento
 
         if (!telefone) throw new Error("Telefone é obrigatório");
 
         const clienteRef = db.collection('fidelidade').doc(telefone);
         const doc = await clienteRef.get();
 
-        let pizzasCompradas = 1;
+        // Variáveis atuais do cliente
+        let dadosCliente = doc.exists ? doc.data() : {};
+        let pizzasCompradas = dadosCliente.pizzas_compradas || 0;
+        let premioDisponivel = dadosCliente.premio_disponivel || false;
+        let validadePremio = dadosCliente.validade_premio || null;
 
-        if (!doc.exists) {
-            pizzasCompradas = 1;
-            console.log(`Novo cliente cadastrado: ${nome}`);
-        } else {
-            const dadosCliente = doc.data();
-            pizzasCompradas = (dadosCliente.pizzas_compradas || 0) + 1;
-            console.log(`Cliente ${nome} atualizado. Total de pizzas: ${pizzasCompradas}`);
+        // 🔥 REGRA 1: SÓ PONTUA SE O PAGAMENTO FOR PIX
+        if (pagamento === 'pix') {
+            pizzasCompradas += 1;
         }
 
-        // --- NOVA LÓGICA DE AVISOS PARA O ROBÔ LER ---
-        // Ele primeiro puxa o comando que veio do site (o de aniversário)
         let acaoWhatsApp = comando_whatsapp; 
 
-        // Se o site não mandou aviso de aniversário, ele checa as pizzas normais
-        if (!acaoWhatsApp) {
+        // 🔥 REGRA 2: AVALIAR O PRÊMIO (SÓ SE ELE COMPROU NO PIX AGORA)
+        if (!acaoWhatsApp && pagamento === 'pix') {
             if (pizzasCompradas === 9) {
                 acaoWhatsApp = "avisar_falta_uma";
             } else if (pizzasCompradas === 10) {
                 acaoWhatsApp = "avisar_ganhou";
-                // Atenção: Apenas se você quiser zerar a contagem depois de ganhar:
-                // pizzasCompradas = 0; 
+                
+                // ZERA AUTOMATICAMENTE
+                pizzasCompradas = 0; 
+                
+                // CRIA O "BILHETE PREMIADO"
+                premioDisponivel = true; 
+                
+                // DEFINE A VALIDADE DO PRÊMIO (EX: 15 DIAS A PARTIR DE HOJE)
+                const dataValidade = new Date();
+                dataValidade.setDate(dataValidade.getDate() + 15);
+                validadePremio = dataValidade.toISOString().split('T')[0]; // Salva só a data (ex: 2026-05-20)
             }
         }
 
         const dadosParaAtualizar = {
             nome: nome,
             pizzas_compradas: pizzasCompradas,
+            premio_disponivel: premioDisponivel,
+            validade_premio: validadePremio,
             data_ultimo_pedido: new Date().toISOString()
         };
 
         if (aniversario) dadosParaAtualizar.aniversario = aniversario;
-        
-        // Se tiver alguma mensagem pra mandar, salva o comando no Firebase
         if (acaoWhatsApp) dadosParaAtualizar.comando_whatsapp = acaoWhatsApp;
 
-        if (!doc.exists) {
-            await clienteRef.set(dadosParaAtualizar);
-        } else {
-            await clienteRef.update(dadosParaAtualizar);
-        }
+        await clienteRef.set(dadosParaAtualizar, { merge: true });
 
         return {
             statusCode: 200,
