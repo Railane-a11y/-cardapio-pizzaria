@@ -41,6 +41,14 @@ exports.handler = async function(event, context) {
             const dadosCliente = doc.data();
             pizzasCompradas = dadosCliente.pizzas_compradas + 1;
             
+            // --- GATILHOS DO WHATSAPP INJETADOS AQUI ---
+            let acaoWhatsApp = null;
+            if (pizzasCompradas === 9) {
+                acaoWhatsApp = "avisar_falta_uma";
+            } else if (pizzasCompradas === 10) {
+                acaoWhatsApp = "avisar_ganhou";
+            }
+            
             const dadosParaAtualizar = {
                 nome: nome,
                 pizzas_compradas: pizzasCompradas,
@@ -50,15 +58,14 @@ exports.handler = async function(event, context) {
             if (aniversario) {
                 dadosParaAtualizar.aniversario = aniversario;
             }
+            
+            // Se bateu 9 ou 10 pizzas, envia o comando pro banco de dados!
+            if (acaoWhatsApp) {
+                dadosParaAtualizar.comando_whatsapp = acaoWhatsApp;
+            }
 
             await clienteRef.update(dadosParaAtualizar);
             console.log(`Cliente ${nome} atualizado. Total de pizzas: ${pizzasCompradas}`);
-        }
-
-        if (pizzasCompradas === 9) {
-            console.log("FALTA 1 PIZZA! Acionar WhatsApp em breve...");
-        } else if (pizzasCompradas === 10) {
-            console.log("GANHOU A PIZZA GRÁTIS! Acionar WhatsApp em breve...");
         }
 
         return {
