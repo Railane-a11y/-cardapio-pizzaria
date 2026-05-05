@@ -21,6 +21,7 @@ exports.handler = async function(event, context) {
         const telefone = dados.telefone.replace(/\D/g, ''); 
         const nome = dados.nome;
         const aniversario = dados.aniversario || null;
+        const comando_whatsapp = dados.comando_whatsapp || null; // 🔥 AGORA O BACKEND LÊ O COMANDO!
 
         if (!telefone) throw new Error("Telefone é obrigatório");
 
@@ -30,42 +31,44 @@ exports.handler = async function(event, context) {
         let pizzasCompradas = 1;
 
         if (!doc.exists) {
-            await clienteRef.set({
-                nome: nome,
-                pizzas_compradas: 1,
-                data_ultimo_pedido: new Date().toISOString(),
-                aniversario: aniversario
-            });
+            pizzasCompradas = 1;
             console.log(`Novo cliente cadastrado: ${nome}`);
         } else {
             const dadosCliente = doc.data();
-            pizzasCompradas = dadosCliente.pizzas_compradas + 1;
-            
-            // --- GATILHOS DO WHATSAPP INJETADOS AQUI ---
-            let acaoWhatsApp = null;
+            pizzasCompradas = (dadosCliente.pizzas_compradas || 0) + 1;
+            console.log(`Cliente ${nome} atualizado. Total de pizzas: ${pizzasCompradas}`);
+        }
+
+        // --- NOVA LÓGICA DE AVISOS PARA O ROBÔ LER ---
+        // Ele primeiro puxa o comando que veio do site (o de aniversário)
+        let acaoWhatsApp = comando_whatsapp; 
+
+        // Se o site não mandou aviso de aniversário, ele checa as pizzas normais
+        if (!acaoWhatsApp) {
             if (pizzasCompradas === 9) {
                 acaoWhatsApp = "avisar_falta_uma";
             } else if (pizzasCompradas === 10) {
                 acaoWhatsApp = "avisar_ganhou";
+                // Atenção: Apenas se você quiser zerar a contagem depois de ganhar:
+                // pizzasCompradas = 0; 
             }
-            
-            const dadosParaAtualizar = {
-                nome: nome,
-                pizzas_compradas: pizzasCompradas,
-                data_ultimo_pedido: new Date().toISOString()
-            };
+        }
 
-            if (aniversario) {
-                dadosParaAtualizar.aniversario = aniversario;
-            }
-            
-            // Se bateu 9 ou 10 pizzas, envia o comando pro banco de dados!
-            if (acaoWhatsApp) {
-                dadosParaAtualizar.comando_whatsapp = acaoWhatsApp;
-            }
+        const dadosParaAtualizar = {
+            nome: nome,
+            pizzas_compradas: pizzasCompradas,
+            data_ultimo_pedido: new Date().toISOString()
+        };
 
+        if (aniversario) dadosParaAtualizar.aniversario = aniversario;
+        
+        // Se tiver alguma mensagem pra mandar, salva o comando no Firebase
+        if (acaoWhatsApp) dadosParaAtualizar.comando_whatsapp = acaoWhatsApp;
+
+        if (!doc.exists) {
+            await clienteRef.set(dadosParaAtualizar);
+        } else {
             await clienteRef.update(dadosParaAtualizar);
-            console.log(`Cliente ${nome} atualizado. Total de pizzas: ${pizzasCompradas}`);
         }
 
         return {
