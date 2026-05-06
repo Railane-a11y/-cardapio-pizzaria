@@ -1,6 +1,5 @@
 const admin = require('firebase-admin');
 
-// Inicializa a conexão com o banco de dados
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -21,44 +20,39 @@ exports.handler = async function(event, context) {
         const telefone = dados.telefone.replace(/\D/g, ''); 
         const nome = dados.nome;
         const aniversario = dados.aniversario || null;
-        const comando_whatsapp = dados.comando_whatsapp || null;
-        const pagamento = dados.pagamento || ""; // 🔥 Trazendo a forma de pagamento
-
-        if (!telefone) throw new Error("Telefone é obrigatório");
+        const comando_whatsapp_original = dados.comando_whatsapp || null;
+        const pagamento = dados.pagamento || "";
 
         const clienteRef = db.collection('fidelidade').doc(telefone);
         const doc = await clienteRef.get();
 
-        // Variáveis atuais do cliente
         let dadosCliente = doc.exists ? doc.data() : {};
         let pizzasCompradas = dadosCliente.pizzas_compradas || 0;
         let premioDisponivel = dadosCliente.premio_disponivel || false;
         let validadePremio = dadosCliente.validade_premio || null;
 
-        // 🔥 REGRA 1: SÓ PONTUA SE O PAGAMENTO FOR PIX
+        let acaoWhatsApp = comando_whatsapp_original;
+
+        // REGRA DE PONTUAÇÃO VIA PIX
         if (pagamento === 'pix') {
             pizzasCompradas += 1;
-        }
-
-        let acaoWhatsApp = comando_whatsapp; 
-
-        // 🔥 REGRA 2: AVALIAR O PRÊMIO (SÓ SE ELE COMPROU NO PIX AGORA)
-        if (!acaoWhatsApp && pagamento === 'pix') {
-            if (pizzasCompradas === 9) {
-                acaoWhatsApp = "avisar_falta_uma";
-            } else if (pizzasCompradas === 10) {
-                acaoWhatsApp = "avisar_ganhou";
-                
-                // ZERA AUTOMATICAMENTE
-                pizzasCompradas = 0; 
-                
-                // CRIA O "BILHETE PREMIADO"
-                premioDisponivel = true; 
-                
-                // DEFINE A VALIDADE DO PRÊMIO (EX: 15 DIAS A PARTIR DE HOJE)
-                const dataValidade = new Date();
-                dataValidade.setDate(dataValidade.getDate() + 15);
-                validadePremio = dataValidade.toISOString().split('T')[0]; // Salva só a data (ex: 2026-05-20)
+            
+            // Se não houver comando de aniversário, vamos mandar o feedback do ponto
+            if (!acaoWhatsApp) {
+                if (pizzasCompradas === 1) {
+                    acaoWhatsApp = "avisar_boas_vindas";
+                } else if (pizzasCompradas === 9) {
+                    acaoWhatsApp = "avisar_falta_uma";
+                } else if (pizzasCompradas === 10) {
+                    acaoWhatsApp = "avisar_ganhou";
+                    pizzasCompradas = 0;
+                    premioDisponivel = true;
+                    const dataValidade = new Date();
+                    dataValidade.setDate(dataValidade.getDate() + 15);
+                    validadePremio = dataValidade.toISOString().split('T')[0];
+                } else {
+                    acaoWhatsApp = "confirmar_ponto"; // Para os pontos 2, 3, 4, 5, 6, 7, 8
+                }
             }
         }
 
@@ -81,7 +75,6 @@ exports.handler = async function(event, context) {
         };
 
     } catch (error) {
-        console.error("Erro no Firebase:", error);
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
     }
 };
