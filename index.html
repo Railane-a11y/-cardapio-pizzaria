@@ -507,6 +507,26 @@
                 return;
             }
 
+            // ======== TRAVA DE SEGURANÇA (DEBOUNCE) ========
+            const todosOsBotoes = document.querySelectorAll('.whatsapp-btn');
+            const textosOriginais = [];
+            todosOsBotoes.forEach(function(btn, i) {
+                textosOriginais[i] = btn.textContent;
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+                btn.style.cursor = 'not-allowed';
+                btn.textContent = 'Processando... 🍕';
+            });
+            setTimeout(function() {
+                todosOsBotoes.forEach(function(btn, i) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                    btn.textContent = textosOriginais[i];
+                });
+            }, 3000);
+            // ================================================
+
             // ======== O RADAR DE ANIVERSÁRIO ========
             const dataAtual = new Date();
             const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, '0');
@@ -526,8 +546,7 @@
                     telefone: telefone,
                     nome: nome,
                     aniversario: aniversario,
-                    comando_whatsapp: comandoParaRobo,
-                    pagamento: pagamento.value // 🔥 AGORA O SITE AVISA SE FOI PIX OU DINHEIRO
+                    comando_whatsapp: comandoParaRobo
                 })
             })
             .then(res => res.json())
