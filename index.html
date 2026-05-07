@@ -42,54 +42,6 @@
         .header-info h1 { color: #fff; font-size: 1.3em; font-weight: 700; line-height: 1.2; }
         .header-info p { color: rgba(255,255,255,0.85); font-size: 0.8em; }
 
-        .banner-clube-link { text-decoration: none; display: block; }
-        .banner-clube {
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            padding: 14px 18px;
-            display: flex; justify-content: space-between; align-items: center;
-            gap: 12px; cursor: pointer; position: relative; overflow: hidden;
-            border-bottom: 3px solid var(--cor-premium-destaque);
-        }
-        .banner-clube::before {
-            content: ''; position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 60%);
-            animation: brilho 4s ease-in-out infinite;
-        }
-        @keyframes brilho { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,10px)} }
-        .banner-esquerda { position: relative; z-index: 1; flex-grow: 1; }
-        .banner-badge {
-            background: var(--cor-primaria); color: #fff;
-            font-size: 0.6rem; font-weight: 800;
-            padding: 2px 10px; border-radius: 20px;
-            display: inline-block; margin-bottom: 5px;
-            animation: pulseBadge 2s ease infinite; letter-spacing: 1px;
-        }
-        @keyframes pulseBadge { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
-        .banner-titulo {
-            color: var(--cor-premium-destaque);
-            font-size: 1.1rem; font-weight: 900; margin: 0; line-height: 1.2;
-        }
-        .banner-subtitulo { color: rgba(255,255,255,0.8); font-size: 0.7rem; margin: 3px 0 0; }
-        .banner-subtitulo strong { color: #00e676; }
-        .banner-cta { margin-top: 8px; }
-        .btn-assinar-banner {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--cor-primaria), #ff6b35);
-            color: #fff; padding: 5px 14px; border-radius: 20px;
-            font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px;
-        }
-        .banner-direita {
-            text-align: center; color: rgba(255,255,255,0.7);
-            font-size: 0.65rem; min-width: 75px;
-            position: relative; z-index: 1;
-        }
-        .preco-clube {
-            font-size: 1.3rem; font-weight: 900;
-            color: var(--cor-premium-destaque);
-            display: block; line-height: 1.1;
-        }
-
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
@@ -147,7 +99,6 @@
             body { padding-bottom: 0; }
             .container { margin: 20px auto; border-radius: 12px; overflow: hidden; }
             .header-info h1 { font-size: 1.6em; }
-            .banner-titulo { font-size: 1.3rem; }
             .category { padding: 40px; }
             .items-grid { grid-template-columns: 1fr 1fr; }
             .nav-menu { justify-content: center; }
@@ -167,25 +118,6 @@
                 <p>As melhores pizzas da cidade</p>
             </div>
         </header>
-
-        <!-- BANNER DO CLUBE -->
-        <a href="checkout.html" class="banner-clube-link">
-            <div class="banner-clube">
-                <div class="banner-esquerda">
-                    <div class="banner-badge">🔥 NOVO — EXCLUSIVO</div>
-                    <h2 class="banner-titulo">CLUBE DA PIZZA</h2>
-                    <p class="banner-subtitulo">Pague uma vez no mês e <strong>receba suas pizzas sem pedir de novo!</strong></p>
-                    <div class="banner-cta">
-                        <span class="btn-assinar-banner">CONHECER PLANOS →</span>
-                    </div>
-                </div>
-                <div class="banner-direita">
-                    A partir de
-                    <span class="preco-clube">R$ 119,90</span>
-                    /mês
-                </div>
-            </div>
-        </a>
 
         <!-- ENTREGA GRÁTIS -->
         <div class="delivery-info">
@@ -539,22 +471,21 @@
             }
             // =========================================
 
-           // ======== INTEGRAÇÃO COM O CLUBE DE FIDELIDADE ========
+            // ======== INTEGRAÇÃO COM O CLUBE DE FIDELIDADE ========
             fetch('/.netlify/functions/fidelidade', {
                 method: 'POST',
                 body: JSON.stringify({ 
                     telefone: telefone,
                     nome: nome,
                     aniversario: aniversario,
-                    comando_whatsapp_original: comandoParaRobo,
-                    pagamento: pagamento.value // AQUI ESTÁ A CHAVE PARA O PONTO!
+                    comando_whatsapp: comandoParaRobo
                 })
             })
             .then(res => res.json())
             .then(data => console.log("✅ Fidelidade atualizada no banco!", data))
             .catch(err => console.error("❌ Erro ao registrar fidelidade:", err));
             // ======================================================
-            
+
             const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
             const numeroWhatsApp = '5598970100184';
             let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
