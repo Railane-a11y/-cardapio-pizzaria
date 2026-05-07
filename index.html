@@ -471,14 +471,15 @@
             }
             // =========================================
 
-            // ======== INTEGRAÇÃO COM O CLUBE DE FIDELIDADE ========
+           // ======== INTEGRAÇÃO COM O CLUBE DE FIDELIDADE ========
             fetch('/.netlify/functions/fidelidade', {
                 method: 'POST',
                 body: JSON.stringify({ 
                     telefone: telefone,
                     nome: nome,
                     aniversario: aniversario,
-                    comando_whatsapp: comandoParaRobo
+                    comando_whatsapp_original: comandoParaRobo,
+                    pagamento: pagamento.value // ESSA É A CHAVE DO PONTO QUE ELE TINHA APAGADO!
                 })
             })
             .then(res => res.json())
