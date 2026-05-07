@@ -539,21 +539,22 @@
             }
             // =========================================
 
-            // ======== INTEGRAÇÃO COM O CLUBE DE FIDELIDADE ========
+           // ======== INTEGRAÇÃO COM O CLUBE DE FIDELIDADE ========
             fetch('/.netlify/functions/fidelidade', {
                 method: 'POST',
                 body: JSON.stringify({ 
                     telefone: telefone,
                     nome: nome,
                     aniversario: aniversario,
-                    comando_whatsapp: comandoParaRobo
+                    comando_whatsapp_original: comandoParaRobo,
+                    pagamento: pagamento.value // AQUI ESTÁ A CHAVE PARA O PONTO!
                 })
             })
             .then(res => res.json())
             .then(data => console.log("✅ Fidelidade atualizada no banco!", data))
             .catch(err => console.error("❌ Erro ao registrar fidelidade:", err));
             // ======================================================
-
+            
             const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
             const numeroWhatsApp = '5598970100184';
             let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
