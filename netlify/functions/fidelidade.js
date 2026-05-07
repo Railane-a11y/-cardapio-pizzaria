@@ -95,3 +95,5 @@ exports.handler = async function(event, context) {
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
     }
 };
+
+// Atualizando a Trava de 24h e a Super Mensagem Combo VIP
