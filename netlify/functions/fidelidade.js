@@ -30,29 +30,45 @@ exports.handler = async function(event, context) {
         let pizzasCompradas = dadosCliente.pizzas_compradas || 0;
         let premioDisponivel = dadosCliente.premio_disponivel || false;
         let validadePremio = dadosCliente.validade_premio || null;
-
+        let ultimoParabens = dadosCliente.ultimo_parabens_data || null;
+        
+        let hojeStr = new Date().toISOString().split('T')[0];
         let acaoWhatsApp = comando_whatsapp_original;
 
-        // REGRA DE PONTUAÇÃO VIA PIX
+        // 1. TRAVA DE 24 HORAS DO ANIVERSÁRIO
+        if (acaoWhatsApp === 'avisar_aniversario') {
+            if (ultimoParabens === hojeStr) {
+                // Se já recebeu parabéns hoje, CANCELA a mensagem de aniversário
+                acaoWhatsApp = null;
+            } else {
+                // Se ainda não recebeu, ATIVA a trava para não mandar de novo hoje
+                ultimoParabens = hojeStr; 
+            }
+        }
+
+        // 2. REGRA DO PIX (Sobrescreve a ação dependendo da situação)
         if (pagamento === 'pix') {
             pizzasCompradas += 1;
             
-            // Se não houver comando de aniversário, vamos mandar o feedback do ponto
-            if (!acaoWhatsApp) {
-                if (pizzasCompradas === 1) {
-                    acaoWhatsApp = "avisar_boas_vindas";
-                } else if (pizzasCompradas === 9) {
-                    acaoWhatsApp = "avisar_falta_uma";
-                } else if (pizzasCompradas === 10) {
-                    acaoWhatsApp = "avisar_ganhou";
-                    pizzasCompradas = 0;
-                    premioDisponivel = true;
-                    const dataValidade = new Date();
-                    dataValidade.setDate(dataValidade.getDate() + 15);
-                    validadePremio = dataValidade.toISOString().split('T')[0];
+            if (pizzasCompradas === 1) {
+                if (acaoWhatsApp === 'avisar_aniversario') {
+                    acaoWhatsApp = 'combo_boas_vindas_aniversario';
                 } else {
-                    acaoWhatsApp = "confirmar_ponto"; // Para os pontos 2, 3, 4, 5, 6, 7, 8
+                    acaoWhatsApp = 'avisar_boas_vindas';
                 }
+            } else if (pizzasCompradas === 9) {
+                acaoWhatsApp = 'avisar_falta_uma';
+            } else if (pizzasCompradas === 10) {
+                acaoWhatsApp = 'avisar_ganhou';
+                pizzasCompradas = 0;
+                premioDisponivel = true;
+                const dataValidade = new Date();
+                dataValidade.setDate(dataValidade.getDate() + 15);
+                validadePremio = dataValidade.toISOString().split('T')[0];
+            } else {
+                // Se for a 2ª pizza no PIX (mesmo que seja aniversário), cai aqui e manda só o ponto, 
+                // porque o aniversário foi bloqueado pela trava lá em cima.
+                acaoWhatsApp = 'confirmar_ponto';
             }
         }
 
@@ -66,6 +82,7 @@ exports.handler = async function(event, context) {
 
         if (aniversario) dadosParaAtualizar.aniversario = aniversario;
         if (acaoWhatsApp) dadosParaAtualizar.comando_whatsapp = acaoWhatsApp;
+        if (ultimoParabens) dadosParaAtualizar.ultimo_parabens_data = ultimoParabens;
 
         await clienteRef.set(dadosParaAtualizar, { merge: true });
 
@@ -78,5 +95,3 @@ exports.handler = async function(event, context) {
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
     }
 };
-
-// Forcando a atualizacao agora
