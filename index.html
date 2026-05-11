@@ -286,11 +286,11 @@
                 </div>
                 <div class="form-group">
                     <label for="telefone">Telefone/WhatsApp:</label>
-                    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" required>
                 </div>
                 <div class="form-group">
                     <label for="aniversario">Data de Nascimento (Opcional - Ganhe mimo no seu dia! 🎉):</label>
-                    <input type="date" id="aniversario" name="aniversario">
+                    <input type="date" id="aniversario" name="aniversario" max="">
                 </div>
                 <div class="form-group">
                     <label for="endereco">Endereço para Entrega:</label>
@@ -328,6 +328,11 @@
     </div>
 
     <script>
+        // ==================================================================
+        //  FLAG GLOBAL ANTI-DUPLO CLIQUE (DEBOUNCE REAL)
+        // ==================================================================
+        let pedidoEmProcessamento = false;
+
         // ==================================================================
         //  OFERTAS AUTOMÁTICAS (AJUSTADAS PARA OS ITENS DISPONÍVEIS)
         // ==================================================================
@@ -420,6 +425,10 @@
         }
 
         function enviarPedido() {
+            // ======== TRAVA REAL ANTI-DUPLO CLIQUE ========
+            if (pedidoEmProcessamento) return;
+            // ==============================================
+
             const nome = document.getElementById('nome').value;
             const telefone = document.getElementById('telefone').value;
             const aniversario = document.getElementById('aniversario').value;
@@ -439,7 +448,24 @@
                 return;
             }
 
-            // ======== TRAVA DE SEGURANÇA (DEBOUNCE) ========
+            // ======== VALIDAÇÃO DE DATA DE NASCIMENTO ========
+            if (aniversario) {
+                const dataNasc = new Date(aniversario);
+                const hoje = new Date();
+                if (dataNasc > hoje) {
+                    alert('A data de nascimento não pode ser no futuro!');
+                    return;
+                }
+                const idade = (hoje - dataNasc) / (365.25 * 24 * 60 * 60 * 1000);
+                if (idade < 10 || idade > 120) {
+                    alert('Por favor, insira uma data de nascimento válida.');
+                    return;
+                }
+            }
+            // =================================================
+
+            // ======== TRAVA DE SEGURANÇA (DEBOUNCE VISUAL + FLAG REAL) ========
+            pedidoEmProcessamento = true;
             const todosOsBotoes = document.querySelectorAll('.whatsapp-btn');
             const textosOriginais = [];
             todosOsBotoes.forEach(function(btn, i) {
@@ -450,14 +476,15 @@
                 btn.textContent = 'Processando... 🍕';
             });
             setTimeout(function() {
+                pedidoEmProcessamento = false;
                 todosOsBotoes.forEach(function(btn, i) {
                     btn.disabled = false;
                     btn.style.opacity = '1';
                     btn.style.cursor = 'pointer';
                     btn.textContent = textosOriginais[i];
                 });
-            }, 3000);
-            // ================================================
+            }, 5000);
+            // ==================================================================
 
             // ======== O RADAR DE ANIVERSÁRIO ========
             const dataAtual = new Date();
@@ -523,7 +550,15 @@
             }
         }
         window.addEventListener('resize', handleResize);
-        window.addEventListener('load', handleResize);
+        window.addEventListener('load', function() {
+            handleResize();
+
+            // Setar max date no campo de aniversário (bloquear datas futuras)
+            const inputAniversario = document.getElementById('aniversario');
+            if (inputAniversario) {
+                inputAniversario.max = new Date().toISOString().split('T')[0];
+            }
+        });
 
         // ==================================================================
         //  REGISTRO DO SERVICE WORKER (PWA)
