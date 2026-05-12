@@ -124,6 +124,17 @@
     </style>
 </head>
 <body>
+    
+    <!-- ======== AVISO DE LOJA FECHADA / SEM PIZZA ======== -->
+    <div id="loja-fechada-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 10000; text-align: center; padding: 50px 20px; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+        <div style="font-size: 80px; margin-bottom: 20px;">😴</div>
+        <h1 style="color: #e74c3c; margin-bottom: 15px; font-size: 2.5em;">Pizzas Esgotadas!</h1>
+        <p style="font-size: 1.2em; color: #333; max-width: 400px; margin: 0 auto 20px;">Agradecemos a preferência! Hoje a procura foi grande e nossas massas acabaram.</p>
+        <p style="font-size: 1.2em; font-weight: bold; color: #2c3e50;">Voltamos amanhã com tudo! 🍕</p>
+        <a href="https://wa.me/5598970100184" style="display: inline-block; margin-top: 30px; background: #25d366; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 1.1em; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);">Dúvidas? Chame no WhatsApp</a>
+    </div>
+    <!-- =================================================== -->
+
     <div class="container">
 
         <header class="header-topo">
@@ -156,7 +167,7 @@
 
         <main class="menu">
             <section id="destaques" class="category category-destaques">
-                <h2> Destaques da Casa</h2>
+                <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
                 <div class="items-grid">
                     <article class="item-card">
@@ -207,7 +218,7 @@
             </section>
 
             <section id="especiais" class="category category-especiais">
-                <h2> Variedades Especiais</h2>
+                <h2>✨ Variedades Especiais</h2>
                 <p class="category-subtitle">Experimente Novos Sabores</p>
                 <div class="items-grid">
                     <article class="item-card">
@@ -257,7 +268,7 @@
             </section>
 
             <section id="bordas" class="category category-destaques">
-                <h2> BORDAS RECHEADAS</h2>
+                <h2>🧀 BORDAS RECHEADAS</h2>
                 <div class="items-grid">
                     <article class="item-card">
                         <h3>Bordas Especiais</h3>
@@ -300,6 +311,7 @@
                 </div>
                 <div class="form-group">
                     <label for="pedido-texto">Seu Pedido:</label>
+                    <!-- AVISO REMOVIDO DAQUI -->
                     <textarea id="pedido-texto" name="pedido" placeholder="Ex: 1 Pizza Calabresa G, 1 Refri 2L, Borda de Catupiry..." required></textarea>
                 </div>
                 <div class="form-group">
@@ -329,6 +341,25 @@
     </div>
 
     <script>
+        // ==================================================================
+        //  SISTEMA DE ABRIR/FECHAR A LOJA
+        // ==================================================================
+        // 🔴 PARA FECHAR O CARDÁPIO: Mude a palavra 'aberto' para 'fechado'
+        const STATUS_LOJA = 'aberto'; 
+
+        function verificarStatusLoja() {
+            const overlay = document.getElementById('loja-fechada-overlay');
+            if (STATUS_LOJA === 'fechado') {
+                overlay.style.display = 'flex'; // Mostra a tela de esgotado
+                document.body.style.overflow = 'hidden'; // Impede o cliente de rolar a página
+            } else {
+                overlay.style.display = 'none'; // Esconde a tela
+                document.body.style.overflow = 'auto'; // Libera a rolagem
+            }
+        }
+        window.addEventListener('load', verificarStatusLoja);
+        // ==================================================================
+
         // ==================================================================
         //  FLAG GLOBAL ANTI-DUPLO CLIQUE (DEBOUNCE REAL)
         // ==================================================================
@@ -507,7 +538,7 @@
                     nome: nome,
                     aniversario: aniversario,
                     comando_whatsapp_original: comandoParaRobo,
-                    pagamento: pagamento.value // ESSA É A CHAVE DO PONTO QUE ELE TINHA APAGADO!
+                    pagamento: pagamento.value 
                 })
             })
             .then(res => res.json())
