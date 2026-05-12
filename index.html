@@ -45,6 +45,13 @@
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
+        
+        /* ======== ESTILOS DO BOTÃO MÁGICO PWA ======== */
+        .install-banner { background: #34495e; color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 0.9em; font-weight: 600; border-bottom: 2px solid #2c3e50; }
+        .install-banner button { background: #2ecc71; color: white; border: none; padding: 8px 16px; font-size: 0.9em; font-weight: 700; border-radius: 20px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .install-banner button:active { transform: scale(0.95); }
+        /* ============================================== */
+
         .offer-section { padding: 20px; margin: 20px; border-radius: 12px; text-align: center; background: linear-gradient(45deg, #ffc107, #ff9800); color: #333; border: 2px dashed #ffffff; }
         .offer-section h2 { font-size: 1.5em; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .offer-section p { font-size: 1.05em; line-height: 1.5; }
@@ -110,7 +117,6 @@
 <body>
     <div class="container">
 
-        <!-- HEADER COM LOGO -->
         <header class="header-topo">
             <div class="logo-mini-emoji">🍕</div>
             <div class="header-info">
@@ -119,12 +125,15 @@
             </div>
         </header>
 
-        <!-- ENTREGA GRÁTIS -->
+        <div id="install-banner" class="install-banner" style="display: none;">
+            <span>📲 Instale nosso App Oficial!</span>
+            <button id="install-btn">Instalar App</button>
+        </div>
+
         <div class="delivery-info">
             🚚 ENTREGA GRÁTIS PARA TODA CIDADE
         </div>
 
-        <!-- MENU DE NAVEGAÇÃO -->
         <nav class="nav-menu">
             <a href="#oferta">Oferta do Dia</a>
             <a href="#destaques">Destaques</a>
@@ -134,17 +143,13 @@
             <a href="#pedido">Pedido</a>
         </nav>
 
-        <!-- OFERTA DO DIA -->
         <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;"></section>
 
-        <!-- CARDÁPIO -->
         <main class="menu">
-            <!-- ⭐ DESTAQUES DA CASA (ALTERADO) -->
             <section id="destaques" class="category category-destaques">
                 <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
                 <div class="items-grid">
-                    <!-- 1. Calabresa com Catupiry (movido) -->
                     <article class="item-card">
                         <h3>Calabresa com Catupiry</h3>
                         <p class="description">Calabresa, catupiry, azeitonas e orégano.</p>
@@ -154,7 +159,6 @@
                         </p>
                     </article>
 
-                    <!-- 2. Portuguesa -->
                     <article class="item-card">
                         <h3>Portuguesa</h3>
                         <p class="description">Presunto, cebola, ervilhas, ovos e mussarela.</p>
@@ -164,7 +168,6 @@
                         </p>
                     </article>
 
-                    <!-- 3. Calabresa -->
                     <article class="item-card">
                         <h3>Calabresa</h3>
                         <p class="description">Mussarela, calabresa, azeitona e orégano.</p> 
@@ -174,7 +177,6 @@
                         </p>
                     </article>
 
-                    <!-- 4. Frango com Requeijão (movido) -->
                     <article class="item-card">
                         <h3>Frango com Requeijão</h3>
                         <p class="description">Frango, Requeijão Cremoso, azeitona e orégano.</p>
@@ -184,7 +186,6 @@
                         </p>
                     </article>
 
-                    <!-- 5. Calabresa Paulista -->
                     <article class="item-card">
                         <h3>Calabresa Paulista</h3>
                         <p class="description">Calabresa, cebola, azeitonas e orégano.</p>
@@ -196,12 +197,10 @@
                 </div>
             </section>
 
-            <!-- ✨ VARIEDADES ESPECIAIS (DUPLICATAS REMOVIDAS) -->
             <section id="especiais" class="category category-especiais">
                 <h2>✨ Variedades Especiais</h2>
                 <p class="category-subtitle">Experimente Novos Sabores</p>
                 <div class="items-grid">
-                    <!-- 4 Queijos (mantido) -->
                     <article class="item-card">
                         <h3>4 Queijos</h3>
                         <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p> 
@@ -211,7 +210,6 @@
                         </p>
                     </article>
 
-                    <!-- Moda da Casa (mantido) -->
                     <article class="item-card">
                         <h3>Moda da Casa</h3>
                         <p class="description">Mussarela, frango desfiado, bacon, milho e orégano.</p>
@@ -221,7 +219,6 @@
                         </p>
                     </article> 
 
-                    <!-- CLASSICA DA CASA (mantido) -->
                     <article class="item-card">
                         <h3>Classica da Casa</h3>
                         <p class="description">Mussarela, Presunto, e orégano.</p>
@@ -233,7 +230,6 @@
                 </div>
             </section>
 
-            <!-- 👑 LINHA PREMIUM (INALTERADA) -->
             <section id="premium" class="category category-premium">
                 <h2>👑 Linha Premium</h2>
                 <p class="category-subtitle">Exclusivas e Sofisticadas</p>
@@ -251,7 +247,6 @@
                 </div>
             </section>
 
-            <!-- 🧀 BORDAS RECHEADAS -->
             <section id="bordas" class="category category-destaques">
                 <h2>🧀 BORDAS RECHEADAS</h2>
                 <div class="items-grid">
@@ -263,7 +258,6 @@
                 </div>
             </section>
 
-            <!-- 🥤 BEBIDAS -->
             <section id="bebidas" class="category category-especiais">
                 <h2>🥤 BEBIDAS</h2>
                 <div class="items-grid">
@@ -276,7 +270,6 @@
             </section>
         </main>
 
-        <!-- FORMULÁRIO DE PEDIDO -->
         <section id="pedido" class="order-section">
             <h2>📝 Faça seu Pedido</h2>
             <form class="order-form" onsubmit="return false;">
@@ -322,7 +315,6 @@
         </section>
     </div>
 
-    <!-- BOTÃO WHATSAPP FIXO -->
     <div class="whatsapp-btn-container">
         <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Finalizar Pedido</button>
     </div>
@@ -568,6 +560,40 @@
                 .then(reg => console.log('✅ Service Worker registrado com sucesso:', reg.scope))
                 .catch(err => console.error('❌ Falha ao registrar Service Worker:', err));
         }
+
+        // ==================================================================
+        //  BOTÃO MÁGICO DE INSTALAÇÃO (PWA PROMPT)
+        // ==================================================================
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Previne que o Chrome mostre o mini-infobar automático na parte inferior
+            e.preventDefault();
+            // Guarda o evento para ser ativado quando o usuário clicar no botão
+            deferredPrompt = e;
+            // Mostra o nosso banner personalizado
+            installBanner.style.display = 'flex';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            // Esconde o nosso banner
+            installBanner.style.display = 'none';
+            // Mostra o prompt de instalação oficial do sistema
+            deferredPrompt.prompt();
+            // Aguarda o usuário responder ao prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Resultado da instalação: ${outcome}`);
+            // Limpa a variável
+            deferredPrompt = null;
+        });
+
+        window.addEventListener('appinstalled', () => {
+            // Esconde o banner caso a pessoa tenha instalado por outro atalho
+            installBanner.style.display = 'none';
+            console.log('✅ App da CasadasPizzaass instalado com sucesso!');
+        });
     </script>
 </body>
 </html>
