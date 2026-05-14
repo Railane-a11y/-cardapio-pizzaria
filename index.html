@@ -46,18 +46,14 @@
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
         
-       /* ======== ESTILOS DO BOTÃO MÁGICO PWA ======== */
         .install-banner { background: #34495e; color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 0.9em; font-weight: 600; border-bottom: 2px solid #2c3e50; }
-        
         @keyframes pulsoMagico {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8); }
             70% { transform: scale(1.08); box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
         }
-        
         .install-banner button { background: #2ecc71; color: white; border: none; padding: 8px 16px; font-size: 0.9em; font-weight: 700; border-radius: 20px; cursor: pointer; transition: transform 0.2s; animation: pulsoMagico 1.5s infinite; }
         .install-banner button:active { transform: scale(0.95); }
-        /* ============================================== */
 
         .offer-section { padding: 20px; margin: 20px; border-radius: 12px; text-align: center; background: linear-gradient(45deg, #ffc107, #ff9800); color: #333; border: 2px dashed #ffffff; }
         .offer-section h2 { font-size: 1.5em; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -78,12 +74,10 @@
         .item-card .price { font-weight: 600; font-size: 1.1em; }
         .item-card .price span { display: block; margin-top: 4px; }
         
-        /* ======== ESTILOS DAS ETIQUETAS (BADGES) ======== */
         .badge { font-size: 0.55em; padding: 4px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
         .badge-tradicional { background-color: #27ae60; color: #fff; }
         .badge-especial { background-color: #e67e22; color: #fff; }
         .badge-premium { background-color: #8e44ad; color: #fff; }
-        /* ================================================ */
 
         .upsell-suggestion { background-color: #e8f5e9; border-left: 4px solid var(--cor-destaque); padding: 10px; margin-top: 15px; border-radius: 0 4px 4px 0; font-size: 0.9em; color: #1b5e20; }
         .upsell-suggestion::before { content: '💡'; margin-right: 8px; font-size: 1.1em; }
@@ -170,23 +164,23 @@
 
         <main class="menu">
             <section id="destaques" class="category category-destaques">
-                <h2> Destaques da Casa</h2>
+                <h2>⭐ Destaques da Casa</h2>
                 <p class="category-subtitle">As Mais Pedidas</p>
                 <div class="items-grid">
                     <article class="item-card">
                         <h3>Calabresa com Catupiry <span class="badge badge-especial">Especial</span></h3>
                         <p class="description">Calabresa, catupiry, azeitonas e orégano.</p>
                         <p class="price">
-                            <span>M (6 fatias) - R$ 36,90</span>
+                            <span>M (6 fatias) - R$ 44,90</span>
                             <span>G (8 fatias) - R$ 49,90</span>
                         </p>
                     </article>
 
                     <article class="item-card">
                         <h3>Portuguesa <span class="badge badge-especial">Especial</span></h3>
-                        <p class="description">Presunto, mussarela e ovos.</p>
+                        <p class="description">Presunto, cebola, ervilhas, ovos e mussarela.</p>
                         <p class="price">
-                            <span>M (6 fatias) - R$ 36,90</span>
+                            <span>M (6 fatias) - R$ 44,90</span>
                             <span>G (8 fatias) - R$ 49,90</span>
                         </p>
                     </article>
@@ -195,7 +189,7 @@
                         <h3>Calabresa <span class="badge badge-tradicional">Tradicional</span></h3>
                         <p class="description">Mussarela, calabresa, azeitona e orégano.</p> 
                         <p class="price">
-                            <span>M (6 fatias) - R$ 34,90</span>
+                            <span>M (6 fatias) - R$ 39,90</span>
                             <span>G (8 fatias) - R$ 44,90</span>
                         </p>
                     </article>
@@ -204,7 +198,7 @@
                         <h3>Frango <span class="badge badge-tradicional">Tradicional</span></h3>
                         <p class="description">Mussarela, frango desfiado e orégano.</p>
                         <p class="price">
-                            <span>M (6 fatias) - R$ 34,90</span>
+                            <span>M (6 fatias) - R$ 39,90</span>
                             <span>G (8 fatias) - R$ 44,90</span>
                         </p>
                     </article>
@@ -213,14 +207,14 @@
                         <h3>Frango com Requeijão <span class="badge badge-especial">Especial</span></h3>
                         <p class="description">Frango, Requeijão Cremoso, azeitona e orégano.</p>
                         <p class="price">
-                            <span>M (6 fatias) - R$ 36,90</span>
+                            <span>M (6 fatias) - R$ 44,90</span>
                             <span>G (8 fatias) - R$ 49,90</span>
                         </p>
                     </article>
 
                     <article class="item-card">
                         <h3>Calabresa Paulista <span class="badge badge-tradicional">Tradicional</span></h3>
-                        <p class="description">Calabresa, molho de tomante, azeitonas e orégano.</p>
+                        <p class="description">Calabresa, cebola, azeitonas e orégano.</p>
                         <p class="price">
                             <span>M (6 fatias) - R$ 29,90</span>
                             <span>G (8 fatias) - R$ 37,90</span>
@@ -230,23 +224,23 @@
             </section>
 
             <section id="especiais" class="category category-especiais">
-                <h2> Variedades Especiais</h2>
+                <h2>✨ Variedades Especiais</h2>
                 <p class="category-subtitle">Experimente Novos Sabores</p>
                 <div class="items-grid">
                     <article class="item-card">
                         <h3>4 Queijos <span class="badge badge-especial">Especial</span></h3>
                         <p class="description">Mussarela, queijo coalho, parmesão e requeijão.</p> 
                         <p class="price">
-                            <span>M (6 fatias) - R$ 34,90</span>
+                            <span>M (6 fatias) - R$ 39,90</span>
                             <span>G (8 fatias) - R$ 44,90</span>
                         </p>
                     </article>
 
                     <article class="item-card">
                         <h3>Moda da Casa <span class="badge badge-especial">Especial</span></h3>
-                        <p class="description">Mussarela, frango desfiado, bacon e orégano.</p>
+                        <p class="description">Mussarela, frango desfiado, bacon, milho e orégano.</p>
                         <p class="price">
-                            <span>M (6 fatias) - R$ 36,90</span>
+                            <span>M (6 fatias) - R$ 44,90</span>
                             <span>G (8 fatias) - R$ 49,90</span>
                         </p>
                     </article> 
@@ -255,7 +249,7 @@
                         <h3>Classica da Casa <span class="badge badge-tradicional">Tradicional</span></h3>
                         <p class="description">Mussarela, Presunto, e orégano.</p>
                         <p class="price">
-                            <span>M (6 fatias) - R$ 31,90</span>
+                            <span>M (6 fatias) - R$ 36,90</span>
                             <span>G (8 fatias) - R$  41,90</span>
                         </p>
                     </article> 
@@ -268,19 +262,19 @@
                 <div class="items-grid">
                     <article class="item-card">
                         <h3>Frango com Catupiry <span class="badge badge-premium">Premium</span></h3>
-                        <p class="description">Frango, mussarela, catupiry e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 37,90</span><span>G (8 fatias) - R$ 49,90</span></p>
+                        <p class="description">Frango, mussarela, catupiry, bacon e orégano.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 44,90</span><span>G (8 fatias) - R$ 49,90</span></p>
                     </article>
                     <article class="item-card">
                         <h3>Carne Seca <span class="badge badge-premium">Premium</span></h3>
-                        <p class="description">Mussarela, carne de sol, requeijão cremoso e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 38,90</span><span>G (8 fatias) - R$ 57,90</span></p>
+                        <p class="description">Mussarela, carne seca, bacon e cebola.</p>
+                        <p class="price"><span>M (6 fatias) - R$ 52,90</span><span>G (8 fatias) - R$ 57,90</span></p>
                     </article>
                 </div>
             </section>
 
             <section id="bordas" class="category category-destaques">
-                <h2> BORDAS RECHEADAS</h2>
+                <h2>🧀 BORDAS RECHEADAS</h2>
                 <div class="items-grid">
                     <article class="item-card">
                         <h3>Bordas Especiais</h3>
@@ -368,12 +362,11 @@
             }
         }
         window.addEventListener('load', verificarStatusLoja);
-        // ==================================================================
 
         let pedidoEmProcessamento = false;
 
         // ==================================================================
-        //  OFERTAS AUTOMÁTICAS (VALORES ATUALIZADOS COM +2.90)
+        //  OFERTAS AUTOMÁTICAS
         // ==================================================================
         const products = {
             'calabresa': { name: 'Pizza de Calabresa (G)', price: 44.90 },
@@ -389,8 +382,7 @@
             'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
             'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
             'sonhodevalsa': { name: 'Bombom Sonho de Valsa', price: 1.50 },
-            'bordacatupiry': { name: 'Borda de Catupiry', price: 12.00 }, 
-            'bordadecheddar': { name: 'Borda de Cheddar', price: 12.00 } 
+            'bordacatupiry': { name: 'Borda de Catupiry', price: 12.00 }
         };
 
         const dailyOffers = [
@@ -398,7 +390,7 @@
             { day: 1, title: 'Segunda da Economia', items: ['calabresapaulista', 'guarana2l'], discount: 0.05 },
             { day: 2, title: 'Terça do Clássico', items: ['calabresa', 'guarana2l'], discount: 0.05 },
             { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l', 'sonhodevalsa', 'bordacatupiry'], discount: 0.0518 },
-            { day: 4, title: 'Quinta Especial', items: ['frangorequeijao', 'bordadecheddar' , 'guarana2l'], discount: 0.05 },
+            { day: 4, title: 'Quinta Especial', items: ['frangorequeijao', 'guarana2l'], discount: 0.05 },
             { day: 5, title: 'Sextou com Pizza!', items: ['calabresacatupiry', 'guarana2l'], discount: 0.05 },
             { day: 6, title: 'Sabadão Imperdível', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
         ];
@@ -589,9 +581,6 @@
             }
         });
 
-        // ==================================================================
-        //  REGISTRO DO SERVICE WORKER (PWA)
-        // ==================================================================
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
                 .then(reg => console.log('✅ Service Worker registrado com sucesso:', reg.scope))
