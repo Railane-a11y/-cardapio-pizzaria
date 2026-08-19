@@ -45,7 +45,7 @@
         .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
         .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
         .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
-        
+
         .install-banner { background: #34495e; color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 0.9em; font-weight: 600; border-bottom: 2px solid #2c3e50; }
         @keyframes pulsoMagico {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8); }
@@ -73,7 +73,7 @@
         .item-card .description { color: var(--cor-texto-claro); margin-bottom: 12px; flex-grow: 1; }
         .item-card .price { font-weight: 600; font-size: 1.1em; }
         .item-card .price span { display: block; margin-top: 4px; }
-        
+
         .badge { font-size: 0.55em; padding: 4px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
         .badge-tradicional { background-color: #27ae60; color: #fff; }
         .badge-especial { background-color: #e67e22; color: #fff; }
@@ -124,7 +124,7 @@
     </style>
 </head>
 <body>
-    
+
     <div id="loja-fechada-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 10000; text-align: center; padding: 50px 20px; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
         <div style="font-size: 80px; margin-bottom: 20px;">😴</div>
         <h1 style="color: #e74c3c; margin-bottom: 15px; font-size: 2.5em;">Pizzas Esgotadas!</h1>
@@ -171,6 +171,7 @@
                         <h3>Calabresa com Catupiry <span class="badge badge-especial">Especial</span></h3>
                         <p class="description">Calabresa, catupiry, e orégano.</p>
                         <p class="price">
+                            <span>P (4 fatias) - R$ 40,00</span>
                             <span>M (6 fatias) - R$ 45,00</span>
                             <span>G (8 fatias) - R$ 49,90</span>
                         </p>
@@ -180,6 +181,7 @@
                         <h3>Portuguesa <span class="badge badge-especial">Especial</span></h3>
                         <p class="description">Mortadela Perdigão, ovos e mussarela.</p>
                         <p class="price">
+                            <span>P (4 fatias) - R$ 40,00</span>
                             <span>M (6 fatias) - R$ 45,00</span>
                             <span>G (8 fatias) - R$ 49,90</span>
                         </p>
@@ -189,6 +191,7 @@
                         <h3>Calabresa <span class="badge badge-tradicional">Tradicional</span></h3>
                         <p class="description">Mussarela, calabresa, e orégano.</p> 
                         <p class="price">
+                            <span>P (4 fatias) - R$ 34,90</span>
                             <span>M (6 fatias) - R$ 39,90</span>
                             <span>G (8 fatias) - R$ 45,00</span>
                         </p>
@@ -198,6 +201,7 @@
                         <h3>Frango <span class="badge badge-tradicional">Tradicional</span></h3>
                         <p class="description">Mussarela, frango desfiado e orégano.</p>
                         <p class="price">
+                            <span>P (4 fatias) - R$ 34,90</span>
                             <span>M (6 fatias) - R$ 39,90</span>
                             <span>G (8 fatias) - R$ 45,00</span>
                         </p>
@@ -207,6 +211,7 @@
                         <h3>Frango com Requeijão <span class="badge badge-especial">Especial</span></h3>
                         <p class="description">Frango, Requeijão Cremoso, e orégano.</p>
                         <p class="price">
+                            <span>P (4 fatias) - R$ 40,00</span>
                             <span>M (6 fatias) - R$ 45,00</span>
                             <span>G (8 fatias) - R$ 49,90</span>
                         </p>
@@ -216,6 +221,7 @@
                         <h3>Calabresa Paulista <span class="badge badge-tradicional">Tradicional</span></h3>
                         <p class="description">Calabresa, Molho de Tomate, e orégano.</p>
                         <p class="price">
+                            <span>P (4 fatias) - R$ 24,90</span>
                             <span>M (6 fatias) - R$ 29,90</span>
                             <span>G (8 fatias) - R$ 35,90</span>
                         </p>
@@ -231,6 +237,7 @@
                         <h3>4 Queijos <span class="badge badge-tradicional">Tradicional</span></h3>
                         <p class="description">Mussarela, queijo coalho, parmesão e Requeijão Cremoso.</p> 
                         <p class="price">
+                            <span>P (4 fatias) - R$ 34,90</span>
                             <span>M (6 fatias) - R$ 39,90</span>
                             <span>G (8 fatias) - R$ 45,00</span>
                         </p>
@@ -240,6 +247,7 @@
                         <h3>Moda da Casa <span class="badge badge-especial">Especial</span></h3>
                         <p class="description">Mussarela, frango desfiado, bacon, e orégano.</p>
                         <p class="price">
+                            <span>P (4 fatias) - R$ 40,00</span>
                             <span>M (6 fatias) - R$ 45,00</span>
                             <span>G (8 fatias) - R$ 49,90</span>
                         </p>
@@ -249,6 +257,7 @@
                         <h3>Classica da Casa <span class="badge badge-tradicional">Tradicional</span></h3>
                         <p class="description">Mussarela, Mortadela Perdigão, e orégano.</p>
                         <p class="price">
+                            <span>P (4 fatias) - R$ 34,90</span>
                             <span>M (6 fatias) - R$ 39,90</span>
                             <span>G (8 fatias) - R$ 45,00</span>
                         </p>
@@ -263,12 +272,20 @@
                     <article class="item-card">
                         <h3>Frango com Catupiry <span class="badge badge-premium">Premium</span></h3>
                         <p class="description">Frango, mussarela, catupiry, e orégano.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 53,00</span><span>G (8 fatias) - R$ 58,00</span></p>
+                        <p class="price">
+                            <span>P (4 fatias) - R$ 48,00</span>
+                            <span>M (6 fatias) - R$ 53,00</span>
+                            <span>G (8 fatias) - R$ 58,00</span>
+                        </p>
                     </article>
                     <article class="item-card">
                         <h3>Carne Seca <span class="badge badge-premium">Premium</span></h3>
                         <p class="description">Mussarela, carne seca, e Requeijão Cremoso.</p>
-                        <p class="price"><span>M (6 fatias) - R$ 53,00</span><span>G (8 fatias) - R$ 58,00</span></p>
+                        <p class="price">
+                            <span>P (4 fatias) - R$ 48,00</span>
+                            <span>M (6 fatias) - R$ 53,00</span>
+                            <span>G (8 fatias) - R$ 58,00</span>
+                        </p>
                     </article>
                 </div>
             </section>
@@ -466,13 +483,13 @@
             const endereco = document.getElementById('endereco').value;
             const pedido = document.getElementById('pedido-texto').value;
             const pagamento = document.querySelector('input[name="pagamento"]:checked');
-            
+
             if (!nome || !telefone || !endereco || !pedido) {
                 alert('Por favor, preencha todos os campos do pedido!');
                 document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
-            
+
             if (!pagamento) {
                 alert('Por favor, selecione uma forma de pagamento!');
                 document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
@@ -545,11 +562,11 @@
                            `*Endereço:* ${endereco}\n\n` +
                            `*Pedido Detalhado:*\n${pedido}\n\n` +
                            `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
-            
+
             if (pagamento.value === 'pix') {
                 mensagem += `*Dados para PIX:*\n*Chave (Celular):* 98970100184\n*Nome:* Francisco de Sousa\n\n_O pedido só é liberado após o envio do comprovante._\n\n`;
             }
-            
+
             mensagem += `_Pedido enviado via cardápio digital._`;
             window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`, '_blank');
         }
