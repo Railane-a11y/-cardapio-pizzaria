@@ -1,11 +1,11 @@
 {
-  "name": "Casa das Pizzaass",
-  "short_name": "Pizzaass",
-  "description": "O cardápio digital da Casa das Pizzaass.",
+  "name": "Casa das Pizzas",
+  "short_name": "Casa Pizzas",
+  "description": "O cardápio digital da Casa das Pizzas.",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#c0392b",
-  "theme_color": "#e74c3c",
+  "background_color": "#17100e",
+  "theme_color": "#17100e",
   "icons": [
     {
       "src": "icon-192x192.png",

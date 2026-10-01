@@ -1,631 +1,171 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio Digital - CasadasPizzaass</title>
-    <meta name="theme-color" content="#e74c3c">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
-    <style>
-        :root {
-            --cor-primaria: #e74c3c;
-            --cor-secundaria: #c0392b;
-            --cor-destaque: #27ae60;
-            --cor-premium-fundo: #2c3e50;
-            --cor-premium-texto: #ecf0f1;
-            --cor-premium-destaque: #ffd700;
-            --cor-texto-escuro: #2c3e50;
-            --cor-texto-claro: #666;
-            --fundo-claro: #ffffff;
-            --fundo-neutro: #f8f9fa;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; line-height: 1.6; padding-bottom: 80px; }
-        .container { max-width: 900px; margin: 0 auto; background: var(--fundo-claro); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-
-        .header-topo {
-            background: linear-gradient(45deg, var(--cor-primaria), var(--cor-secundaria));
-            display: flex;
-            align-items: center;
-            padding: 10px 16px;
-            gap: 12px;
-        }
-        .logo-mini-emoji {
-            width: 42px; height: 42px; border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; flex-shrink: 0;
-            border: 2px solid rgba(255,255,255,0.4);
-        }
-        .header-info { flex-grow: 1; }
-        .header-info h1 { color: #fff; font-size: 1.3em; font-weight: 700; line-height: 1.2; }
-        .header-info p { color: rgba(255,255,255,0.85); font-size: 0.8em; }
-
-        .nav-menu { background-color: var(--fundo-claro); padding: 10px; border-bottom: 1px solid #eee; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; white-space: nowrap; }
-        .nav-menu a { color: var(--cor-primaria); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 20px; transition: background-color 0.3s, color 0.3s; display: inline-block; }
-        .nav-menu a:hover { background-color: var(--cor-primaria); color: white; }
-
-        .install-banner { background: #34495e; color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 0.9em; font-weight: 600; border-bottom: 2px solid #2c3e50; }
-        @keyframes pulsoMagico {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8); }
-            70% { transform: scale(1.08); box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-        }
-        .install-banner button { background: #2ecc71; color: white; border: none; padding: 8px 16px; font-size: 0.9em; font-weight: 700; border-radius: 20px; cursor: pointer; transition: transform 0.2s; animation: pulsoMagico 1.5s infinite; }
-        .install-banner button:active { transform: scale(0.95); }
-
-        .offer-section { padding: 20px; margin: 20px; border-radius: 12px; text-align: center; background: linear-gradient(45deg, #ffc107, #ff9800); color: #333; border: 2px dashed #ffffff; }
-        .offer-section h2 { font-size: 1.5em; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .offer-section p { font-size: 1.05em; line-height: 1.5; }
-        .offer-section .original-price { text-decoration: line-through; opacity: 0.8; font-size: 0.9em; }
-        .offer-section .price-highlight { font-weight: 700; font-size: 1.3em; display: block; margin-top: 8px; }
-        .countdown-timer { margin-top: 15px; background-color: rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 8px; }
-        .countdown-timer .timer-label { font-size: 0.9em; font-weight: 600; display: block; margin-bottom: 5px; }
-        .countdown-timer #timer { font-size: 1.4em; font-weight: 700; color: var(--cor-secundaria); letter-spacing: 2px; }
-        .delivery-info { background: var(--cor-destaque); color: white; text-align: center; padding: 12px; font-size: 1em; font-weight: 600; }
-        .category { padding: 30px 20px; border-bottom: 8px solid #f0f2f5; }
-        .category h2 { font-size: 1.7em; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .category .category-subtitle { font-size: 1em; color: var(--cor-texto-claro); margin-bottom: 25px; font-style: italic; }
-        .items-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
-        .item-card { display: flex; flex-direction: column; }
-        .item-card h3 { font-size: 1.25em; color: var(--cor-texto-escuro); margin-bottom: 8px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-        .item-card .description { color: var(--cor-texto-claro); margin-bottom: 12px; flex-grow: 1; }
-        .item-card .price { font-weight: 600; font-size: 1.1em; }
-        .item-card .price span { display: block; margin-top: 4px; }
-
-        .badge { font-size: 0.55em; padding: 4px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
-        .badge-tradicional { background-color: #27ae60; color: #fff; }
-        .badge-especial { background-color: #e67e22; color: #fff; }
-        .badge-premium { background-color: #8e44ad; color: #fff; }
-
-        .upsell-suggestion { background-color: #e8f5e9; border-left: 4px solid var(--cor-destaque); padding: 10px; margin-top: 15px; border-radius: 0 4px 4px 0; font-size: 0.9em; color: #1b5e20; }
-        .upsell-suggestion::before { content: '💡'; margin-right: 8px; font-size: 1.1em; }
-        .category-destaques { background-color: var(--fundo-claro); }
-        .category-destaques h2 { color: var(--cor-primaria); }
-        .category-destaques .price { color: var(--cor-primaria); }
-        .category-especiais { background-color: var(--fundo-neutro); }
-        .category-especiais h2 { color: var(--cor-primaria); }
-        .category-especiais .price { color: var(--cor-primaria); }
-        .category-premium { background-color: var(--cor-premium-fundo); color: var(--cor-premium-texto); }
-        .category-premium h2 { color: var(--cor-premium-destaque); }
-        .category-premium .category-subtitle { color: #bdc3c7; }
-        .category-premium .item-card h3 { color: var(--fundo-claro); }
-        .category-premium .item-card .description { color: #bdc3c7; }
-        .category-premium .item-card .price { color: var(--cor-premium-destaque); }
-        .order-section { background: linear-gradient(135deg, #3498db, #2980b9); padding: 40px 20px; color: white; }
-        .order-section h2 { text-align: center; font-size: 1.8em; }
-        .order-form { max-width: 500px; margin: 30px auto 0; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
-        .form-group input, .form-group textarea { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 1em; font-family: inherit; }
-        .form-group textarea { resize: vertical; min-height: 120px; }
-        .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .payment-option { background: rgba(255,255,255,0.15); border: 2px solid transparent; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
-        .payment-option:hover { background: rgba(255,255,255,0.25); }
-        .payment-option.selected { background: var(--fundo-claro); color: #2980b9; border-color: #2980b9; }
-        .payment-option input { display: none; }
-        .payment-option .payment-icon { font-size: 1.8em; }
-        .payment-option .payment-text { font-weight: 600; font-size: 0.9em; display: block; margin-top: 5px; }
-        .whatsapp-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--fundo-claro); padding: 10px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 200; }
-        .whatsapp-btn { background: #25d366; color: white; border: none; padding: 15px; font-size: 1.1em; font-weight: 700; border-radius: 50px; cursor: pointer; width: 100%; transition: background-color 0.3s ease, transform 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .whatsapp-btn:hover { background: #128c7e; transform: scale(1.02); }
-
-        @media (min-width: 768px) {
-            body { padding-bottom: 0; }
-            .container { margin: 20px auto; border-radius: 12px; overflow: hidden; }
-            .header-info h1 { font-size: 1.6em; }
-            .category { padding: 40px; }
-            .items-grid { grid-template-columns: 1fr 1fr; }
-            .nav-menu { justify-content: center; }
-            .whatsapp-btn-container { display: none; }
-            .order-form .whatsapp-btn-placeholder { display: block; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cardápio Digital | Casa das Pizzas</title>
+  <meta name="description" content="Cardápio digital da Casa das Pizzas. Entrega grátis para toda a cidade. Peça pelo WhatsApp.">
+  <meta name="theme-color" content="#17100e">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192x192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <div id="loja-fechada-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 10000; text-align: center; padding: 50px 20px; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
-        <div style="font-size: 80px; margin-bottom: 20px;">😴</div>
-        <h1 style="color: #e74c3c; margin-bottom: 15px; font-size: 2.5em;">Pizzas Esgotadas!</h1>
-        <p style="font-size: 1.2em; color: #333; max-width: 400px; margin: 0 auto 20px;">Agradecemos a preferência! Hoje a procura foi grande e nossas massas acabaram.</p>
-        <p style="font-size: 1.2em; font-weight: bold; color: #2c3e50;">Voltamos Segunda Feira com tudo! 🍕</p>
-        <a href="https://wa.me/5598970100184" style="display: inline-block; margin-top: 30px; background: #25d366; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 1.1em; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);">Dúvidas? Chame no WhatsApp</a>
+  <!-- Aviso de loja fechada (controlado por CONFIG.statusLoja em js/config.js) -->
+  <div id="loja-fechada" class="fechado" hidden>
+    <div class="fechado__conteudo">
+      <img src="img/logo.png" alt="Casa das Pizzas" class="fechado__logo" width="120" height="120">
+      <h1 id="fechado-titulo"></h1>
+      <p id="fechado-texto"></p>
+      <p id="fechado-retorno" class="fechado__retorno"></p>
+      <a id="fechado-contato" class="btn btn--whatsapp" href="#">Dúvidas? Chame no WhatsApp</a>
     </div>
-    <div class="container">
+  </div>
 
-        <header class="header-topo">
-            <div class="logo-mini-emoji">🍕</div>
-            <div class="header-info">
-                <h1>CasadasPizzaass</h1>
-                <p>As melhores pizzas da cidade</p>
+  <header class="topo">
+    <div class="topo__interno">
+      <img src="img/logo.png" alt="Casa das Pizzas" class="topo__logo" width="64" height="64">
+      <div class="topo__marca">
+        <p class="wordmark"><span class="wordmark__casa">Casa</span> <span class="wordmark__das">das Pizzas</span></p>
+        <p class="topo__slogan">As melhores pizzas da cidade</p>
+      </div>
+    </div>
+  </header>
+
+  <div id="instalar" class="instalar" hidden>
+    <span>Instale o app oficial e peça mais rápido</span>
+    <button type="button" id="instalar-btn" class="instalar__btn">Instalar</button>
+  </div>
+
+  <div class="entrega">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1zM14 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+    Entrega grátis para toda a cidade
+  </div>
+
+  <nav class="nav" aria-label="Seções do cardápio">
+    <div class="nav__lista">
+      <a href="#oferta" id="nav-oferta" hidden>Oferta do dia</a>
+      <a href="#destaques">Destaques</a>
+      <a href="#especiais">Especiais</a>
+      <a href="#premium">Premium</a>
+      <a href="#bordas">Bordas</a>
+      <a href="#bebidas">Bebidas</a>
+      <a href="#pedido">Pedido</a>
+    </div>
+  </nav>
+
+  <main class="pagina">
+
+    <!-- Banner de fotos (preenchido por js/app.js a partir de BANNERS) -->
+    <section class="banner" id="banner" aria-label="Nossas pizzas" aria-roledescription="carrossel">
+      <div class="banner__trilho" id="banner-trilho"></div>
+      <button type="button" class="banner__seta banner__seta--prev" id="banner-prev" aria-label="Foto anterior">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="banner__seta banner__seta--next" id="banner-next" aria-label="Próxima foto">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="banner__pontos" id="banner-pontos"></div>
+    </section>
+
+    <!-- Oferta do dia (preenchida por js/app.js) -->
+    <section id="oferta" class="oferta" hidden></section>
+
+    <!-- Categorias do cardápio (preenchidas por js/app.js a partir de CATEGORIAS) -->
+    <div id="cardapio"></div>
+
+    <section id="pedido" class="pedido">
+      <div class="pedido__interno">
+        <h2 class="pedido__titulo">Faça seu pedido</h2>
+        <p class="pedido__sub">Preencha os dados e enviamos tudo direto para o nosso WhatsApp.</p>
+
+        <form class="form" id="form-pedido" novalidate>
+          <div class="campo">
+            <label for="nome">Seu nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" autocomplete="name" required>
+          </div>
+          <div class="campo">
+            <label for="telefone">Telefone / WhatsApp</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" autocomplete="tel" required>
+          </div>
+          <div class="campo">
+            <label for="aniversario">Data de nascimento <span class="campo__opcional">opcional: ganhe desconto no seu dia</span></label>
+            <input type="date" id="aniversario" name="aniversario">
+          </div>
+          <div class="campo">
+            <label for="endereco">Endereço para entrega</label>
+            <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro e referência" autocomplete="street-address" required>
+          </div>
+          <div class="campo">
+            <label for="pedido-texto">Seu pedido</label>
+            <textarea id="pedido-texto" name="pedido" placeholder="Ex: 1 Pizza Calabresa G, 1 Refri 2L, borda de Catupiry" required></textarea>
+          </div>
+
+          <fieldset class="campo pagamento">
+            <legend>Forma de pagamento</legend>
+            <div class="pagamento__opcoes">
+              <label class="pagamento__opcao">
+                <input type="radio" name="pagamento" value="dinheiro">
+                <span class="pagamento__cartao">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
+                  Dinheiro
+                </span>
+              </label>
+              <label class="pagamento__opcao">
+                <input type="radio" name="pagamento" value="pix">
+                <span class="pagamento__cartao">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l4.2 4.2a2 2 0 0 1 0 2.8L12 13.7 7.8 9.5a2 2 0 0 1 0-2.8z"/><path d="M12 10.3l4.2 4.2a2 2 0 0 1 0 2.8L12 21.5l-4.2-4.2a2 2 0 0 1 0-2.8z" opacity=".55"/></svg>
+                  PIX
+                </span>
+              </label>
             </div>
-        </header>
+          </fieldset>
 
-        <div id="install-banner" class="install-banner" style="display: none;">
-            <span>📲 Instale nosso App Oficial!</span>
-            <button id="install-btn">Instalar App</button>
-        </div>
+          <p class="form__erro" id="form-erro" role="alert" hidden></p>
 
-        <div class="delivery-info">
-            🚚 ENTREGA GRÁTIS PARA TODA CIDADE
-        </div>
+          <button type="submit" class="btn btn--whatsapp btn--grande" id="enviar-btn">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            <span id="enviar-texto">Enviar pelo WhatsApp</span>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
 
-        <nav class="nav-menu">
-            <a href="#oferta">Oferta do Dia</a>
-            <a href="#destaques">Destaques</a>
-            <a href="#especiais">Especiais</a>
-            <a href="#premium">Premium</a>
-            <a href="#bebidas">Bebidas</a>
-            <a href="#pedido">Pedido</a>
-        </nav>
-
-        <section id="oferta" class="offer-section" style="display: none; margin-top: 20px;"></section>
-
-        <main class="menu">
-            <section id="destaques" class="category category-destaques">
-                <h2>⭐ Destaques da Casa</h2>
-                <p class="category-subtitle">As Mais Pedidas</p>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Calabresa com Requeijão <span class="badge badge-especial">Especial</span></h3>
-                        <p class="description">Calabresa, catupiry, e orégano.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 40,00</span>
-                            <span>M (6 fatias) - R$ 45,00</span>
-                            <span>G (8 fatias) - R$ 49,90</span>
-                        </p>
-                    </article>
-
-                    <article class="item-card">
-                        <h3>Portuguesa <span class="badge badge-especial">Especial</span></h3>
-                        <p class="description">Mortadela Perdigão, ovos e mussarela.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 40,00</span>
-                            <span>M (6 fatias) - R$ 45,00</span>
-                            <span>G (8 fatias) - R$ 49,90</span>
-                        </p>
-                    </article>
-
-                    <article class="item-card">
-                        <h3>Calabresa <span class="badge badge-tradicional">Tradicional</span></h3>
-                        <p class="description">Mussarela, calabresa, e orégano.</p> 
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 34,90</span>
-                            <span>M (6 fatias) - R$ 39,90</span>
-                            <span>G (8 fatias) - R$ 45,00</span>
-                        </p>
-                    </article>
-
-                    <article class="item-card">
-                        <h3>Frango <span class="badge badge-tradicional">Tradicional</span></h3>
-                        <p class="description">Mussarela, frango desfiado e orégano.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 34,90</span>
-                            <span>M (6 fatias) - R$ 39,90</span>
-                            <span>G (8 fatias) - R$ 45,00</span>
-                        </p>
-                    </article>
-
-                    <article class="item-card">
-                        <h3>Frango com Requeijão Normal <span class="badge badge-especial">Especial</span></h3>
-                        <p class="description">Frango, Requeijão Cremoso, e orégano.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 40,00</span>
-                            <span>M (6 fatias) - R$ 45,00</span>
-                            <span>G (8 fatias) - R$ 49,90</span>
-                        </p>
-                    </article>
-
-                    <article class="item-card">
-                        <h3>Calabresa Paulista <span class="badge badge-tradicional">Tradicional</span></h3>
-                        <p class="description">Calabresa, Molho de Tomate, e orégano.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 29,90</span>
-                            <span>M (6 fatias) - R$ 34,90</span>
-                            <span>G (8 fatias) - R$ 39,90</span>
-                        </p>
-                    </article>
-                </div>
-            </section>
-
-            <section id="especiais" class="category category-especiais">
-                <h2>✨ Variedades Especiais</h2>
-                <p class="category-subtitle">Experimente Novos Sabores</p>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Pizza de Queijo <span class="badge badge-tradicional">Tradicional</span></h3>
-                        <p class="description">Mussarela, queijo coalho, parmesão e Requeijão Cremoso.</p> 
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 34,90</span>
-                            <span>M (6 fatias) - R$ 39,90</span>
-                            <span>G (8 fatias) - R$ 45,00</span>
-                        </p>
-                    </article>
-
-                    <article class="item-card">
-                        <h3>Moda da Casa <span class="badge badge-especial">Especial</span></h3>
-                        <p class="description">Mussarela, frango desfiado, bacon, e orégano.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 40,00</span>
-                            <span>M (6 fatias) - R$ 45,00</span>
-                            <span>G (8 fatias) - R$ 49,90</span>
-                        </p>
-                    </article> 
-
-                    <article class="item-card">
-                        <h3>Classica da Casa <span class="badge badge-tradicional">Tradicional</span></h3>
-                        <p class="description">Mussarela, Mortadela Perdigão, e orégano.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 34,90</span>
-                            <span>M (6 fatias) - R$ 39,90</span>
-                            <span>G (8 fatias) - R$ 45,00</span>
-                        </p>
-                    </article> 
-                </div>
-            </section>
-
-            <section id="premium" class="category category-premium">
-                <h2>👑 Linha Premium</h2>
-                <p class="category-subtitle">Exclusivas e Sofisticadas</p>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Frango com Requeijão  <span class="badge badge-premium">Premium</span></h3>
-                        <p class="description">Frango, mussarela, Requeijão, e orégano.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 48,00</span>
-                            <span>M (6 fatias) - R$ 53,00</span>
-                            <span>G (8 fatias) - R$ 58,00</span>
-                        </p>
-                    </article>
-                    <article class="item-card">
-                        <h3>Carne Seca <span class="badge badge-premium">Premium</span></h3>
-                        <p class="description">Mussarela, carne seca, e Requeijão Cremoso.</p>
-                        <p class="price">
-                            <span>P (4 fatias) - R$ 48,00</span>
-                            <span>M (6 fatias) - R$ 53,00</span>
-                            <span>G (8 fatias) - R$ 58,00</span>
-                        </p>
-                    </article>
-                </div>
-            </section>
-
-            <section id="bordas" class="category category-destaques">
-                <h2> BORDAS RECHEADAS</h2>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Bordas Especiais</h3>
-                        <p class="description">Catupiry e Cheddar</p>
-                        <p class="price"><span>M - R$ 10,00</span><span>G - R$ 12,00</span></p>
-                    </article>
-                </div>
-            </section>
-
-            <section id="bebidas" class="category category-especiais">
-                <h2>🥤 BEBIDAS</h2>
-                <div class="items-grid">
-                    <article class="item-card">
-                        <h3>Refrigerantes</h3>
-                        <p class="description">Coca-Cola e Guaraná</p>
-                        <p class="price"><span>1 Litro - R$ 10,00</span><span>2 Litros - R$ 15,00</span></p>
-                    </article>
-                </div>
-            </section>
-        </main>
-
-        <section id="pedido" class="order-section">
-            <h2>📝 Faça seu Pedido</h2>
-            <form class="order-form" onsubmit="return false;">
-                <div class="form-group">
-                    <label for="nome">Seu Nome:</label>
-                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefone">Telefone/WhatsApp:</label>
-                    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" required>
-                </div>
-                <div class="form-group">
-                    <label for="aniversario">Data de Nascimento (Opcional - Ganhe Desconto no seu dia! 🎉):</label>
-                    <input type="date" id="aniversario" name="aniversario" max="">
-                </div>
-                <div class="form-group">
-                    <label for="endereco">Endereço para Entrega:</label>
-                    <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro e referência" required>
-                </div>
-                <div class="form-group">
-                    <label for="pedido-texto">Seu Pedido:</label>
-                    <textarea id="pedido-texto" name="pedido" placeholder="Ex: 1 Pizza Calabresa G, 1 Refri 2L, Borda de Catupiry..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>💳 Forma de Pagamento:</label>
-                    <div class="payment-methods">
-                        <label class="payment-option" onclick="selectPayment('dinheiro')">
-                            <input type="radio" name="pagamento" value="dinheiro" id="dinheiro">
-                            <span class="payment-icon">💵</span>
-                            <span class="payment-text">Dinheiro</span>
-                        </label>
-                        <label class="payment-option" onclick="selectPayment('pix')">
-                            <input type="radio" name="pagamento" value="pix" id="pix">
-                            <span class="payment-icon">📱</span>
-                            <span class="payment-text">PIX</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="whatsapp-btn-placeholder" style="display: none; margin-top: 20px;">
-                    <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Enviar pelo WhatsApp</button>
-                </div>
-            </form>
-        </section>
+  <footer class="rodape">
+    <div class="rodape__interno">
+      <img src="img/logo.png" alt="Casa das Pizzas" class="rodape__logo" width="96" height="96" loading="lazy">
+      <div class="rodape__info">
+        <p class="rodape__titulo">Onde estamos</p>
+        <p id="rodape-endereco"></p>
+        <p id="rodape-horario"></p>
+        <p id="rodape-atendimento"></p>
+      </div>
+      <div class="rodape__info">
+        <p class="rodape__titulo">Fale com a gente</p>
+        <p><a id="rodape-whats" href="#"></a></p>
+        <p>
+          <a id="rodape-insta" class="rodape__insta" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            <span id="rodape-insta-texto"></span>
+          </a>
+        </p>
+      </div>
     </div>
+    <p class="rodape__copy">Casa das Pizzas. Todos os direitos reservados.</p>
+  </footer>
 
-    <div class="whatsapp-btn-container">
-        <button type="button" class="whatsapp-btn" onclick="enviarPedido()">Finalizar Pedido</button>
-    </div>
+  <!-- Barra fixa no celular: leva até o formulário -->
+  <div class="barra-fixa" id="barra-fixa">
+    <a href="#pedido" class="btn btn--whatsapp btn--grande">Fazer pedido</a>
+  </div>
 
-    <script>
-        // ==================================================================
-        //  SISTEMA DE ABRIR/FECHAR A LOJA
-        // ==================================================================
-        const STATUS_LOJA = 'aberto'; 
-
-        function verificarStatusLoja() {
-            const overlay = document.getElementById('loja-fechada-overlay');
-            if (STATUS_LOJA === 'fechado') {
-                overlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden'; 
-            } else {
-                overlay.style.display = 'none'; 
-                document.body.style.overflow = 'auto'; 
-            }
-        }
-        window.addEventListener('load', verificarStatusLoja);
-
-        let pedidoEmProcessamento = false;
-
-        // ==================================================================
-        //  OFERTAS AUTOMÁTICAS (PREÇOS NOVOS ATUALIZADOS)
-        // ==================================================================
-        const products = {
-            'calabresa': { name: 'Pizza de Calabresa (G)', price: 44.90 },
-            'calabresacatupiry': { name: 'Pizza de Calabresa com Catupiry (G)', price: 49.90 },
-            'frangorequeijao': { name: 'Pizza de Frango com Requeijão (G)', price: 49.90 },
-            'portuguesa': { name: 'Pizza Portuguesa (G)', price: 49.90 },
-            '4queijos': { name: 'Pizza 4 Queijos (G)', price: 44.90 },
-            'modadacasa': { name: 'Pizza Moda da Casa (G)', price: 49.90 },
-            'frangocatupiry': { name: 'Pizza Frango com Catupiry (G)', price: 57.90 },
-            'carneseca': { name: 'Pizza Carne Seca (G)', price: 57.90 },
-            'calabresapaulista': { name: 'Pizza Calabresa Paulista (G)', price: 35.90 },
-            'coca2l': { name: 'Coca-Cola 2L', price: 14.00 },
-            'guarana2l': { name: 'Guaraná 2L', price: 14.00 },
-            'coca1l': { name: 'Coca-Cola 1L', price: 10.00 },
-            'sonhodevalsa': { name: 'Bombom Sonho de Valsa', price: 1.50 },
-            'bordacatupiry': { name: 'Borda de Catupiry', price: 12.00 }
-        };
-
-        const dailyOffers = [
-            { day: 0, title: 'Domingão em Família', items: ['portuguesa', 'guarana2l'], discount: 0.05 },
-            { day: 1, title: 'Segunda da Economia', items: ['calabresapaulista', 'guarana2l'], discount: 0.05 },
-            { day: 2, title: 'Terça do Clássico', items: ['calabresa', 'guarana2l'], discount: 0.05 },
-            { day: 3, title: 'Quarta do Futebol', items: ['4queijos', 'guarana2l', 'bordacatupiry'], discount: 0.0518 },
-            { day: 4, title: 'Quinta Especial', items: ['frangorequeijao', 'guarana2l'], discount: 0.05 },
-            { day: 5, title: 'Sextou com Pizza!', items: ['calabresacatupiry', 'guarana2l'], discount: 0.05 },
-            { day: 6, title: 'Sabadão Imperdível', items: ['modadacasa', 'guarana2l'], discount: 0.05 },
-        ];
-
-        let countdownInterval;
-        function displayDailyOffer() {
-            const today = new Date().getDay();
-            const offer = dailyOffers.find(o => o.day === today);
-            const offerSection = document.getElementById('oferta');
-            if (!offer) return;
-            let originalPrice = 0;
-            let offerDescription = [];
-            offer.items.forEach(itemId => {
-                if (products[itemId]) {
-                    originalPrice += products[itemId].price;
-                    offerDescription.push(products[itemId].name);
-                }
-            });
-            if (originalPrice === 0) return;
-            const finalPrice = originalPrice * (1 - offer.discount);
-            offerSection.innerHTML = `
-                <h2>🔥 ${offer.title}</h2>
-                <p>${offerDescription.join(' + ')}</p>
-                <div>
-                    <span class="original-price">De ${formatCurrency(originalPrice)}</span>
-                    <span class="price-highlight">Por apenas ${formatCurrency(finalPrice)}</span>
-                </div>
-                <div class="countdown-timer">
-                    <span class="timer-label">Esta oferta relâmpago termina em:</span>
-                    <div id="timer">00:00</div>
-                </div>
-            `;
-            offerSection.style.display = 'block';
-            startCountdown();
-        }
-        function startCountdown() {
-            if (countdownInterval) { clearInterval(countdownInterval); }
-            let durationInSeconds = (3 * 60) + 59;
-            const timerElement = document.getElementById('timer');
-            countdownInterval = setInterval(() => {
-                if (durationInSeconds < 0) {
-                    clearInterval(countdownInterval);
-                    timerElement.textContent = "22:59";
-                    return;
-                }
-                const minutes = Math.floor(durationInSeconds / 60);
-                const seconds = durationInSeconds % 60;
-                timerElement.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
-                durationInSeconds--;
-            }, 1000);
-        }
-        function formatCurrency(value) {
-            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-        document.addEventListener('DOMContentLoaded', displayDailyOffer);
-
-        // ==================================================================
-        //  FORMULÁRIO E WHATSAPP
-        // ==================================================================
-        function selectPayment(paymentType) {
-            document.querySelectorAll('.payment-option').forEach(option => { option.classList.remove('selected'); });
-            const selectedOption = document.querySelector(`label[onclick="selectPayment('${paymentType}')"]`);
-            selectedOption.classList.add('selected');
-            document.getElementById(paymentType).checked = true;
-        }
-
-        function enviarPedido() {
-            if (pedidoEmProcessamento) return;
-
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const aniversario = document.getElementById('aniversario').value;
-            const endereco = document.getElementById('endereco').value;
-            const pedido = document.getElementById('pedido-texto').value;
-            const pagamento = document.querySelector('input[name="pagamento"]:checked');
-
-            if (!nome || !telefone || !endereco || !pedido) {
-                alert('Por favor, preencha todos os campos do pedido!');
-                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-
-            if (!pagamento) {
-                alert('Por favor, selecione uma forma de pagamento!');
-                document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-
-            if (aniversario) {
-                const dataNasc = new Date(aniversario);
-                const hoje = new Date();
-                if (dataNasc > hoje) {
-                    alert('A data de nascimento não pode ser no futuro!');
-                    return;
-                }
-                const idade = (hoje - dataNasc) / (365.25 * 24 * 60 * 60 * 1000);
-                if (idade < 10 || idade > 120) {
-                    alert('Por favor, insira uma data de nascimento válida.');
-                    return;
-                }
-            }
-
-            pedidoEmProcessamento = true;
-            const todosOsBotoes = document.querySelectorAll('.whatsapp-btn');
-            const textosOriginais = [];
-            todosOsBotoes.forEach(function(btn, i) {
-                textosOriginais[i] = btn.textContent;
-                btn.disabled = true;
-                btn.style.opacity = '0.6';
-                btn.style.cursor = 'not-allowed';
-                btn.textContent = 'Processando... 🍕';
-            });
-            setTimeout(function() {
-                pedidoEmProcessamento = false;
-                todosOsBotoes.forEach(function(btn, i) {
-                    btn.disabled = false;
-                    btn.style.opacity = '1';
-                    btn.style.cursor = 'pointer';
-                    btn.textContent = textosOriginais[i];
-                });
-            }, 5000);
-
-            const dataAtual = new Date();
-            const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, '0');
-            const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
-            const hojeDiaMes = `-${mesAtual}-${diaAtual}`;
-
-            let comandoParaRobo = null;
-            if (aniversario && aniversario.endsWith(hojeDiaMes)) {
-                comandoParaRobo = 'avisar_aniversario';
-            }
-
-            fetch('/.netlify/functions/fidelidade', {
-                method: 'POST',
-                body: JSON.stringify({ 
-                    telefone: telefone,
-                    nome: nome,
-                    aniversario: aniversario,
-                    comando_whatsapp_original: comandoParaRobo,
-                    pagamento: pagamento.value 
-                })
-            })
-            .then(res => res.json())
-            .then(data => console.log("✅ Fidelidade atualizada no banco!", data))
-            .catch(err => console.error("❌ Erro ao registrar fidelidade:", err));
-
-            const formasPagamento = { 'dinheiro': '💵 Dinheiro', 'pix': '📱 PIX' };
-            const numeroWhatsApp = '5598970100184';
-            let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
-                           `*Cliente:* ${nome}\n` +
-                           `*Contato:* ${telefone}\n` +
-                           `*Endereço:* ${endereco}\n\n` +
-                           `*Pedido Detalhado:*\n${pedido}\n\n` +
-                           `*Pagamento:* ${formasPagamento[pagamento.value]}\n\n`;
-
-            if (pagamento.value === 'pix') {
-                mensagem += `*Dados para PIX:*\n*Chave (Celular):* 98970100184\n*Nome:* Francisco de Sousa\n\n_O pedido só é liberado após o envio do comprovante._\n\n`;
-            }
-
-            mensagem += `_Pedido enviado via cardápio digital._`;
-            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`, '_blank');
-        }
-
-        document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = value.slice(0, 15);
-        });
-
-        function handleResize() {
-            const floatingBtn = document.querySelector('.whatsapp-btn-container');
-            const formBtn = document.querySelector('.order-form .whatsapp-btn-placeholder');
-            if (window.innerWidth < 768) {
-                floatingBtn.style.display = 'block';
-                if(formBtn) formBtn.style.display = 'none';
-            } else {
-                floatingBtn.style.display = 'none';
-                if(formBtn) formBtn.style.display = 'block';
-            }
-        }
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('load', function() {
-            handleResize();
-            const inputAniversario = document.getElementById('aniversario');
-            if (inputAniversario) {
-                inputAniversario.max = new Date().toISOString().split('T')[0];
-            }
-        });
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('✅ Service Worker registrado com sucesso:', reg.scope))
-                .catch(err => console.error('❌ Falha ao registrar Service Worker:', err));
-        }
-
-        let deferredPrompt;
-        const installBanner = document.getElementById('install-banner');
-        const installBtn = document.getElementById('install-btn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBanner.style.display = 'flex';
-        });
-
-        installBtn.addEventListener('click', async () => {
-            installBanner.style.display = 'none';
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`Resultado da instalação: ${outcome}`);
-            deferredPrompt = null;
-        });
-
-        window.addEventListener('appinstalled', () => {
-            installBanner.style.display = 'none';
-            console.log('✅ App da CasadasPizzaass instalado com sucesso!');
-        });
-    </script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

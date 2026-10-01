@@ -1,17 +1,22 @@
 // ============================================================
 //  SERVICE WORKER — CasadasPizzaass PWA
 //  Estratégia: Network First com fallback para cache
-//  Versão: 1.0 — Atualizar CACHE_NAME para forçar recache
+//  Versão: 3.0 — Atualizar CACHE_NAME para forçar recache
 // ============================================================
 
-const CACHE_NAME = 'casadaspizzaass-v1';
+const CACHE_NAME = 'casadaspizzaass-v3';
 
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
+    '/css/style.css',
+    '/js/config.js',
+    '/js/app.js',
     '/manifest.json',
     '/icon-192x192.png',
-    '/icon-512x512.png'
+    '/icon-512x512.png',
+    '/apple-touch-icon.png',
+    '/img/logo.png'
 ];
 
 // ========== INSTALAÇÃO ==========
