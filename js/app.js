@@ -177,13 +177,10 @@ function iniciarBanner() {
 function iniciarFormulario() {
   const form = $('form-pedido');
   const telefone = $('telefone');
-  const aniversario = $('aniversario');
   const erro = $('form-erro');
   const botao = $('enviar-btn');
   const textoBotao = $('enviar-texto');
   let enviando = false;
-
-  aniversario.max = new Date().toISOString().split('T')[0];
 
   telefone.addEventListener('input', (e) => {
     let v = e.target.value.replace(/\D/g, '');
@@ -218,37 +215,13 @@ function iniciarFormulario() {
     if (!pedido.value.trim()) return mostrarErro('Escreva o seu pedido.', pedido);
     if (!pagamento) return mostrarErro('Escolha a forma de pagamento.');
 
-    if (aniversario.value) {
-      const nasc = new Date(aniversario.value);
-      const idade = (new Date() - nasc) / (365.25 * 24 * 60 * 60 * 1000);
-      if (nasc > new Date() || idade < 10 || idade > 120) {
-        return mostrarErro('Informe uma data de nascimento válida.', aniversario);
-      }
-    }
-
     // Bloqueia cliques repetidos por 5 segundos
     enviando = true;
     botao.disabled = true;
     textoBotao.textContent = 'Abrindo o WhatsApp...';
     setTimeout(() => { enviando = false; botao.disabled = false; textoBotao.textContent = 'Enviar pelo WhatsApp'; }, 5000);
 
-    // Clube da Pizza: registra o ponto de fidelidade (função do Netlify)
-    const hoje = new Date();
-    const hojeDiaMes = `-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
-    const comandoParaRobo = aniversario.value && aniversario.value.endsWith(hojeDiaMes) ? 'avisar_aniversario' : null;
-
-    fetch('/.netlify/functions/fidelidade', {
-      method: 'POST',
-      body: JSON.stringify({
-        telefone: telefone.value,
-        nome: nome.value,
-        aniversario: aniversario.value,
-        comando_whatsapp_original: comandoParaRobo,
-        pagamento: pagamento.value
-      })
-    }).catch((err) => console.error('Erro ao registrar fidelidade:', err));
-
-    // Mensagem enviada ao WhatsApp. O formato é o mesmo de antes, para não afetar o robô.
+    // Mensagem enviada ao WhatsApp. O formato é o mesmo de sempre.
     const formas = { dinheiro: '💵 Dinheiro', pix: '📱 PIX' };
     let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
       `*Cliente:* ${nome.value}\n` +

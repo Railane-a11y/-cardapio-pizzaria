@@ -246,7 +246,6 @@ a { color: inherit; }
 
 .campo { margin-bottom: 18px; border: 0; }
 .campo label, .campo legend { display: block; font-weight: 600; font-size: .92rem; margin-bottom: 7px; padding: 0; }
-.campo__opcional { display: block; font-weight: 400; font-size: .78rem; opacity: .8; }
 .campo input[type="text"], .campo input[type="tel"], .campo input[type="date"], .campo textarea {
   width: 100%; border: 2px solid transparent; border-radius: 12px; background: #fff; color: var(--tinta);
   padding: 14px 15px; font: 400 1rem var(--fonte-texto);

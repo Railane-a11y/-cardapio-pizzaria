@@ -48,9 +48,6 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
 
-    // Ignora requisições para Netlify Functions (nunca cachear API)
-    if (url.pathname.startsWith('/.netlify/')) return;
-
     // Ignora requisições que não são GET (POST, PUT, etc.)
     if (event.request.method !== 'GET') return;
 

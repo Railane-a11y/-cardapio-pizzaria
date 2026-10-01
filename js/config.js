@@ -38,6 +38,7 @@ const CONFIG = {
    Mantenha cada foto abaixo de 250 KB para o site abrir rápido.
    -------------------------------------------------------------------------- */
 const BANNERS = [
+  { imagem: 'img/banners/calabresa-requeijao-desktop.jpg', mobile: 'img/banners/calabresa-requeijao-mobile.jpg', titulo: 'Calabresa com Requeijão', texto: 'Calabresa, catupiry e orégano' },
   { imagem: 'img/banners/calabresa-desktop.jpg',         mobile: 'img/banners/calabresa-mobile.jpg',         titulo: 'Calabresa',                texto: 'Mussarela, calabresa e orégano' },
   { imagem: 'img/banners/carne-seca-desktop.jpg',        mobile: 'img/banners/carne-seca-mobile.jpg',        titulo: 'Carne Seca',               texto: 'Mussarela, carne seca e requeijão cremoso' },
   { imagem: 'img/banners/frango-requeijao-desktop.jpg',  mobile: 'img/banners/frango-requeijao-mobile.jpg',  titulo: 'Frango com Requeijão',     texto: 'Frango, mussarela, requeijão e orégano' },
