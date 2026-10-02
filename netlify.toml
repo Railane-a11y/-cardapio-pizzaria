@@ -1,2 +1,15 @@
 [build]
   publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# O painel não deve aparecer em buscas nem ficar guardado no navegador
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-cache"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "same-origin"

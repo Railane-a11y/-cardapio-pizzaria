@@ -1,10 +1,10 @@
 // ============================================================
 //  SERVICE WORKER — CasadasPizzaass PWA
 //  Estratégia: Network First com fallback para cache
-//  Versão: 3.0 — Atualizar CACHE_NAME para forçar recache
+//  Versão: 4.0 — Atualizar CACHE_NAME para forçar recache
 // ============================================================
 
-const CACHE_NAME = 'casadaspizzaass-v3';
+const CACHE_NAME = 'casadaspizzaass-v4';
 
 const ASSETS_TO_CACHE = [
     '/',
@@ -53,6 +53,9 @@ self.addEventListener('fetch', event => {
 
     // Ignora requisições para outros domínios (ex: wa.me, analytics)
     if (url.origin !== self.location.origin) return;
+
+    // O painel e a API de administração nunca passam pelo cache
+    if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/api/admin')) return;
 
     event.respondWith(
         fetch(event.request)

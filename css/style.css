@@ -74,6 +74,15 @@ a { color: inherit; }
   padding: 9px 16px; font-weight: 700; font-size: .88rem; letter-spacing: .3px;
 }
 
+/* ---------- Aviso do dia (editável no painel) ---------- */
+.aviso {
+  background: var(--carvao); color: var(--amarelo); font-weight: 600; font-size: .9rem;
+  display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;
+  padding: 10px 16px;
+}
+.aviso svg { flex: none; }
+.carregando { text-align: center; color: var(--tinta-suave); padding: 40px 16px; }
+
 /* ---------- Navegação ---------- */
 .nav {
   position: sticky; top: 0; z-index: 50;
@@ -220,6 +229,11 @@ a { color: inherit; }
 .selo--tradicional { color: var(--tinta-suave); }
 .selo--especial { color: #8a5a00; background: #fff1bf; border-color: #f0cf66; }
 .selo--premium { color: var(--tinta); background: var(--amarelo); border-color: var(--amarelo); }
+
+/* Item esgotado */
+.item--esgotado { opacity: .6; }
+.item--esgotado .preco__valor { text-decoration: line-through; }
+.selo--esgotado { color: #fff; background: var(--tinta-suave); border-color: var(--tinta-suave); }
 
 .precos { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 8px; }
 .preco {

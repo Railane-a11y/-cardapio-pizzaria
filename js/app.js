@@ -1,48 +1,97 @@
 /* ==========================================================================
    CASA DAS PIZZAS  |  Lógica do cardápio
-   Os dados (preços, sabores, ofertas, banners) ficam em js/config.js
+   Todo o conteúdo (preços, fotos, ofertas, textos) vem do PAINEL (/admin).
+   Se o painel não responder, o site usa o último conteúdo guardado no
+   aparelho ou o conteúdo inicial de js/config.js.
    ========================================================================== */
 
-const moeda = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const moeda = (v) => Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 const $ = (id) => document.getElementById(id);
 const escapar = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const LOGO_PADRAO = 'img/logo.png';
+
+let D = CONTEUDO_PADRAO; // conteúdo atual do site
+
+/* ---------- Busca do conteúdo ---------- */
+async function carregarConteudo() {
+  try {
+    const controle = new AbortController();
+    const limite = setTimeout(() => controle.abort(), 4000);
+    const r = await fetch('/api/conteudo', { signal: controle.signal, cache: 'no-store' });
+    clearTimeout(limite);
+    if (r.ok) {
+      const { conteudo } = await r.json();
+      if (conteudo) {
+        try { localStorage.setItem('conteudo-v1', JSON.stringify(conteudo)); } catch (e) { /* sem espaço: ignora */ }
+        return conteudo;
+      }
+      return CONTEUDO_PADRAO; // painel ativo, mas ainda sem nada salvo
+    }
+  } catch (e) { /* sem rede ou painel fora do ar */ }
+  try {
+    const guardado = JSON.parse(localStorage.getItem('conteudo-v1'));
+    if (guardado && guardado.categorias) return guardado;
+  } catch (e) { /* ignora */ }
+  return CONTEUDO_PADRAO;
+}
+
+/* ---------- Marca, textos e contato ---------- */
+function aplicarMarca() {
+  const { marca, contato, aviso } = D;
+  const logo = marca.logo || LOGO_PADRAO;
+  document.querySelectorAll('.js-logo').forEach((img) => { img.src = logo; img.alt = `Logo ${marca.nome}`; });
+
+  const [primeira, ...resto] = marca.nome.split(' ');
+  $('marca-nome').innerHTML = `<span class="wordmark__casa">${escapar(primeira)}</span>${resto.length ? ` <span class="wordmark__das">${escapar(resto.join(' '))}</span>` : ''}`;
+  $('marca-slogan').textContent = marca.slogan;
+  $('marca-slogan').hidden = !marca.slogan;
+  document.title = `Cardápio Digital | ${marca.nome}`;
+
+  $('faixa-entrega').hidden = !marca.faixaEntrega;
+  $('faixa-entrega-texto').textContent = marca.faixaEntrega;
+  $('aviso').hidden = !(aviso && aviso.ativo && aviso.texto);
+  $('aviso-texto').textContent = aviso ? aviso.texto : '';
+
+  const whats = $('rodape-whats');
+  whats.href = `https://wa.me/${contato.whatsapp}`;
+  whats.textContent = `WhatsApp ${contato.whatsappExibicao || contato.whatsapp}`;
+  $('rodape-endereco').textContent = contato.endereco;
+  $('rodape-horario').textContent = contato.horario;
+  $('rodape-atendimento').textContent = contato.atendimento;
+  const insta = $('rodape-insta');
+  insta.hidden = !contato.instagram;
+  insta.href = `https://www.instagram.com/${contato.instagram}/`;
+  $('rodape-insta-texto').textContent = `@${contato.instagram}`;
+  $('rodape-copy').textContent = `${marca.nome}. Todos os direitos reservados.`;
+}
 
 /* ---------- Loja aberta / fechada ---------- */
 function verificarLoja() {
-  const aviso = $('loja-fechada');
-  if (CONFIG.statusLoja !== 'fechado') return;
-  $('fechado-titulo').textContent = CONFIG.mensagemFechado.titulo;
-  $('fechado-texto').textContent = CONFIG.mensagemFechado.texto;
-  $('fechado-retorno').textContent = CONFIG.mensagemFechado.retorno;
-  $('fechado-contato').href = `https://wa.me/${CONFIG.whatsapp}`;
-  aviso.hidden = false;
+  if (D.loja.status !== 'fechado') return;
+  const m = D.loja.mensagemFechado;
+  $('fechado-titulo').textContent = m.titulo;
+  $('fechado-texto').textContent = m.texto;
+  $('fechado-retorno').textContent = m.retorno;
+  $('fechado-contato').href = `https://wa.me/${D.contato.whatsapp}`;
+  $('loja-fechada').hidden = false;
   document.body.style.overflow = 'hidden';
-}
-
-/* ---------- Contato e endereço no rodapé ---------- */
-function preencherContato() {
-  const whats = $('rodape-whats');
-  whats.href = `https://wa.me/${CONFIG.whatsapp}`;
-  whats.textContent = `WhatsApp ${CONFIG.whatsappExibicao}`;
-  $('rodape-endereco').textContent = CONFIG.endereco;
-  $('rodape-horario').textContent = CONFIG.horario;
-  $('rodape-atendimento').textContent = CONFIG.atendimento;
-  $('rodape-insta').href = `https://www.instagram.com/${CONFIG.instagram}/`;
-  $('rodape-insta-texto').textContent = `@${CONFIG.instagram}`;
 }
 
 /* ---------- Cardápio ---------- */
 function renderizarCardapio() {
-  $('cardapio').innerHTML = CATEGORIAS.map((cat) => `
-    <section id="${cat.id}" class="categoria categoria--${cat.tema}">
+  const categorias = D.categorias.filter((c) => c.visivel !== false && c.itens.length);
+  $('cardapio').innerHTML = categorias.map((cat) => `
+    <section id="${escapar(cat.id)}" class="categoria categoria--${escapar(cat.tema)}">
       <h2 class="categoria__titulo">${escapar(cat.titulo)}</h2>
       ${cat.subtitulo ? `<p class="categoria__sub">${escapar(cat.subtitulo)}</p>` : ''}
       <div class="itens">
         ${cat.itens.map((item) => `
-          <article class="item">
+          <article class="item${item.disponivel === false ? ' item--esgotado' : ''}">
             <div class="item__cabeca">
               <h3 class="item__nome">${escapar(item.nome)}</h3>
-              ${item.selo ? `<span class="selo selo--${item.selo.toLowerCase()}">${escapar(item.selo)}</span>` : ''}
+              ${item.disponivel === false
+                ? '<span class="selo selo--esgotado">Esgotado</span>'
+                : item.selo ? `<span class="selo selo--${escapar(item.selo.toLowerCase())}">${escapar(item.selo)}</span>` : ''}
             </div>
             <p class="item__desc">${escapar(item.descricao)}</p>
             <div class="precos">
@@ -56,28 +105,32 @@ function renderizarCardapio() {
           </article>`).join('')}
       </div>
     </section>`).join('');
+  return categorias;
 }
 
 /* ---------- Oferta do dia ---------- */
 function renderizarOferta() {
-  const oferta = OFERTAS_DA_SEMANA.find((o) => o.dia === new Date().getDay());
-  if (!oferta) return;
-
-  const produtos = oferta.itens.map((id) => PRODUTOS_OFERTA[id]).filter(Boolean);
-  const precoOriginal = produtos.reduce((soma, p) => soma + p.preco, 0);
-  if (!precoOriginal) return;
-
-  const precoFinal = precoOriginal * (1 - oferta.desconto);
   const secao = $('oferta');
+  const oferta = (D.ofertas || []).find((o) => o.dia === new Date().getDay() && o.ativo !== false && o.por > 0);
+  if (!oferta) { secao.hidden = true; return false; }
   secao.innerHTML = `
     <span class="oferta__selo">Oferta de hoje</span>
     <h2 class="oferta__titulo">${escapar(oferta.titulo)}</h2>
-    <p class="oferta__itens">${produtos.map((p) => escapar(p.nome)).join(' + ')}</p>
-    <p class="oferta__de">De ${moeda(precoOriginal)}</p>
-    <p class="oferta__por">Por apenas ${moeda(precoFinal)}</p>
+    ${oferta.descricao ? `<p class="oferta__itens">${escapar(oferta.descricao)}</p>` : ''}
+    ${oferta.de > oferta.por ? `<p class="oferta__de">De ${moeda(oferta.de)}</p>` : ''}
+    <p class="oferta__por">Por apenas ${moeda(oferta.por)}</p>
     <p class="oferta__validade">Válida somente hoje</p>`;
   secao.hidden = false;
-  $('nav-oferta').hidden = false;
+  return true;
+}
+
+/* ---------- Menu de atalhos ---------- */
+function renderizarMenu(categorias, temOferta) {
+  const links = [];
+  if (temOferta) links.push(['oferta', 'Oferta do dia']);
+  categorias.forEach((c) => links.push([c.id, c.rotuloMenu || c.titulo]));
+  links.push(['pedido', 'Pedido']);
+  $('nav-lista').innerHTML = links.map(([id, nome]) => `<a href="#${escapar(id)}">${escapar(nome)}</a>`).join('');
 }
 
 /* ---------- Banner de fotos ---------- */
@@ -85,21 +138,23 @@ function iniciarBanner() {
   const banner = $('banner');
   const trilho = $('banner-trilho');
   const pontos = $('banner-pontos');
+  const logo = D.marca.logo || LOGO_PADRAO;
 
   const slideMarca = () => `
     <div class="slide slide--marca">
       <div>
-        <img class="slide__logo" src="img/logo.png" alt="Casa das Pizzas" width="140" height="140">
-        <p class="slide__texto">As melhores pizzas da cidade. Peça pelo WhatsApp.</p>
+        <img class="slide__logo" src="${escapar(logo)}" alt="Logo ${escapar(D.marca.nome)}" width="140" height="140">
+        <p class="slide__texto">${escapar(D.marca.slogan || 'Peça pelo WhatsApp.')}</p>
       </div>
     </div>`;
 
-  trilho.innerHTML = BANNERS.length
-    ? BANNERS.map((b, i) => `
+  const fotos = (D.banners || []).filter((b) => b.ativo !== false && b.imagem);
+  trilho.innerHTML = fotos.length
+    ? fotos.map((b, i) => `
         <figure class="slide">
           <picture>
             ${b.mobile ? `<source media="(max-width: 799px)" srcset="${escapar(b.mobile)}">` : ''}
-            <img class="slide__img" src="${escapar(b.imagem)}" alt="${escapar(b.titulo || 'Pizza da Casa das Pizzas')}"
+            <img class="slide__img" src="${escapar(b.imagem)}" alt="${escapar(b.titulo || 'Pizza')}"
                  ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
           </picture>
           ${b.titulo ? `<figcaption class="slide__legenda">
@@ -221,7 +276,7 @@ function iniciarFormulario() {
     textoBotao.textContent = 'Abrindo o WhatsApp...';
     setTimeout(() => { enviando = false; botao.disabled = false; textoBotao.textContent = 'Enviar pelo WhatsApp'; }, 5000);
 
-    // Mensagem enviada ao WhatsApp. O formato é o mesmo de sempre.
+    // Mensagem enviada ao WhatsApp.
     const formas = { dinheiro: '💵 Dinheiro', pix: '📱 PIX' };
     let mensagem = `🍕 *NOVO PEDIDO - CasadasPizzaass* 🍕\n\n` +
       `*Cliente:* ${nome.value}\n` +
@@ -230,12 +285,12 @@ function iniciarFormulario() {
       `*Pedido Detalhado:*\n${pedido.value}\n\n` +
       `*Pagamento:* ${formas[pagamento.value]}\n\n`;
 
-    if (pagamento.value === 'pix') {
-      mensagem += `*Dados para PIX:*\n*Chave (Celular):* ${CONFIG.pix.chave}\n*Nome:* ${CONFIG.pix.nome}\n\n_O pedido só é liberado após o envio do comprovante._\n\n`;
+    if (pagamento.value === 'pix' && D.pix.chave) {
+      mensagem += `*Dados para PIX:*\n*Chave (Celular):* ${D.pix.chave}\n*Nome:* ${D.pix.nome}\n\n_O pedido só é liberado após o envio do comprovante._\n\n`;
     }
     mensagem += `_Pedido enviado via cardápio digital._`;
 
-    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensagem)}`, '_blank');
+    window.open(`https://wa.me/${D.contato.whatsapp}?text=${encodeURIComponent(mensagem)}`, '_blank');
   });
 }
 
@@ -267,13 +322,22 @@ function iniciarPWA() {
 }
 
 /* ---------- Início ---------- */
-document.addEventListener('DOMContentLoaded', () => {
-  verificarLoja();
-  preencherContato();
-  iniciarBanner();
-  renderizarOferta();
-  renderizarCardapio();
+document.addEventListener('DOMContentLoaded', async () => {
   iniciarFormulario();
   iniciarBarraFixa();
   iniciarPWA();
+
+  D = await carregarConteudo();
+  aplicarMarca();
+  verificarLoja();
+  iniciarBanner();
+  const temOferta = renderizarOferta();
+  const categorias = renderizarCardapio();
+  renderizarMenu(categorias, temOferta);
+
+  // Se o endereço tiver #categoria, vai até ela depois de montar a página
+  if (location.hash) {
+    const alvo = document.getElementById(location.hash.slice(1));
+    if (alvo) alvo.scrollIntoView();
+  }
 });

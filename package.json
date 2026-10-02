@@ -1,0 +1,10 @@
+{
+  "name": "casa-das-pizzas-cardapio",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Cardápio digital da Casa das Pizzas com painel de administração",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

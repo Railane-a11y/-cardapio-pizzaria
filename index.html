@@ -16,10 +16,10 @@
 </head>
 <body>
 
-  <!-- Aviso de loja fechada (controlado por CONFIG.statusLoja em js/config.js) -->
+  <!-- Aviso de loja fechada (controlado pelo painel /admin) -->
   <div id="loja-fechada" class="fechado" hidden>
     <div class="fechado__conteudo">
-      <img src="img/logo.png" alt="Casa das Pizzas" class="fechado__logo" width="120" height="120">
+      <img src="img/logo.png" alt="Logo" class="fechado__logo js-logo" width="120" height="120">
       <h1 id="fechado-titulo"></h1>
       <p id="fechado-texto"></p>
       <p id="fechado-retorno" class="fechado__retorno"></p>
@@ -29,10 +29,10 @@
 
   <header class="topo">
     <div class="topo__interno">
-      <img src="img/logo.png" alt="Casa das Pizzas" class="topo__logo" width="64" height="64">
+      <img src="img/logo.png" alt="Logo" class="topo__logo js-logo" width="64" height="64">
       <div class="topo__marca">
-        <p class="wordmark"><span class="wordmark__casa">Casa</span> <span class="wordmark__das">das Pizzas</span></p>
-        <p class="topo__slogan">As melhores pizzas da cidade</p>
+        <p class="wordmark" id="marca-nome"><span class="wordmark__casa">Casa</span> <span class="wordmark__das">das Pizzas</span></p>
+        <p class="topo__slogan" id="marca-slogan">As melhores pizzas da cidade</p>
       </div>
     </div>
   </header>
@@ -42,26 +42,23 @@
     <button type="button" id="instalar-btn" class="instalar__btn">Instalar</button>
   </div>
 
-  <div class="entrega">
+  <div class="entrega" id="faixa-entrega" hidden>
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1zM14 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-    Entrega grátis para toda a cidade
+    <span id="faixa-entrega-texto"></span>
+  </div>
+
+  <div class="aviso" id="aviso" role="status" hidden>
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+    <span id="aviso-texto"></span>
   </div>
 
   <nav class="nav" aria-label="Seções do cardápio">
-    <div class="nav__lista">
-      <a href="#oferta" id="nav-oferta" hidden>Oferta do dia</a>
-      <a href="#destaques">Destaques</a>
-      <a href="#especiais">Especiais</a>
-      <a href="#premium">Premium</a>
-      <a href="#bordas">Bordas</a>
-      <a href="#bebidas">Bebidas</a>
-      <a href="#pedido">Pedido</a>
-    </div>
+    <div class="nav__lista" id="nav-lista"></div>
   </nav>
 
   <main class="pagina">
 
-    <!-- Banner de fotos (preenchido por js/app.js a partir de BANNERS) -->
+    <!-- Banner de fotos (preenchido por js/app.js com o conteúdo do painel) -->
     <section class="banner" id="banner" aria-label="Nossas pizzas" aria-roledescription="carrossel">
       <div class="banner__trilho" id="banner-trilho"></div>
       <button type="button" class="banner__seta banner__seta--prev" id="banner-prev" aria-label="Foto anterior">
@@ -76,8 +73,8 @@
     <!-- Oferta do dia (preenchida por js/app.js) -->
     <section id="oferta" class="oferta" hidden></section>
 
-    <!-- Categorias do cardápio (preenchidas por js/app.js a partir de CATEGORIAS) -->
-    <div id="cardapio"></div>
+    <!-- Categorias do cardápio (preenchidas por js/app.js com o conteúdo do painel) -->
+    <div id="cardapio"><p class="carregando">Carregando o cardápio...</p></div>
 
     <section id="pedido" class="pedido">
       <div class="pedido__interno">
@@ -135,7 +132,7 @@
 
   <footer class="rodape">
     <div class="rodape__interno">
-      <img src="img/logo.png" alt="Casa das Pizzas" class="rodape__logo" width="96" height="96" loading="lazy">
+      <img src="img/logo.png" alt="Logo" class="rodape__logo js-logo" width="96" height="96" loading="lazy">
       <div class="rodape__info">
         <p class="rodape__titulo">Onde estamos</p>
         <p id="rodape-endereco"></p>
@@ -153,7 +150,7 @@
         </p>
       </div>
     </div>
-    <p class="rodape__copy">Casa das Pizzas. Todos os direitos reservados.</p>
+    <p class="rodape__copy" id="rodape-copy"></p>
   </footer>
 
   <!-- Barra fixa no celular: leva até o formulário -->

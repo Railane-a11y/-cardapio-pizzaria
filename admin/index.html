@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#17100e">
+  <title>Painel | Casa das Pizzas</title>
+  <link rel="icon" href="../icon-192x192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Entrada com senha -->
+  <section id="tela-login" class="login" hidden>
+    <form id="form-login" class="login__caixa" autocomplete="on">
+      <img src="../img/logo.png" alt="" class="login__logo" width="110" height="110">
+      <h1>Painel da loja</h1>
+      <p>Entre com a sua senha para editar o cardápio.</p>
+      <label class="campo">
+        <span>Senha</span>
+        <input type="password" id="login-senha" autocomplete="current-password" required>
+      </label>
+      <p class="login__erro" id="login-erro" role="alert" hidden></p>
+      <button type="submit" class="btn btn--vermelho btn--cheio" id="login-btn">Entrar</button>
+    </form>
+  </section>
+
+  <!-- Painel -->
+  <div id="app" hidden>
+    <header class="topo">
+      <div class="topo__marca">
+        <img src="../img/logo.png" alt="" id="topo-logo" width="40" height="40">
+        <strong>Painel da loja</strong>
+      </div>
+      <div class="topo__acoes">
+        <a class="btn btn--leve" href="../" target="_blank" rel="noopener">Ver site</a>
+        <button type="button" class="btn btn--leve" data-acao="sair">Sair</button>
+      </div>
+    </header>
+
+    <nav class="abas" role="tablist" aria-label="Seções do painel">
+      <button type="button" role="tab" data-aba="geral" aria-selected="true">Geral</button>
+      <button type="button" role="tab" data-aba="fotos" aria-selected="false">Fotos</button>
+      <button type="button" role="tab" data-aba="cardapio" aria-selected="false">Cardápio</button>
+      <button type="button" role="tab" data-aba="ofertas" aria-selected="false">Ofertas</button>
+    </nav>
+
+    <main id="conteudo" class="conteudo"></main>
+
+    <div class="salvar" id="barra-salvar">
+      <span class="salvar__estado" id="estado" role="status">Tudo publicado</span>
+      <button type="button" class="btn btn--vermelho" id="btn-salvar" data-acao="salvar" disabled>Salvar e publicar</button>
+    </div>
+  </div>
+
+  <!-- Adicionar foto ao banner -->
+  <dialog id="dlg-foto" class="dialogo">
+    <form method="dialog" class="dialogo__corpo" id="form-foto">
+      <h2>Adicionar foto ao banner</h2>
+      <label class="campo">
+        <span>Escolha a foto da pizza</span>
+        <input type="file" id="foto-arquivo" accept="image/jpeg,image/png,image/webp">
+      </label>
+      <div id="foto-area" hidden>
+        <p class="dica">Ajuste o enquadramento. À esquerda, como aparece no computador. À direita, no celular.</p>
+        <div class="previas">
+          <canvas id="previa-pc" width="500" height="200" aria-label="Prévia no computador"></canvas>
+          <canvas id="previa-cel" width="200" height="200" aria-label="Prévia no celular"></canvas>
+        </div>
+        <label class="campo campo--faixa"><span>Aproximar (zoom)</span><input type="range" id="foto-zoom" min="1" max="2.5" step="0.05" value="1"></label>
+        <label class="campo campo--faixa"><span>Mover para os lados</span><input type="range" id="foto-x" min="0" max="1" step="0.01" value="0.5"></label>
+        <label class="campo campo--faixa"><span>Mover para cima e para baixo</span><input type="range" id="foto-y" min="0" max="1" step="0.01" value="0.5"></label>
+        <label class="campo"><span>Nome da pizza (aparece sobre a foto)</span><input type="text" id="foto-titulo" maxlength="60" placeholder="Ex: Calabresa com Requeijão"></label>
+        <label class="campo"><span>Descrição curta (opcional)</span><input type="text" id="foto-texto" maxlength="100" placeholder="Ex: Calabresa, catupiry e orégano"></label>
+      </div>
+      <p class="login__erro" id="foto-erro" role="alert" hidden></p>
+      <div class="dialogo__botoes">
+        <button type="button" class="btn btn--leve btn--escuro" id="foto-cancelar">Cancelar</button>
+        <button type="button" class="btn btn--vermelho" id="foto-ok" disabled>Adicionar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <input type="file" id="arq-logo" accept="image/jpeg,image/png,image/webp" hidden>
+  <div id="aviso-toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="../js/config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
